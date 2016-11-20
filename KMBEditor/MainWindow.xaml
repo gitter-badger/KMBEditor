@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KMBEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="KMBEditor" Height="350" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="19"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="380*"/>
+            <ColumnDefinition Width="137*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="textBox" TextWrapping="Wrap" Text="TextBox" Background="#FFD8D8D8" AcceptsReturn="True" Grid.Row="1" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+        <Menu x:Name="menu" Grid.ColumnSpan="2" Margin="0,0,0,0.665" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+            <MenuItem Header="ファイル(_F)">
+                <MenuItem Header="新規作成(_N)"/>
+                <MenuItem Header="開く(_O)"/>
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>
