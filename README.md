@@ -29,6 +29,15 @@ AA(アスキーアート) 作成用エディタ(になる予定のもの)です�
 + .NET Framework 4.5 以上
 
 # 開発環境
+## 開発言語
+
++ C#
+
+## 仕様フレームワーク/ライブラリ
+
++ .NET Framework 4.5
++ OpenCV
+
+## 開発環境
 
 + Visual Studio 2015
-+ .NET Framework 4.5
