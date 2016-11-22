@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:KMBEditor"
         mc:Ignorable="d"
         Title="KMBEditor" Height="350" Width="525">
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="19"/>
@@ -15,11 +18,11 @@
             <ColumnDefinition Width="380*"/>
             <ColumnDefinition Width="137*"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="textBox" TextWrapping="Wrap" Text="TextBox" Background="#FFD8D8D8" AcceptsReturn="True" Grid.Row="1" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+        <TextBox x:Name="textBox" TextWrapping="Wrap" Text="{Binding AA.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="#FFD8D8D8" AcceptsReturn="True" Grid.Row="1" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
         <Menu x:Name="menu" Grid.ColumnSpan="2" Margin="0,0,0,0.665" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
             <MenuItem Header="ファイル(_F)">
                 <MenuItem Header="新規作成(_N)"/>
-                <MenuItem Header="開く(_O)"/>
+                <MenuItem Header="開く(_O)" Command="{Binding OpenCommand}"/>
             </MenuItem>
         </Menu>
     </Grid>
