@@ -36,7 +36,8 @@ AA(アスキーアート) 作成用エディタ(になる予定のもの)です�
 ## 使用フレームワーク/ライブラリ
 
 + .NET Framework 4.5
-+ OpenCV
++ OpenCV(予定)
++ [ReactiveProperty 3.3.2 (MIT License)](https://github.com/runceel/ReactiveProperty)
 
 ## 開発環境
 
