@@ -69,6 +69,9 @@ namespace KMBEditor
         public MainWindow()
         {
             InitializeComponent();
+
+            var win = new MLTViewerWindow();
+            win.Show();
         }
     }
 }
