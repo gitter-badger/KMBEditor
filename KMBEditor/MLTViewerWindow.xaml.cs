@@ -16,6 +16,11 @@ namespace KMBEditor
 {
     /// <summary>
     /// MLTViewerWindow.xaml の相互作用ロジック
+    /// 
+    /// 機能要件:
+    /// ・MLTのZipファイルの一覧表示機能を提供
+    /// ・編集機能は持たない、閲覧機能のみを提供
+    /// 
     /// </summary>
     public partial class MLTViewerWindow : Window
     {
