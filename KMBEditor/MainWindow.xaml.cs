@@ -52,9 +52,11 @@ namespace KMBEditor
 
         public MainWindowViewModel()
         {
+            // 初期化
             this.AA = new ReactiveProperty<string>("");
             this.OpenCommand = new ReactiveCommand();
 
+            // コマンド定義
             this.OpenCommand.Subscribe(_ => this.OpenMLTFile());
         }
     }
