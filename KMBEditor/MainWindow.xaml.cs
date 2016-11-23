@@ -29,16 +29,25 @@ namespace KMBEditor
         // コマンド
         public ReactiveCommand OpenCommand { get; private set; }
 
+        public ReactiveCommand PrevPageCommand { get; private set; }
+        public ReactiveCommand NextPageCommand { get; private set; }
+
+        // データ
+        private MLTClass current_mlt;
+
         public MainWindowViewModel()
         {
             // 初期化
             this.AA = new ReactiveProperty<string>("");
             this.OpenCommand = new ReactiveCommand();
-
-            var current = new MLTClass();
+            this.PrevPageCommand = new ReactiveCommand();
+            this.NextPageCommand = new ReactiveCommand();
+            this.current_mlt = new MLTClass();
 
             // コマンド定義
-            this.OpenCommand.Subscribe(_ => this.AA.Value = current.OpenMLTFile());
+            this.OpenCommand.Subscribe(_ => this.AA.Value = this.current_mlt.OpenMLTFile());
+            this.PrevPageCommand.Subscribe(_ => this.AA.Value = this.current_mlt.GetPrevPage());
+            this.NextPageCommand.Subscribe(_ => this.AA.Value = this.current_mlt.GetNextPage());
         }
     }
 
