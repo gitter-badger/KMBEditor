@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Reactive.Bindings;
 using Microsoft.Win32;
+using System.IO;
 
 namespace KMBEditor
 {
@@ -36,7 +37,16 @@ namespace KMBEditor
 
             if (dialog.ShowDialog() == true)
             {
-                this.AA.Value = dialog.FileName;
+                var filepath = dialog.FileName;
+                if (File.Exists(filepath) == false)
+                {
+                    MessageBox.Show("指定されたファイルが見つかりませんでした");
+                    return;
+                }
+
+                var st = new StreamReader(filepath, System.Text.Encoding.Default);
+
+                this.AA.Value = st.ReadToEnd();
             }
         }
 
