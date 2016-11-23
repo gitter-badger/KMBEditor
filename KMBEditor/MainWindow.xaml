@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KMBEditor"
         mc:Ignorable="d"
-        Title="KMBEditor" Height="350" Width="525">
+        Title="KMBEditor" Height="350" Width="525" WindowState="Maximized">
     <Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>

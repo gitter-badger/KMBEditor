@@ -29,35 +29,16 @@ namespace KMBEditor
         // コマンド
         public ReactiveCommand OpenCommand { get; private set; }
 
-        public void OpenMLTFile()
-        {
-            var dialog = new OpenFileDialog();
-            dialog.Title = "ファイルを開く";
-            dialog.Filter = "すべてのファイル(*.*)|*.*";
-
-            if (dialog.ShowDialog() == true)
-            {
-                var filepath = dialog.FileName;
-                if (File.Exists(filepath) == false)
-                {
-                    MessageBox.Show("指定されたファイルが見つかりませんでした");
-                    return;
-                }
-
-                var st = new StreamReader(filepath, System.Text.Encoding.Default);
-
-                this.AA.Value = st.ReadToEnd();
-            }
-        }
-
         public MainWindowViewModel()
         {
             // 初期化
             this.AA = new ReactiveProperty<string>("");
             this.OpenCommand = new ReactiveCommand();
 
+            var current = new MLTClass();
+
             // コマンド定義
-            this.OpenCommand.Subscribe(_ => this.OpenMLTFile());
+            this.OpenCommand.Subscribe(_ => this.AA.Value = current.OpenMLTFile());
         }
     }
 
@@ -70,6 +51,7 @@ namespace KMBEditor
         {
             InitializeComponent();
 
+            // MLTViewerの表示
             var win = new MLTViewerWindow();
             win.Show();
         }
