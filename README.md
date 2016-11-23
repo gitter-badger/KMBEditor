@@ -11,7 +11,7 @@ AA(アスキーアート) 作成用エディタ(になる予定のもの)です�
 
 当面はOrinrinEditorの補助的なツール、将来的には代替+αを目標としています。
 
-+ [OrinrinEditor/BrushTemplate.cpp at master · SikigamiHNQ/OrinrinEditor](https://github.com/SikigamiHNQ/OrinrinEditor/blob/master/BrushTemplate.cpp)
++ [SikigamiHNQ/OrinrinEditor: AsciiArt Story Editor for Japanese Only](https://github.com/SikigamiHNQ/OrinrinEditor)
 + [OrinrinEditor | やる夫 Wiki | Fandom powered by Wikia](http://yaruo.wikia.com/wiki/OrinrinEditor)
 
 # コンセプト
