@@ -1,5 +1,9 @@
 version: 1.0.{build}
+platform:
+  - Any CPU
+configuration:
+  - Release
 before_build:
-- ps: nuget restore
+  - ps: nuget restore
 build:
   verbosity: minimal
