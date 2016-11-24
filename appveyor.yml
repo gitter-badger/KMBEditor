@@ -1,4 +1,4 @@
-version: 1.0.{build}
+version: 0.0.{build}
 platform:
   - Any CPU
 configuration:
@@ -7,3 +7,7 @@ before_build:
   - ps: nuget restore
 build:
   verbosity: minimal
+artifacts:
+  - path: KMBEditor\bin\$(configuration)
+    name: KMBEditor
+    type: zip

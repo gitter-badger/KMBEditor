@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/7m2j8rd1ye54mmit?svg=true)](https://ci.appveyor.com/project/tar-bin/kmbeditor)
+[![Build status](https://ci.appveyor.com/api/projects/status/7m2j8rd1ye54mmit?svg=true)](https://ci.appveyor.com/project/tar-bin/kmbeditor/build/artifacts)
 
 KMBEditor
 ==
