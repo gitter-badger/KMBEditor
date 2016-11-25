@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KMBEditor"
         mc:Ignorable="d"
-        Title="KMBEditor" Height="350" Width="525" WindowState="Maximized">
+        Title="KMBEditor" Height="600" Width="800" WindowState="Maximized">
     <Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>
@@ -26,6 +26,11 @@
                 <MenuItem Header="開く(_O)" Command="{Binding OpenCommand}"/>
             </MenuItem>
             <MenuItem Header="ヘルプ(_H)">
+                <MenuItem Header="バグレポート・機能追加要望(_U)">
+                    <MenuItem Header="GitLab Issue の作成ページを開く[推奨:要ログイン](_G)" Command="{Binding BrowserOpenCommand_GitLabIssueURL}" CommandParameter="{Binding GitLabIssueURL.Value}"/>
+                    <MenuItem Header="現行スレを開く(_S)" Command="{Binding BrowserOpenCommand_CurrentBoardURL}" CommandParameter="{Binding CurrentBoardURL.Value}"/>
+                    <MenuItem Header="開発者Twtterを開く(_T)" Command="{Binding BrowserOpenCommand_DevelopperTwtterURL}" CommandParameter="{Binding DevelopperTwtterURL.Value}"/>
+                </MenuItem>
                 <MenuItem Header="バージョン情報(_V)"/>
             </MenuItem>
         </Menu>
