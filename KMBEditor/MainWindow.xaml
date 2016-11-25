@@ -25,11 +25,14 @@
                 <MenuItem Header="新規作成(_N)"/>
                 <MenuItem Header="開く(_O)" Command="{Binding OpenCommand}"/>
             </MenuItem>
+            <MenuItem Header="ヘルプ(_H)">
+                <MenuItem Header="バージョン情報(_V)"/>
+            </MenuItem>
         </Menu>
         <Button x:Name="prevButton" Content="Prev" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="2" VerticalAlignment="Bottom" Width="75" Command="{Binding PrevPageCommand}"/>
         <Button x:Name="nextButton" Content="Next" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,34.96" Grid.Row="2" VerticalAlignment="Bottom" Width="75" Command="{Binding NextPageCommand}"/>
         <StatusBar Grid.Row="3" Grid.ColumnSpan="2"/>
-        <TabControl x:Name="tabControl" Margin="0,-0.665,0,0.334" Grid.Row="1" Grid.RowSpan="2">
+        <TabControl x:Name="tabControl" Margin="0,0,0,0.334" Grid.Row="2">
             <TabItem Header="TabItem">
                 <Grid Background="#FFE5E5E5">
                     <TextBox x:Name="textBox" TextWrapping="Wrap" Text="{Binding AA.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="#FFD8D8D8" AcceptsReturn="True" FontFamily="MS PGothic"/>
