@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Reactive.Bindings;
 using Microsoft.Win32;
+using System.Reactive.Linq;
 using System.IO;
 
 namespace KMBEditor
@@ -25,6 +26,9 @@ namespace KMBEditor
     {
         // プロパティ
         public ReactiveProperty<string> AA { get; private set; }
+        public ReactiveProperty<string> GitLabIssueURL { get; private set; }
+        public ReactiveProperty<string> CurrentBoardURL { get; private set; }
+        public ReactiveProperty<string> DevelopperTwtterURL { get; private set; }
 
         // コマンド
         public ReactiveCommand OpenCommand { get; private set; }
@@ -32,22 +36,38 @@ namespace KMBEditor
         public ReactiveCommand PrevPageCommand { get; private set; }
         public ReactiveCommand NextPageCommand { get; private set; }
 
+        public ReactiveCommand BrowserOpenCommand_GitLabIssueURL { get; private set; }
+        public ReactiveCommand BrowserOpenCommand_CurrentBoardURL { get; private set; }
+        public ReactiveCommand BrowserOpenCommand_DevelopperTwtterURL { get; private set; }
+
         // データ
         private MLTClass current_mlt;
 
         public MainWindowViewModel()
         {
-            // 初期化
+            this.current_mlt = new MLTClass();
+
+            // 変数初期化
             this.AA = new ReactiveProperty<string>("");
+            this.GitLabIssueURL = new ReactiveProperty<string>("https://gitlab.com/tar_bin/KMBEditor/issues");
+            this.CurrentBoardURL = new ReactiveProperty<string>("");
+            this.DevelopperTwtterURL = new ReactiveProperty<string>("https://twitter.com/tar_bin");
+
+            // コマンド初期化
             this.OpenCommand = new ReactiveCommand();
             this.PrevPageCommand = new ReactiveCommand();
             this.NextPageCommand = new ReactiveCommand();
-            this.current_mlt = new MLTClass();
+            this.BrowserOpenCommand_GitLabIssueURL = this.GitLabIssueURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
+            this.BrowserOpenCommand_DevelopperTwtterURL = this.DevelopperTwtterURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
+            this.BrowserOpenCommand_CurrentBoardURL = this.CurrentBoardURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
 
             // コマンド定義
             this.OpenCommand.Subscribe(_ => this.AA.Value = this.current_mlt.OpenMLTFile());
             this.PrevPageCommand.Subscribe(_ => this.AA.Value = this.current_mlt.GetPrevPage());
             this.NextPageCommand.Subscribe(_ => this.AA.Value = this.current_mlt.GetNextPage());
+            this.BrowserOpenCommand_GitLabIssueURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
+            this.BrowserOpenCommand_DevelopperTwtterURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
+            this.BrowserOpenCommand_CurrentBoardURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
         }
     }
 
