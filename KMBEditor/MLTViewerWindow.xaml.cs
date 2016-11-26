@@ -23,11 +23,18 @@ namespace KMBEditor
     /// </summary>
     public class MLTViewerWindowViewModel
     {
+        private MLTFileTreeClass _mlt_file_tree { get; set; }
+        private MLTClass _current_preview_mlt { get; set; }
+
+        public ReactiveProperty<string> PreviewText { get; private set; }
         public ReactiveProperty<string> ResourceDirectoryPath { get; private set; }
         public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; }
 
         public ReactiveCommand OpenResourceDirectoryCommand { get; private set; }
-
+        public ReactiveCommand PreviewTextUpdateCommand { get; private set; }
+        public ReactiveCommand PrevPageCommand { get; private set; }
+        public ReactiveCommand NextPageCommand { get; private set; }
+        public ReactiveCommand ShowAllPageCommand { get; private set; }
 
         public string OpenResourceDirectory()
         {
@@ -43,8 +50,7 @@ namespace KMBEditor
                 }
 
                 // 選択されたディレクトリを起点に、MLTファイルを探索
-                var mlt = new MLTFileTreeClass();
-                this.MLTFileTreeNodes.Value = mlt.SearchMLTFile(dialog.SelectedPath);
+                this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(dialog.SelectedPath);
 
                 // 選択されたディレクトリへのパスを返す
                 return dialog.SelectedPath;
@@ -54,37 +60,32 @@ namespace KMBEditor
         public MLTViewerWindowViewModel()
         {
             // 変数初期化
+            this._mlt_file_tree = new MLTFileTreeClass();
+            this._current_preview_mlt = new MLTClass();
+            this.PreviewText = new ReactiveProperty<string>("");
             this.ResourceDirectoryPath = new ReactiveProperty<string>("");
-            this.MLTFileTreeNodes = new ReactiveProperty<List<MLTFileTreeNode>>(
-                new List<MLTFileTreeNode> {
-                    new MLTFileTreeNode
-                    {
-                        Name = "test1",
-                        Path = "test1",
-                        Children = new List<MLTFileTreeNode>
-                        {
-                            new MLTFileTreeNode
-                            {
-                                Name = "test2",
-                                Path = "test2",
-                                Children = new List<MLTFileTreeNode>
-                                {
-                                    new MLTFileTreeNode
-                                    {
-                                        Name = "FileName2",
-                                        Path = "FilePath2",
-                                    }
-                                },
-                            }
-                        }
-                    }
-                });
+            this.MLTFileTreeNodes = new ReactiveProperty<List<MLTFileTreeNode>>();
 
             // コマンド初期化
             this.OpenResourceDirectoryCommand = new ReactiveCommand();
+            this.PreviewTextUpdateCommand = new ReactiveCommand();
+            this.PrevPageCommand = new ReactiveCommand();
+            this.NextPageCommand = new ReactiveCommand();
+            this.ShowAllPageCommand = new ReactiveCommand();
 
             // コマンド定義
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.OpenResourceDirectory());
+            this.PreviewTextUpdateCommand.Subscribe(obj =>
+                {
+                    MLTFileTreeNode node = (MLTFileTreeNode)obj;
+                    if (node.IsDirectory == false)
+                    {
+                        this.PreviewText.Value = this._current_preview_mlt.OpenMLTFile(node.Path);
+                    }
+                });
+            this.PrevPageCommand.Subscribe(_ => this.PreviewText.Value = this._current_preview_mlt.GetPrevPage());
+            this.NextPageCommand.Subscribe(_ => this.PreviewText.Value = this._current_preview_mlt.GetNextPage());
+            this.ShowAllPageCommand.Subscribe(_ => this.PreviewText.Value = this._current_preview_mlt.GetRawMLT());
         }
     }
 

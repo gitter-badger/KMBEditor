@@ -61,7 +61,7 @@ namespace KMBEditor
             this.BrowserOpenCommand_CurrentBoardURL = this.CurrentBoardURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
 
             // コマンド定義
-            this.OpenCommand.Subscribe(_ => this.AA.Value = this.current_mlt.OpenMLTFile());
+            this.OpenCommand.Subscribe(_ => this.AA.Value = this.current_mlt.OpemMLTFileWithDialog());
             this.PrevPageCommand.Subscribe(_ => this.AA.Value = this.current_mlt.GetPrevPage());
             this.NextPageCommand.Subscribe(_ => this.AA.Value = this.current_mlt.GetNextPage());
             this.BrowserOpenCommand_GitLabIssueURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
