@@ -117,6 +117,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MLTFileTreeClass.cs" />
     <Compile Include="MLTViewerWindow.xaml.cs">
       <DependentUpon>MLTViewerWindow.xaml</DependentUpon>
     </Compile>

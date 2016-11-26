@@ -5,37 +5,47 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KMBEditor"
         mc:Ignorable="d"
-        Title="MLTViewerWindow" Height="300" Width="300">
+        Title="MLTViewerWindow" Height="599" Width="800">
     <Window.DataContext>
         <local:MLTViewerWindowViewModel/>
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="19.564"/>
+            <RowDefinition Height="20"/>
             <RowDefinition/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="95*"/>
-            <ColumnDefinition Width="197*"/>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="Auto" MinWidth="7"/>
+            <ColumnDefinition Width="107*"/>
         </Grid.ColumnDefinitions>
-        <TreeView x:Name="treeView" Grid.Row="1">
+        <GridSplitter x:Name="gridSplitter" Grid.Column="1" Grid.Row="1" Margin="0,0,0.5,0" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" Width="0"/>
+        <!-- メニューバー -->
+        <Menu x:Name="menu" Grid.ColumnSpan="3" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+            <MenuItem Header="ファイル(_F)">
+                <MenuItem Header="リソースディレクトリを開く(_O)" HorizontalAlignment="Left" Command="{Binding OpenResourceDirectoryCommand}" Margin="0,0,-48,0"/>
+            </MenuItem>
+        </Menu>
+        <!-- 左カラム -->
+        <TreeView x:Name="treeView" Grid.Row="1" ItemsSource="{Binding MLTFileTreeNodes.Value}" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="local:Person" ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Name}" />
+                <HierarchicalDataTemplate DataType="MLTFileTreeNode" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}"/>
+                    </StackPanel>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-        <TabControl x:Name="tabControl" Grid.Column="1" Grid.Row="1">
+        <!-- 右カラム -->
+        <TabControl x:Name="tabControl" Grid.Column="2" Grid.Row="1" Margin="0,0,0,-1" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
             <TabItem Header="Preview">
                 <Grid Background="#FFE5E5E5">
                     <TextBlock x:Name="textBlock" TextWrapping="Wrap" FontFamily="MS PGothic" Background="#FFF0F0F0"><Run Text="TextBlock"/></TextBlock>
                 </Grid>
             </TabItem>
         </TabControl>
-        <Menu x:Name="menu" Grid.ColumnSpan="2">
-            <MenuItem Header="ファイル(_F)">
-                <MenuItem Header="リソースディレクトリを開く(_O)" HorizontalAlignment="Left" Width="140" Command="{Binding OpenResourceDirectoryCommand}"/>
-            </MenuItem>
-        </Menu>
+        <!-- ステータスバー -->
+        <StatusBar Grid.ColumnSpan="3" Margin="0,1,0,0" Grid.Row="2" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
     </Grid>
 </Window>
