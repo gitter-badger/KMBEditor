@@ -6,13 +6,36 @@
         xmlns:local="clr-namespace:KMBEditor"
         mc:Ignorable="d"
         Title="MLTViewerWindow" Height="300" Width="300">
+    <Window.DataContext>
+        <local:MLTViewerWindowViewModel/>
+    </Window.DataContext>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="19.564"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="95*"/>
             <ColumnDefinition Width="197*"/>
         </Grid.ColumnDefinitions>
-        <TreeView x:Name="treeView"/>
-        <TextBlock x:Name="textBlock" Grid.Column="1" TextWrapping="Wrap" Text="TextBlock" FontFamily="MS PGothic" Background="#FFF0F0F0"/>
-
+        <TreeView x:Name="treeView" Grid.Row="1">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="local:Person" ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Name}" />
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        <TabControl x:Name="tabControl" Grid.Column="1" Grid.Row="1">
+            <TabItem Header="Preview">
+                <Grid Background="#FFE5E5E5">
+                    <TextBlock x:Name="textBlock" TextWrapping="Wrap" FontFamily="MS PGothic" Background="#FFF0F0F0"><Run Text="TextBlock"/></TextBlock>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Menu x:Name="menu" Grid.ColumnSpan="2">
+            <MenuItem Header="ファイル(_F)">
+                <MenuItem Header="リソースディレクトリを開く(_O)" HorizontalAlignment="Left" Width="140" Command="{Binding OpenResourceDirectoryCommand}"/>
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>

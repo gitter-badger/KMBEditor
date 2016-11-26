@@ -1,11 +1,8 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using WinForms = System.Windows.Forms;
 
 namespace KMBEditor
 {
@@ -60,34 +57,36 @@ namespace KMBEditor
         public string OpenMLTFile()
         {
             // ダイアログからファイルパスの取得
-            var dialog = new OpenFileDialog();
-            dialog.Title = "ファイルを開く";
-            dialog.Filter = "すべてのファイル(*.*)|*.*"; // FIXME: MLT & Textファイルのみの指定にする
-            
-            if (dialog.ShowDialog() == false)
+            using (var dialog = new WinForms.OpenFileDialog())
             {
-                return "";
+                dialog.Title = "ファイルを開く";
+                dialog.Filter = "すべてのファイル(*.*)|*.*"; // FIXME: MLT & Textファイルのみの指定にする
+
+                if (dialog.ShowDialog() != WinForms.DialogResult.OK)
+                {
+                    return "";
+                }
+
+                // ファイルの存在チェック
+                var filepath = dialog.FileName;
+                if (File.Exists(filepath) == false)
+                {
+                    MessageBox.Show("指定されたファイルが見つかりませんでした");
+                    return "";
+                }
+
+                // ページリストの初期化
+                this.pages.Clear();
+                this.current_page_num = 0;
+
+                // MLTからページリストの更新
+                foreach (var page in this.ReadMLT(filepath))
+                {
+                    pages.Add(page);
+                }
+
+                return this.pages.First(); // 初回は先頭ページを開く
             }
-
-            // ファイルの存在チェック
-            var filepath = dialog.FileName;
-            if (File.Exists(filepath) == false)
-            {
-                MessageBox.Show("指定されたファイルが見つかりませんでした");
-                return "";
-            }
-
-            // ページリストの初期化
-            this.pages.Clear();
-            this.current_page_num = 0;
-
-            // MLTからページリストの更新
-            foreach (var page in this.ReadMLT(filepath))
-            {
-                pages.Add(page);
-            }
-
-            return this.pages.First(); // 初回は先頭ページを開く
         }
 
         /// <summary>
