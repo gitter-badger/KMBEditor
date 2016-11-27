@@ -47,6 +47,9 @@ AA(アスキーアート) 作成用エディタ(になる予定のもの)です�
 + [ReactiveProperty 3.3.2 (MIT License)](https://github.com/runceel/ReactiveProperty)
 + [Json.NET 9.0.1 (MIT License)](http://www.newtonsoft.com/json)
 
+## アイコン画像
+[Icon8](https://icons8.com/)([CC BY-ND 3.0](https://icons8.com/license/))
+
 ## 開発環境
 
 + Visual Studio 2015
