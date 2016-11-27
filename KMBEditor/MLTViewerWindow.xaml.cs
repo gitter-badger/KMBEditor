@@ -86,6 +86,9 @@ namespace KMBEditor
             this.PrevPageCommand.Subscribe(_ => this.PreviewText.Value = this._current_preview_mlt.GetPrevPage());
             this.NextPageCommand.Subscribe(_ => this.PreviewText.Value = this._current_preview_mlt.GetNextPage());
             this.ShowAllPageCommand.Subscribe(_ => this.PreviewText.Value = this._current_preview_mlt.GetRawMLT());
+
+            // FileTreeの初期化
+            this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(@"C:\Users\user\Documents\AA\HukuTemp_v21.0_20161120\HukuTemp");
         }
     }
 

@@ -33,7 +33,8 @@
             <!-- TreeViewの動的アイテム更新のためのTemplate -->
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="MLTFileTreeNode" ItemsSource="{Binding Path=Children}">
-                    <StackPanel x:Name="treeview_stackpanel" Orientation="Horizontal">
+                    <StackPanel x:Name="treeview_stackpanel" Orientation="Horizontal" Height="20">
+                        <Image Source="{Binding Icon}" Width="15" Margin="0,0,5,0"/>
                         <TextBlock>
                             <!-- Memo: ItemTemplateの中ではViewModelのコマンドが直接見えないためパスを変更している -->
                             <Hyperlink TextDecorations="None" Foreground="Black"
