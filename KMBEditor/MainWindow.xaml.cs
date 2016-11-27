@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Reactive.Bindings;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,10 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Reactive.Bindings;
-using Microsoft.Win32;
-using System.Reactive.Linq;
-using System.IO;
 
 namespace KMBEditor
 {
@@ -62,7 +61,7 @@ namespace KMBEditor
             this.BrowserOpenCommand_CurrentBoardURL = this.CurrentBoardURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
 
             // コマンド定義
-            this.OpenCommand.Subscribe(_ => this.AA.Value = this.current_mlt.OpenMLTFile());
+            this.OpenCommand.Subscribe(_ => this.AA.Value = this.current_mlt.OpemMLTFileWithDialog());
             this.PrevPageCommand.Subscribe(_ => this.AA.Value = this.current_mlt.GetPrevPage());
             this.NextPageCommand.Subscribe(_ => this.AA.Value = this.current_mlt.GetNextPage());
             this.BrowserOpenCommand_GitLabIssueURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
