@@ -17,11 +17,11 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="Auto" MinWidth="7"/>
-            <ColumnDefinition Width="107*"/>
+            <ColumnDefinition Width="250*"/>
+            <ColumnDefinition Width="Auto" MinWidth="5"/>
+            <ColumnDefinition Width="537*"/>
         </Grid.ColumnDefinitions>
-        <GridSplitter x:Name="gridSplitter" Grid.Column="1" Grid.Row="1" Margin="0,0,1,0" Width="0" Grid.RowSpan="2"/>
+        <GridSplitter x:Name="gridSplitter" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Stretch" Width="5"/>
         <!-- メニューバー -->
         <Menu x:Name="menu" Grid.ColumnSpan="3">
             <MenuItem Header="ファイル(_F)">
@@ -62,8 +62,8 @@
         </TabControl>
         <!-- ステータスバー -->
         <StatusBar Grid.ColumnSpan="3" Margin="0,1,0,0" Grid.Row="3"/>
-        <CheckBox x:Name="checkBox" Content="全表示" Grid.Column="2" HorizontalAlignment="Left" Margin="294,14,0,0" Grid.Row="1" VerticalAlignment="Top" Command="{Binding Path=ShowAllPageCommand}"/>
-        <Button x:Name="button" Content="Prev" Grid.Column="2" HorizontalAlignment="Left" Margin="370,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Command="{Binding Path=PrevPageCommand}"/>
-        <Button x:Name="button1" Content="Next" Grid.Column="2" HorizontalAlignment="Left" Margin="450,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Command="{Binding Path=NextPageCommand}"/>
+        <CheckBox x:Name="checkBox" Content="全表示" Grid.Column="2" HorizontalAlignment="Left" Margin="294,14,0,0" Grid.Row="1" VerticalAlignment="Top" Command="{Binding Path=ShowAllPageCommand}" Height="15" Width="56"/>
+        <Button x:Name="button" Content="Prev" Grid.Column="2" HorizontalAlignment="Left" Margin="370,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Command="{Binding Path=PrevPageCommand}" Height="20"/>
+        <Button x:Name="button1" Content="Next" Grid.Column="2" HorizontalAlignment="Left" Margin="450,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Command="{Binding Path=NextPageCommand}" Height="20"/>
     </Grid>
 </Window>
