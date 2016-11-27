@@ -23,18 +23,18 @@ namespace KMBEditor
     /// </summary>
     public class MLTViewerWindowViewModel
     {
-        private MLTFileTreeClass _mlt_file_tree { get; set; }
-        private MLTClass _current_preview_mlt { get; set; }
+        private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
+        private MLTClass _current_preview_mlt { get; set; } = new MLTClass();
 
-        public ReactiveProperty<string> PreviewText { get; private set; }
-        public ReactiveProperty<string> ResourceDirectoryPath { get; private set; }
-        public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; }
+        public ReactiveProperty<string> PreviewText { get; private set; } = new ReactiveProperty<string>("");
+        public ReactiveProperty<string> ResourceDirectoryPath { get; private set; } = new ReactiveProperty<string>("");
+        public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; } = new ReactiveProperty<List<MLTFileTreeNode>>();
 
-        public ReactiveCommand OpenResourceDirectoryCommand { get; private set; }
-        public ReactiveCommand PreviewTextUpdateCommand { get; private set; }
-        public ReactiveCommand PrevPageCommand { get; private set; }
-        public ReactiveCommand NextPageCommand { get; private set; }
-        public ReactiveCommand ShowAllPageCommand { get; private set; }
+        public ReactiveCommand OpenResourceDirectoryCommand { get; private set; } = new ReactiveCommand();
+        public ReactiveCommand PreviewTextUpdateCommand { get; private set; } = new ReactiveCommand();
+        public ReactiveCommand PrevPageCommand { get; private set; } = new ReactiveCommand();
+        public ReactiveCommand NextPageCommand { get; private set; } = new ReactiveCommand();
+        public ReactiveCommand ShowAllPageCommand { get; private set; } = new ReactiveCommand();
 
         public string OpenResourceDirectory()
         {
@@ -59,20 +59,6 @@ namespace KMBEditor
 
         public MLTViewerWindowViewModel()
         {
-            // 変数初期化
-            this._mlt_file_tree = new MLTFileTreeClass();
-            this._current_preview_mlt = new MLTClass();
-            this.PreviewText = new ReactiveProperty<string>("");
-            this.ResourceDirectoryPath = new ReactiveProperty<string>("");
-            this.MLTFileTreeNodes = new ReactiveProperty<List<MLTFileTreeNode>>();
-
-            // コマンド初期化
-            this.OpenResourceDirectoryCommand = new ReactiveCommand();
-            this.PreviewTextUpdateCommand = new ReactiveCommand();
-            this.PrevPageCommand = new ReactiveCommand();
-            this.NextPageCommand = new ReactiveCommand();
-            this.ShowAllPageCommand = new ReactiveCommand();
-
             // コマンド定義
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.OpenResourceDirectory());
             this.PreviewTextUpdateCommand.Subscribe(obj =>
