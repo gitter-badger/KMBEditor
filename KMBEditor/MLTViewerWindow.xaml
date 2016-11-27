@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KMBEditor"
         mc:Ignorable="d"
-        Title="MLTViewerWindow" Height="599" Width="800">
+        Title="MLTViewerWindow" Height="599" Width="1120">
     <Window.DataContext>
         <local:MLTViewerWindowViewModel/>
     </Window.DataContext>
@@ -17,13 +17,15 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250*"/>
+            <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="Auto" MinWidth="5"/>
-            <ColumnDefinition Width="537*"/>
+            <ColumnDefinition Width="722*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="129*"/>
         </Grid.ColumnDefinitions>
-        <GridSplitter x:Name="gridSplitter" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Stretch" Width="5"/>
+        <GridSplitter x:Name="gridSplitter" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Stretch"/>
         <!-- メニューバー -->
-        <Menu x:Name="menu" Grid.ColumnSpan="3">
+        <Menu x:Name="menu" Grid.ColumnSpan="5">
             <MenuItem Header="ファイル(_F)">
                 <MenuItem Header="リソースディレクトリを開く(_O)" HorizontalAlignment="Left" Command="{Binding Path=OpenResourceDirectoryCommand}" Margin="0,0,-48,0"/>
             </MenuItem>
@@ -61,9 +63,10 @@
             </TabItem>
         </TabControl>
         <!-- ステータスバー -->
-        <StatusBar Grid.ColumnSpan="3" Margin="0,1,0,0" Grid.Row="3"/>
+        <StatusBar Grid.ColumnSpan="5" Margin="0,1,0,0" Grid.Row="3"/>
         <CheckBox x:Name="checkBox" Content="全表示" Grid.Column="2" HorizontalAlignment="Left" Margin="294,14,0,0" Grid.Row="1" VerticalAlignment="Top" Command="{Binding Path=ShowAllPageCommand}" Height="15" Width="56"/>
         <Button x:Name="button" Content="Prev" Grid.Column="2" HorizontalAlignment="Left" Margin="370,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Command="{Binding Path=PrevPageCommand}" Height="20"/>
         <Button x:Name="button1" Content="Next" Grid.Column="2" HorizontalAlignment="Left" Margin="450,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Command="{Binding Path=NextPageCommand}" Height="20"/>
+        <GridSplitter x:Name="gridSplitter1" Grid.Column="3" HorizontalAlignment="Stretch" Grid.Row="1" Grid.RowSpan="2" Width="5"/>
     </Grid>
 </Window>
