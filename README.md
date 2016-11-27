@@ -48,7 +48,8 @@ AA(アスキーアート) 作成用エディタ(になる予定のもの)です�
 + [Json.NET 9.0.1 (MIT License)](http://www.newtonsoft.com/json)
 
 ## アイコン画像
-[Icon8](https://icons8.com/)([CC BY-ND 3.0](https://icons8.com/license/))
+
++ [Icon8](https://icons8.com/)([CC BY-ND 3.0](https://icons8.com/license/))
 
 ## 開発環境
 
