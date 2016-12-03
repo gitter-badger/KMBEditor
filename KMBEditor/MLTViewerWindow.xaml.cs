@@ -95,7 +95,7 @@ namespace KMBEditor
 
         /// <summary>
         /// <para>クローズボタンが押された時のイベント</para>
-        /// <para>再インデックスに時間がかかるため、Closeはせずに隠すだけにする</para>
+        /// <para>ファイルツリーの再インデックスに時間がかかるため、Closeはせずに隠すだけにする</para>
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
