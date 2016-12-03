@@ -7,35 +7,38 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Width="Auto" Height="Auto" MinWidth="420" MinHeight="300">
     <Grid x:Name="AAEditorUserControl">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <!-- メインエディタ -->
-        <TextBox x:Name="textBox"
-                 Grid.Column="1"
-                 Text="{Binding Path=Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 FontFamily="MS PGothic"
-                 FontSize="12pt"
-                 AcceptsReturn="True"
-                 VerticalScrollBarVisibility="Auto"
-                 HorizontalScrollBarVisibility="Auto"/>
-        <!-- ライン数表示 -->
-        <ListView x:Name="listView"
-                  ItemsSource="{Binding Path=LineNumberList}"
-                  FontFamily="MS PGothic"
-                  FontSize="12pt"
-                  BorderThickness="0"
-                  HorizontalContentAlignment="Right"
-                  MinWidth="20"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
+        <ScrollViewer>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <!-- ライン数表示 -->
+                <ListView x:Name="listView"
+                          ItemsSource="{Binding LineNumberList}"
+                          FontFamily="MS PGothic"
+                          FontSize="12pt"
+                          BorderThickness="0"
+                          HorizontalContentAlignment="Right"
+                          MinWidth="20"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+                <TextBox x:Name="textBox"
+                         Text="{Binding Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         FontFamily="MS PGothic"
+                         FontSize="12pt"
+                         AcceptsReturn="True"
+                         VerticalScrollBarVisibility="Disabled"
+                         HorizontalScrollBarVisibility="Auto" Grid.Column="1"/>
+                <!-- メインエディタ -->
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>
