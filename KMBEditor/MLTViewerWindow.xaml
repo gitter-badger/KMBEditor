@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="Auto" MinWidth="5"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="722*"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="129*"/>
@@ -54,7 +54,7 @@
             </TreeView.ItemTemplate>
         </TreeView>
         <!-- 左スプリッター -->
-        <GridSplitter x:Name="gridSplitter" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Stretch"/>
+        <GridSplitter x:Name="gridSplitter" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Stretch" MinWidth="3"/>
         <!-- 右カラム -->
         <CheckBox x:Name="checkBox" Content="全表示" Grid.Column="2" HorizontalAlignment="Left" Margin="294,14,0,0" Grid.Row="1" VerticalAlignment="Top" Command="{Binding Path=ShowAllPageCommand}" Height="15" Width="56"/>
         <Button x:Name="button" Content="Prev" Grid.Column="2" HorizontalAlignment="Left" Margin="370,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Command="{Binding Path=PrevPageCommand}" Height="20"/>
@@ -67,7 +67,7 @@
             </TabItem>
         </TabControl>
         <!-- 右スプリッター -->
-        <GridSplitter x:Name="gridSplitter1" Grid.Column="3" HorizontalAlignment="Stretch" Grid.Row="1" Grid.RowSpan="2" Width="5"/>
+        <GridSplitter x:Name="gridSplitter1" Grid.Column="3" HorizontalAlignment="Stretch" Grid.Row="1" Grid.RowSpan="2" MinWidth="3"/>
         <!-- ステータスバー -->
         <StatusBar Grid.ColumnSpan="5" Margin="0,1,0,0" Grid.Row="3"/>
     </Grid>

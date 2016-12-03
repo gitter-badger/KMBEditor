@@ -10,15 +10,17 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="20"/>
-            <RowDefinition/>
+            <RowDefinition Height="250*"/>
+            <RowDefinition Height="259*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="380*"/>
-            <ColumnDefinition Width="137*"/>
+            <ColumnDefinition Width="194*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="67*"/>
         </Grid.ColumnDefinitions>
         <!-- メニューバー -->
-        <Menu x:Name="menu" Grid.ColumnSpan="2" Margin="0,0,0,0.665" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+        <Menu x:Name="menu" Grid.ColumnSpan="3" Margin="0,0,0,1">
             <!-- メニューバー：ファイル -->
             <MenuItem Header="ファイル(_F)">
                 <MenuItem Header="新規作成(_N)"/>
@@ -45,7 +47,7 @@
             </MenuItem>
         </Menu>
         <!-- 左カラム -->
-        <TabControl x:Name="tabControl" Margin="0,0,0,0.334" Grid.Row="2">
+        <TabControl x:Name="tabControl" Grid.Row="2" Grid.RowSpan="2">
             <TabItem Header="TabItem">
                 <Grid Background="#FFE5E5E5">
                     <local:AAEditor Text="{Binding Path=AA.Value}"/>
@@ -53,9 +55,10 @@
             </TabItem>
         </TabControl>
         <!-- 右カラム -->
-        <Button x:Name="prevButton" Content="Prev" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="2" VerticalAlignment="Bottom" Width="75" Command="{Binding PrevPageCommand}"/>
-        <Button x:Name="nextButton" Content="Next" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,34.96" Grid.Row="2" VerticalAlignment="Bottom" Width="75" Command="{Binding NextPageCommand}"/>
+        <Button x:Name="prevButton" Content="Prev" Grid.Column="2" HorizontalAlignment="Left" Margin="1,0,0,10" Grid.Row="3" VerticalAlignment="Bottom" Width="75" Command="{Binding PrevPageCommand}"/>
+        <Button x:Name="nextButton" Content="Next" Grid.Column="2" HorizontalAlignment="Left" Margin="1,0,0,35" Grid.Row="3" VerticalAlignment="Bottom" Width="75" Command="{Binding NextPageCommand}"/>
         <!-- ステータスバー -->
-        <StatusBar Grid.Row="3" Grid.ColumnSpan="2"/>
+        <StatusBar Grid.Row="4" Grid.ColumnSpan="3"/>
+        <GridSplitter x:Name="gridSplitter" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="2" Grid.RowSpan="2" MinWidth="3"/>
     </Grid>
 </Window>
