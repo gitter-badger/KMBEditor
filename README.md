@@ -44,7 +44,7 @@ AA(アスキーアート) 作成用エディタ(になる予定のもの)です�
 
 + .NET Framework 4.5
 + OpenCV(予定)
-+ [ReactiveProperty 3.3.2 (MIT License)](https://github.com/runceel/ReactiveProperty)
++ [ReactiveProperty 3.4.0 (MIT License)](https://github.com/runceel/ReactiveProperty)
 + [Json.NET 9.0.1 (MIT License)](http://www.newtonsoft.com/json)
 
 ## アイコン画像

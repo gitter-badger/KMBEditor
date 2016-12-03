@@ -54,12 +54,12 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ReactiveProperty, Version=3.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ReactiveProperty.3.3.2\lib\net45\ReactiveProperty.dll</HintPath>
+    <Reference Include="ReactiveProperty, Version=3.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveProperty.3.4.0\lib\net45\ReactiveProperty.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ReactiveProperty.NET45, Version=3.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ReactiveProperty.3.3.2\lib\net45\ReactiveProperty.NET45.dll</HintPath>
+    <Reference Include="ReactiveProperty.NET45, Version=3.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveProperty.3.4.0\lib\net45\ReactiveProperty.NET45.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -70,27 +70,27 @@
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Reactive.Core, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.Core.3.1.0\lib\net45\System.Reactive.Core.dll</HintPath>
+      <HintPath>..\packages\System.Reactive.Core.3.1.1\lib\net45\System.Reactive.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Interfaces, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.Interfaces.3.1.0\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <HintPath>..\packages\System.Reactive.Interfaces.3.1.1\lib\net45\System.Reactive.Interfaces.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Linq, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.Linq.3.1.0\lib\net45\System.Reactive.Linq.dll</HintPath>
+      <HintPath>..\packages\System.Reactive.Linq.3.1.1\lib\net45\System.Reactive.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.PlatformServices, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.PlatformServices.3.1.0\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+      <HintPath>..\packages\System.Reactive.PlatformServices.3.1.1\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Windows.Threading, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.0\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
+      <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
@@ -114,10 +114,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="AAEditorControl\AAEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="AAEditorControl\AAEditor.xaml.cs">
+      <DependentUpon>AAEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -154,7 +161,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
