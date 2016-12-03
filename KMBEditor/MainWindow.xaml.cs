@@ -75,9 +75,15 @@ namespace KMBEditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainWindowViewModel _vm;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            _vm = new MainWindowViewModel();
+
+            this.DataContext = _vm;
 
             // MLTViewerの表示
             var win = new MLTViewerWindow();

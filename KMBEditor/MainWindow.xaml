@@ -6,9 +6,6 @@
         xmlns:local="clr-namespace:KMBEditor"
         mc:Ignorable="d"
         Title="KMBEditor" Height="600" Width="800">
-    <Window.DataContext>
-        <local:MainWindowViewModel/>
-    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -40,7 +37,7 @@
         <TabControl x:Name="tabControl" Margin="0,0,0,0.334" Grid.Row="2">
             <TabItem Header="TabItem">
                 <Grid Background="#FFE5E5E5">
-                    <TextBox x:Name="textBox" TextWrapping="Wrap" Text="{Binding AA.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="#FFD8D8D8" AcceptsReturn="True" FontFamily="MS PGothic"/>
+                    <local:AAEditor Text="{Binding Path=AA.Value}"/>
                 </Grid>
             </TabItem>
         </TabControl>
