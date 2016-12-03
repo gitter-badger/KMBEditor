@@ -17,16 +17,25 @@
             <ColumnDefinition Width="380*"/>
             <ColumnDefinition Width="137*"/>
         </Grid.ColumnDefinitions>
+        <!-- メニューバー -->
         <Menu x:Name="menu" Grid.ColumnSpan="2" Margin="0,0,0,0.665" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+            <!-- メニューバー：ファイル -->
             <MenuItem Header="ファイル(_F)">
                 <MenuItem Header="新規作成(_N)"/>
                 <MenuItem Header="開く(_O)" Command="{Binding OpenCommand}"/>
             </MenuItem>
+            <!-- メニューバー：ヘルプ -->
             <MenuItem Header="ヘルプ(_H)">
                 <MenuItem Header="バグレポート・機能追加要望(_U)">
-                    <MenuItem Header="GitLab Issue の作成ページを開く[推奨:要ログイン](_G)" Command="{Binding BrowserOpenCommand_GitLabIssueURL}" CommandParameter="{Binding GitLabIssueURL.Value}"/>
-                    <MenuItem Header="現行スレを開く(_S)" Command="{Binding BrowserOpenCommand_CurrentBoardURL}" CommandParameter="{Binding CurrentBoardURL.Value}"/>
-                    <MenuItem Header="開発者Twtterを開く(_T)" Command="{Binding BrowserOpenCommand_DevelopperTwtterURL}" CommandParameter="{Binding DevelopperTwtterURL.Value}"/>
+                    <MenuItem Header="GitLab Issue の作成ページを開く[推奨:要ログイン](_G)"
+                              Command="{Binding BrowserOpenCommand_GitLabIssueURL}"
+                              CommandParameter="{Binding GitLabIssueURL.Value}"/>
+                    <MenuItem Header="現行スレを開く(_S)"
+                              Command="{Binding BrowserOpenCommand_CurrentBoardURL}"
+                              CommandParameter="{Binding CurrentBoardURL.Value}"/>
+                    <MenuItem Header="開発者Twtterを開く(_T)"
+                              Command="{Binding BrowserOpenCommand_DevelopperTwtterURL}"
+                              CommandParameter="{Binding DevelopperTwtterURL.Value}"/>
                 </MenuItem>
                 <MenuItem Header="バージョン情報(_V)"/>
             </MenuItem>
