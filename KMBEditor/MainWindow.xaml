@@ -44,9 +44,7 @@
                 <MenuItem Header="バージョン情報(_V)"/>
             </MenuItem>
         </Menu>
-        <Button x:Name="prevButton" Content="Prev" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="2" VerticalAlignment="Bottom" Width="75" Command="{Binding PrevPageCommand}"/>
-        <Button x:Name="nextButton" Content="Next" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,34.96" Grid.Row="2" VerticalAlignment="Bottom" Width="75" Command="{Binding NextPageCommand}"/>
-        <StatusBar Grid.Row="3" Grid.ColumnSpan="2"/>
+        <!-- 左カラム -->
         <TabControl x:Name="tabControl" Margin="0,0,0,0.334" Grid.Row="2">
             <TabItem Header="TabItem">
                 <Grid Background="#FFE5E5E5">
@@ -54,5 +52,10 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <!-- 右カラム -->
+        <Button x:Name="prevButton" Content="Prev" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="2" VerticalAlignment="Bottom" Width="75" Command="{Binding PrevPageCommand}"/>
+        <Button x:Name="nextButton" Content="Next" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,34.96" Grid.Row="2" VerticalAlignment="Bottom" Width="75" Command="{Binding NextPageCommand}"/>
+        <!-- ステータスバー -->
+        <StatusBar Grid.Row="3" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
