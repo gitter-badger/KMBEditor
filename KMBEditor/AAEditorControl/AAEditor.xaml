@@ -11,18 +11,25 @@
             <ColumnDefinition Width="20"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <!-- メインエディタ -->
         <TextBox x:Name="textBox"
                  Grid.Column="1"
-                 TextWrapping="Wrap"
                  Text="{Binding Path=Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  FontFamily="MS PGothic"
                  FontSize="12pt"
-                 AcceptsReturn="True" MinWidth="400" MinHeight="300"/>
+                 AcceptsReturn="True"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"/>
+        <!-- ライン数表示 -->
         <ListView x:Name="listView"
                   ItemsSource="{Binding Path=LineNumberList}"
                   FontFamily="MS PGothic"
                   FontSize="12pt"
-                  BorderThickness="0" HorizontalContentAlignment="Right" MinWidth="20" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                  BorderThickness="0"
+                  HorizontalContentAlignment="Right"
+                  MinWidth="20"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Padding" Value="0"/>
