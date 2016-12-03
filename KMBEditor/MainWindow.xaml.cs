@@ -31,6 +31,7 @@ namespace KMBEditor
 
         // コマンド
         public ReactiveCommand OpenCommand { get; private set; }
+        public ReactiveCommand OpenMLTViewerCommand { get; private set; } = new ReactiveCommand();
 
         public ReactiveCommand PrevPageCommand { get; private set; }
         public ReactiveCommand NextPageCommand { get; private set; }
@@ -41,6 +42,30 @@ namespace KMBEditor
 
         // データ
         private MLTClass current_mlt;
+        private MLTViewerWindow _mlt_viewer;
+
+        /// <summary>
+        /// <para>MLTViewerを表示する</para>
+        /// <para>初回はMLTViewerWindonwのインスタンスを生成する</para>
+        /// </summary>
+        private void MLTViewerWindowTogleVisible()
+        {
+            // 初期化は初回表示時まで遅延
+            if (this._mlt_viewer == null)
+            {
+                this._mlt_viewer = new MLTViewerWindow();
+            }
+
+            // 表示、非表示の切り替え
+            if (this._mlt_viewer.IsVisible)
+            {
+                this._mlt_viewer.Hide();
+            }
+            else
+            {
+                this._mlt_viewer.Show();
+            }
+        }
 
         public MainWindowViewModel()
         {
@@ -52,6 +77,7 @@ namespace KMBEditor
             this.CurrentBoardURL = new ReactiveProperty<string>("");
             this.DevelopperTwtterURL = new ReactiveProperty<string>("https://twitter.com/tar_bin");
 
+
             // コマンド初期化
             this.OpenCommand = new ReactiveCommand();
             this.PrevPageCommand = new ReactiveCommand();
@@ -62,6 +88,7 @@ namespace KMBEditor
 
             // コマンド定義
             this.OpenCommand.Subscribe(_ => this.AA.Value = this.current_mlt.OpemMLTFileWithDialog());
+            this.OpenMLTViewerCommand.Subscribe(_ => this.MLTViewerWindowTogleVisible());
             this.PrevPageCommand.Subscribe(_ => this.AA.Value = this.current_mlt.GetPrevPage());
             this.NextPageCommand.Subscribe(_ => this.AA.Value = this.current_mlt.GetNextPage());
             this.BrowserOpenCommand_GitLabIssueURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
@@ -84,10 +111,6 @@ namespace KMBEditor
             _vm = new MainWindowViewModel();
 
             this.DataContext = _vm;
-
-            // MLTViewerの表示
-            var win = new MLTViewerWindow();
-            win.Show();
         }
     }
 }

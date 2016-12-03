@@ -24,6 +24,10 @@
                 <MenuItem Header="新規作成(_N)"/>
                 <MenuItem Header="開く(_O)" Command="{Binding OpenCommand}"/>
             </MenuItem>
+            <!-- メニューバー：表示 -->
+            <MenuItem Header="表示(_N)">
+                <MenuItem Header="MLTViewerを表示(_A)" Command="{Binding OpenMLTViewerCommand}"/>
+            </MenuItem>
             <!-- メニューバー：ヘルプ -->
             <MenuItem Header="ヘルプ(_H)">
                 <MenuItem Header="バグレポート・機能追加要望(_U)">

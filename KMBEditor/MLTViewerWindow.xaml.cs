@@ -92,5 +92,19 @@ namespace KMBEditor
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// <para>クローズボタンが押された時のイベント</para>
+        /// <para>再インデックスに時間がかかるため、Closeはせずに隠すだけにする</para>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Windowは終了させない
+            e.Cancel = true;
+            // Windowを隠す。再表示はMainWindow側で行う
+            this.Hide();
+        }
     }
 }
