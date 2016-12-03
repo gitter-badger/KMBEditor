@@ -24,24 +24,24 @@ namespace KMBEditor
     public class MainWindowViewModel
     {
         // プロパティ
-        public ReactiveProperty<string> AA { get; private set; }
-        public ReactiveProperty<string> GitLabIssueURL { get; private set; }
-        public ReactiveProperty<string> CurrentBoardURL { get; private set; }
-        public ReactiveProperty<string> DevelopperTwtterURL { get; private set; }
+        public ReactiveProperty<string> AA { get; private set; } = new ReactiveProperty<string>();
+        public ReactiveProperty<string> GitLabIssueURL { get; private set; } = new ReactiveProperty<string>();
+        public ReactiveProperty<string> CurrentBoardURL { get; private set; } = new ReactiveProperty<string>();
+        public ReactiveProperty<string> DevelopperTwtterURL { get; private set; } = new ReactiveProperty<string>();
 
         // コマンド
-        public ReactiveCommand OpenCommand { get; private set; }
+        public ReactiveCommand OpenCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand OpenMLTViewerCommand { get; private set; } = new ReactiveCommand();
 
-        public ReactiveCommand PrevPageCommand { get; private set; }
-        public ReactiveCommand NextPageCommand { get; private set; }
+        public ReactiveCommand PrevPageCommand { get; private set; } = new ReactiveCommand();
+        public ReactiveCommand NextPageCommand { get; private set; } = new ReactiveCommand();
 
         public ReactiveCommand BrowserOpenCommand_GitLabIssueURL { get; private set; }
         public ReactiveCommand BrowserOpenCommand_CurrentBoardURL { get; private set; }
         public ReactiveCommand BrowserOpenCommand_DevelopperTwtterURL { get; private set; }
 
         // データ
-        private MLTClass current_mlt;
+        private MLTClass current_mlt = new MLTClass();
         private MLTViewerWindow _mlt_viewer;
 
         /// <summary>
@@ -69,19 +69,13 @@ namespace KMBEditor
 
         public MainWindowViewModel()
         {
-            this.current_mlt = new MLTClass();
 
             // 変数初期化
-            this.AA = new ReactiveProperty<string>("");
-            this.GitLabIssueURL = new ReactiveProperty<string>("https://gitlab.com/tar_bin/KMBEditor/issues");
-            this.CurrentBoardURL = new ReactiveProperty<string>("");
-            this.DevelopperTwtterURL = new ReactiveProperty<string>("https://twitter.com/tar_bin");
-
+            this.GitLabIssueURL.Value = "https://gitlab.com/tar_bin/KMBEditor/issues";
+            this.CurrentBoardURL.Value = "";
+            this.DevelopperTwtterURL.Value = "https://twitter.com/tar_bin";
 
             // コマンド初期化
-            this.OpenCommand = new ReactiveCommand();
-            this.PrevPageCommand = new ReactiveCommand();
-            this.NextPageCommand = new ReactiveCommand();
             this.BrowserOpenCommand_GitLabIssueURL = this.GitLabIssueURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
             this.BrowserOpenCommand_DevelopperTwtterURL = this.DevelopperTwtterURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
             this.BrowserOpenCommand_CurrentBoardURL = this.CurrentBoardURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
