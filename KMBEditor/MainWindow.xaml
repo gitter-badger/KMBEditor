@@ -9,18 +9,14 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="250*"/>
-            <RowDefinition Height="259*"/>
+            <RowDefinition/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="194*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="67*"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <!-- メニューバー -->
-        <Menu x:Name="menu" Grid.ColumnSpan="3" Margin="0,0,0,1">
+        <Menu x:Name="menu" Margin="0,0,0,1">
             <!-- メニューバー：ファイル -->
             <MenuItem Header="ファイル(_F)">
                 <MenuItem Header="新規作成(_N)"/>
@@ -46,19 +42,30 @@
                 <MenuItem Header="バージョン情報(_V)"/>
             </MenuItem>
         </Menu>
-        <!-- 左カラム -->
-        <TabControl x:Name="tabControl" Grid.Row="2" Grid.RowSpan="2">
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5">
-                    <local:AAEditor Text="{Binding Path=AA.Value}"/>
-                </Grid>
-            </TabItem>
-        </TabControl>
-        <!-- 右カラム -->
-        <Button x:Name="prevButton" Content="Prev" Grid.Column="2" HorizontalAlignment="Left" Margin="1,0,0,10" Grid.Row="3" VerticalAlignment="Bottom" Width="75" Command="{Binding PrevPageCommand}"/>
-        <Button x:Name="nextButton" Content="Next" Grid.Column="2" HorizontalAlignment="Left" Margin="1,0,0,35" Grid.Row="3" VerticalAlignment="Bottom" Width="75" Command="{Binding NextPageCommand}"/>
+        <!-- メイン -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="148*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="45*"/>
+            </Grid.ColumnDefinitions>
+            <!-- 左カラム -->
+            <TabControl x:Name="tabControl">
+                <TabItem Header="TabItem">
+                    <Grid Background="#FFE5E5E5">
+                        <local:AAEditor Text="{Binding AA.Value}"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <!-- グリッドスプリッター -->
+            <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Stretch" MinWidth="3" Margin="0" Grid.Column="1"/>
+            <!-- 右カラム -->
+            <Grid Grid.Column="2">
+                <Button x:Name="nextButton" Content="Next" HorizontalAlignment="Left" Margin="24,0,0,96" VerticalAlignment="Bottom" Width="75" Command="{Binding NextPageCommand}"/>
+                <Button x:Name="prevButton" Content="Prev" HorizontalAlignment="Left" Margin="24,0,0,58" VerticalAlignment="Bottom" Width="75" Command="{Binding PrevPageCommand}"/>
+            </Grid>
+        </Grid>
         <!-- ステータスバー -->
-        <StatusBar Grid.Row="4" Grid.ColumnSpan="3"/>
-        <GridSplitter x:Name="gridSplitter" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="2" Grid.RowSpan="2" MinWidth="3"/>
+        <StatusBar Grid.Row="2" MinHeight="20"/>
     </Grid>
 </Window>
