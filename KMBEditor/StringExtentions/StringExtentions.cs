@@ -31,6 +31,7 @@ namespace KMBEditor.StringExtentions
             int n = 0;
             foreach (var c in str)
             {
+                // 改行が'\r\n'でも'\n'は含まれているので行数カウントには問題ない
                 if (c == '\n') n++;
             }
             return n + 1;
