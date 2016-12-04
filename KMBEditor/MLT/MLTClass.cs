@@ -188,28 +188,33 @@ namespace KMBEditor.MLT
                 var page = "";
 
                 // [SPLIT] 単位でのページ分割を実施
-                var line = reader.ReadLine() + System.Environment.NewLine;
-                page += line;
-
+                // 最終行に到達したらwhileループから抜ける
                 while (reader.Peek() >= 0)
                 {
-                    line = reader.ReadLine() + System.Environment.NewLine;
-                    // XXX: AST形式の場合でも問題ないか要確認
+                    var line = reader.ReadLine();
+
+                    // 区切り文字の判定
+                    // TODO: AST形式の場合でも問題ないか要確認
                     if (line.Contains("[SPLIT]") == true)
                     {
-                        // 行が`[SPLIT]`(区切り文字)の場合は、ページを返す
-                        yield return page;
-                        // ページをリセット
+                        // 行が区切り文字の場合は、それまでの行をページとして返す
+                        // 区切り文字の行はどのページにも含まない
+                        // 最終行は改行しない
+                        // XXX: => ASTの場合は？情報を落とすと復元できなくなる？
+                        yield return page.TrimEnd(System.Environment.NewLine.ToCharArray());
+                        // ページ生成用変数をリセット
                         page = "";
                     }
                     else
                     {
-                        // 区切り文字は含まない
-                        page += line;
+                        // 区切り文字以外なら行を追加
+                        page += line + System.Environment.NewLine;
                     }
                 }
 
-                yield return page;
+                // 最終ページを返す
+                // 最終行は改行しない
+                yield return page.TrimEnd(System.Environment.NewLine.ToCharArray());
             }
         }
     }
