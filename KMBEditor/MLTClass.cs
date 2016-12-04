@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using WinForms = System.Windows.Forms;
+using KMBEditor.StringExtentions;
 
 namespace KMBEditor.MLT
 {
@@ -154,12 +155,19 @@ namespace KMBEditor.MLT
             this.current_page_num = 0;
 
             // MLTからページリストの更新
+            var index = 1;
             foreach (var page in this.ReadMLT(file_path))
             {
                 Pages.Add(new MLTPage
                 {
+                    Index = index,
+                    Name = "",
+                    Bytes = page.GetShift_JISByteCount(),
+                    Lines = page.GetLineCount(),
                     AA = page
                 });
+
+                index++;
             }
 
             // 初回は先頭ページを開く
