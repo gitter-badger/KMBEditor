@@ -66,16 +66,10 @@
                     <RowDefinition Height="265*"/>
                 </Grid.RowDefinitions>
                 <!-- MLT内ページリスト表示 -->
-                <ListView x:Name="listView">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
                 <!-- ページ変更ボタン（削除予定） -->
                 <Button x:Name="nextButton" Content="Next" HorizontalAlignment="Left" Margin="24,0,0,96" VerticalAlignment="Bottom" Width="75" Command="{Binding NextPageCommand}" Grid.Row="1" Height="20"/>
                 <Button x:Name="prevButton" Content="Prev" HorizontalAlignment="Left" Margin="24,0,0,58" VerticalAlignment="Bottom" Width="75" Command="{Binding PrevPageCommand}" Grid.Row="1" Height="20"/>
+                <DataGrid x:Name="dataGrid"/>
             </Grid>
         </Grid>
         <!-- ステータスバー -->
