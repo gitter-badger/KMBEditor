@@ -14,9 +14,9 @@ namespace KMBEditor.MLT
         /// </summary>
         public int Index { get; set; } = 0;
         /// <summary>
-        /// AST形式でのページ名
+        /// AST形式でのページ名(MLTの場合は定義なし)
         /// </summary>
-        public int Name { get; set; } = 0;
+        public string Name { get; set; } = "";
         /// <summary>
         /// ページの総バイト数
         /// </summary>
@@ -186,6 +186,7 @@ namespace KMBEditor.MLT
                 while (reader.Peek() >= 0)
                 {
                     line = reader.ReadLine() + System.Environment.NewLine;
+                    // XXX: AST形式の場合でも問題ないか要確認
                     if (line.Contains("[SPLIT]") == true)
                     {
                         // 行が`[SPLIT]`(区切り文字)の場合は、ページを返す
