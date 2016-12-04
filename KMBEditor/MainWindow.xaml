@@ -53,7 +53,7 @@
             <TabControl x:Name="tabControl">
                 <TabItem Header="TabItem">
                     <Grid Background="#FFE5E5E5">
-                        <local:AAEditor Text="{Binding AA.Value}"/>
+                        <local:AAEditor Text="{Binding Path=Page.Value.AA}"/>
                     </Grid>
                 </TabItem>
             </TabControl>
@@ -61,8 +61,15 @@
             <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Stretch" MinWidth="3" Margin="0" Grid.Column="1"/>
             <!-- 右カラム -->
             <Grid Grid.Column="2">
-                <Button x:Name="nextButton" Content="Next" HorizontalAlignment="Left" Margin="24,0,0,96" VerticalAlignment="Bottom" Width="75" Command="{Binding NextPageCommand}"/>
-                <Button x:Name="prevButton" Content="Prev" HorizontalAlignment="Left" Margin="24,0,0,58" VerticalAlignment="Bottom" Width="75" Command="{Binding PrevPageCommand}"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="264*"/>
+                    <RowDefinition Height="265*"/>
+                </Grid.RowDefinitions>
+                <!-- MLT内ページリスト表示 -->
+                <DataGrid x:Name="dataGrid" ItemsSource="{Binding Path=PageList}" AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"/>
+                <!-- ページ変更ボタン（削除予定） -->
+                <Button x:Name="nextButton" Content="Next" HorizontalAlignment="Left" Margin="24,0,0,96" VerticalAlignment="Bottom" Width="75" Command="{Binding NextPageCommand}" Grid.Row="1" Height="20"/>
+                <Button x:Name="prevButton" Content="Prev" HorizontalAlignment="Left" Margin="24,0,0,58" VerticalAlignment="Bottom" Width="75" Command="{Binding PrevPageCommand}" Grid.Row="1" Height="20"/>
             </Grid>
         </Grid>
         <!-- ステータスバー -->

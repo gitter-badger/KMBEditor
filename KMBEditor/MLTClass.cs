@@ -1,11 +1,37 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using WinForms = System.Windows.Forms;
+using KMBEditor.StringExtentions;
 
-namespace KMBEditor
+namespace KMBEditor.MLT
 {
+    public class MLTPage
+    {
+        /// <summary>
+        /// ページ番号(1始まり）
+        /// </summary>
+        public int Index { get; set; } = 1;
+        /// <summary>
+        /// AST形式でのページ名(MLTの場合は定義なし)
+        /// </summary>
+        public string Name { get; set; } = "";
+        /// <summary>
+        /// ページの総バイト数
+        /// </summary>
+        public int Bytes { get; set; } = 0;
+        /// <summary>
+        /// ページの総行数(最低1行は存在)
+        /// </summary>
+        public int Lines { get; set; } = 1;
+        /// <summary>
+        /// ページのAAテキストデータ
+        /// </summary>
+        public string AA { get; set; } = "";
+    }
+
     /// <summary>
     /// MLT単位の状態を管理するクラス
     /// 
@@ -13,17 +39,18 @@ namespace KMBEditor
     /// `^[SPLIT]$` にてAAを区切る
     /// 
     /// </summary>
-    class MLTClass
+    public class MLTFile
     {
         private string _file_path { get; set; }
         private string _raw_page { get; set; }
-        private List<string> pages { get; set; }
         private int current_page_num { get; set; }
 
-        public MLTClass()
+        public ObservableCollection<MLTPage> Pages { get; private set; }
+
+        public MLTFile()
         {
-            this.pages = new List<string>();
-            this.pages.Add("");
+            this.Pages = new ObservableCollection<MLTPage>();
+            this.Pages.Add(new MLTPage {});
         }
 
         /// <summary>
@@ -50,35 +77,35 @@ namespace KMBEditor
         /// 現在のページを取得する
         /// </summary>
         /// <returns></returns>
-        public string GetCurrentPage()
+        public MLTPage GetCurrentPage()
         {
-            return this.pages[this.current_page_num];
+            return this.Pages[this.current_page_num];
         }
 
         /// <summary>
         /// 前ページを開く
         /// </summary>
         /// <returns></returns>
-        public string GetPrevPage()
+        public MLTPage GetPrevPage()
         {
             if (this.current_page_num > 0)
             {
                 this.current_page_num -= 1;
             }
-            return this.pages[this.current_page_num];
+            return this.Pages[this.current_page_num];
         }
 
         /// <summary>
         /// 次ページを開く
         /// </summary>
         /// <returns></returns>
-        public string GetNextPage()
+        public MLTPage GetNextPage()
         {
-            if (this.current_page_num < (this.pages.Count -1))
+            if (this.current_page_num < (this.Pages.Count -1))
             {
                 this.current_page_num += 1;
             }
-            return this.pages[this.current_page_num];
+            return this.Pages[this.current_page_num];
         }
 
         /// <summary>
@@ -87,7 +114,7 @@ namespace KMBEditor
         /// ファイル選択ダイアログを表示する
         /// </summary>
         /// <returns></returns>
-        public string OpemMLTFileWithDialog()
+        public MLTPage OpemMLTFileWithDialog()
         {
             using (var dialog = new WinForms.OpenFileDialog())
             {
@@ -96,7 +123,8 @@ namespace KMBEditor
 
                 if (dialog.ShowDialog() != WinForms.DialogResult.OK)
                 {
-                    return "";
+                    // FIXME: キャンセルした場合は前のページを表示するべき
+                    return null;
                 }
 
                 return this.OpenMLTFile(dialog.FileName);
@@ -110,29 +138,40 @@ namespace KMBEditor
         /// すでにデータがある場合は初期化される
         /// </summary>
         /// <returns></returns>
-        public string OpenMLTFile(string file_path)
+        public MLTPage OpenMLTFile(string file_path)
         {
             // ファイルの存在チェック
             if (File.Exists(file_path) == false)
             {
                 MessageBox.Show("指定されたファイルが見つかりませんでした");
-                return "";
+                return null;
             }
 
             // 現在ページのPATHの更新
             this._file_path = file_path;
 
             // ページリストの初期化
-            this.pages.Clear();
+            this.Pages.Clear();
             this.current_page_num = 0;
 
             // MLTからページリストの更新
+            var index = 1;
             foreach (var page in this.ReadMLT(file_path))
             {
-                pages.Add(page);
+                Pages.Add(new MLTPage
+                {
+                    Index = index,
+                    Name = "",
+                    Bytes = page.GetShift_JISByteCount(),
+                    Lines = page.GetLineCount(),
+                    AA = page
+                });
+
+                index++;
             }
 
-            return this.pages.First(); // 初回は先頭ページを開く
+            // 初回は先頭ページを開く
+            return this.Pages.First();
         }
 
         /// <summary>
@@ -155,6 +194,7 @@ namespace KMBEditor
                 while (reader.Peek() >= 0)
                 {
                     line = reader.ReadLine() + System.Environment.NewLine;
+                    // XXX: AST形式の場合でも問題ないか要確認
                     if (line.Contains("[SPLIT]") == true)
                     {
                         // 行が`[SPLIT]`(区切り文字)の場合は、ページを返す
