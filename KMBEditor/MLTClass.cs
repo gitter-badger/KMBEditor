@@ -30,7 +30,7 @@ namespace KMBEditor.MLT
         private string _raw_page { get; set; }
         private int current_page_num { get; set; }
 
-        public ObservableCollection<MLTPage> Pages { get; set; }
+        public ObservableCollection<MLTPage> Pages { get; private set; }
 
         public MLTFile()
         {
