@@ -10,9 +10,9 @@ namespace KMBEditor.MLT
     public class MLTPage
     {
         /// <summary>
-        /// ページ番号
+        /// ページ番号(1始まり）
         /// </summary>
-        public int Index { get; set; } = 0;
+        public int Index { get; set; } = 1;
         /// <summary>
         /// AST形式でのページ名(MLTの場合は定義なし)
         /// </summary>
