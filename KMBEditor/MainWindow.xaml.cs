@@ -1,6 +1,7 @@
 ﻿using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
@@ -24,7 +25,7 @@ namespace KMBEditor
     public class MainWindowViewModel
     {
         // プロパティ
-        public ReactiveProperty<string> AA { get; private set; } = new ReactiveProperty<string>();
+        public ReactiveProperty<MLT.MLTPage> Page { get; private set; } = new ReactiveProperty<MLT.MLTPage>();
         public ReactiveProperty<string> GitLabIssueURL { get; private set; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> CurrentBoardURL { get; private set; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> DevelopperTwtterURL { get; private set; } = new ReactiveProperty<string>();
@@ -41,7 +42,7 @@ namespace KMBEditor
         public ReactiveCommand BrowserOpenCommand_DevelopperTwtterURL { get; private set; }
 
         // データ
-        private MLTClass current_mlt = new MLTClass();
+        private MLT.MLTFile current_mlt = new MLT.MLTFile();
         private MLTViewerWindow _mlt_viewer;
 
         /// <summary>
@@ -81,10 +82,10 @@ namespace KMBEditor
             this.BrowserOpenCommand_CurrentBoardURL = this.CurrentBoardURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
 
             // コマンド定義
-            this.OpenCommand.Subscribe(_ => this.AA.Value = this.current_mlt.OpemMLTFileWithDialog());
+            this.OpenCommand.Subscribe(_ => this.Page.Value = this.current_mlt.OpemMLTFileWithDialog());
             this.OpenMLTViewerCommand.Subscribe(_ => this.MLTViewerWindowTogleVisible());
-            this.PrevPageCommand.Subscribe(_ => this.AA.Value = this.current_mlt.GetPrevPage());
-            this.NextPageCommand.Subscribe(_ => this.AA.Value = this.current_mlt.GetNextPage());
+            this.PrevPageCommand.Subscribe(_ => this.Page.Value = this.current_mlt.GetPrevPage());
+            this.NextPageCommand.Subscribe(_ => this.Page.Value = this.current_mlt.GetNextPage());
             this.BrowserOpenCommand_GitLabIssueURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_DevelopperTwtterURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_CurrentBoardURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));

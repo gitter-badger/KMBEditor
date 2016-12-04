@@ -53,7 +53,7 @@
             <TabControl x:Name="tabControl">
                 <TabItem Header="TabItem">
                     <Grid Background="#FFE5E5E5">
-                        <local:AAEditor Text="{Binding AA.Value}"/>
+                        <local:AAEditor Text="{Binding Path=Page.Value.AA}"/>
                     </Grid>
                 </TabItem>
             </TabControl>
