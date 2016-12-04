@@ -9,12 +9,26 @@ namespace KMBEditor.MLT
 {
     public class MLTPage
     {
-        public string AA { get; set; }
-
-        public MLTPage()
-        {
-
-        }
+        /// <summary>
+        /// ページ番号
+        /// </summary>
+        public int Index { get; set; } = 0;
+        /// <summary>
+        /// AST形式でのページ名
+        /// </summary>
+        public int Name { get; set; } = 0;
+        /// <summary>
+        /// ページの総バイト数
+        /// </summary>
+        public int Bytes { get; set; } = 0;
+        /// <summary>
+        /// ページの総行数(最低1行は存在)
+        /// </summary>
+        public int Lines { get; set; } = 1;
+        /// <summary>
+        /// ページのAAテキストデータ
+        /// </summary>
+        public string AA { get; set; } = "";
     }
 
     /// <summary>
@@ -24,7 +38,7 @@ namespace KMBEditor.MLT
     /// `^[SPLIT]$` にてAAを区切る
     /// 
     /// </summary>
-    class MLTFile
+    public class MLTFile
     {
         private string _file_path { get; set; }
         private string _raw_page { get; set; }
@@ -35,10 +49,7 @@ namespace KMBEditor.MLT
         public MLTFile()
         {
             this.Pages = new ObservableCollection<MLTPage>();
-            this.Pages.Add(new MLTPage
-                {
-                    AA = ""
-                });
+            this.Pages.Add(new MLTPage {});
         }
 
         /// <summary>
