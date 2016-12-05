@@ -30,14 +30,16 @@
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
+                <!-- メインエディタ -->
                 <TextBox x:Name="textBox"
                          Text="{Binding Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          FontFamily="MS PGothic"
                          FontSize="12pt"
                          AcceptsReturn="True"
                          VerticalScrollBarVisibility="Disabled"
-                         HorizontalScrollBarVisibility="Auto" Grid.Column="1"/>
-                <!-- メインエディタ -->
+                         HorizontalScrollBarVisibility="Auto"
+                         Grid.Column="1"
+                         TextOptions.TextFormattingMode="Display"/>
             </Grid>
         </ScrollViewer>
     </Grid>
