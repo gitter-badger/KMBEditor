@@ -10,7 +10,7 @@
         <ScrollViewer>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="25"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <!-- ライン数表示 -->
