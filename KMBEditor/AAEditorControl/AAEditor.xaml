@@ -31,6 +31,7 @@
                     </ListView.ItemContainerStyle>
                 </ListView>
                 <!-- メインエディタ -->
+                <!-- 縦線のずれ回避のため、必ず TextOptions.TextFormattingMode="Display" を指定すること -->
                 <TextBox x:Name="textBox"
                          Text="{Binding Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          FontFamily="MS PGothic"
