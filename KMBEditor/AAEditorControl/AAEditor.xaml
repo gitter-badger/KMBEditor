@@ -36,6 +36,7 @@
                         <!-- 以下は重ねて表示される -->
                         <!-- 縦線のずれ回避のため、必ず TextOptions.TextFormattingMode="Display" を指定すること -->
                         <!-- 編集領域 -->
+                        <!-- 編集領域は描画する必要がないため、Foreground をブラシなしに設定 -->
                         <TextBox x:Name="textBox"
                                  Text="{Binding Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  FontFamily="MS PGothic"
@@ -43,7 +44,8 @@
                                  AcceptsReturn="True"
                                  VerticalScrollBarVisibility="Disabled"
                                  HorizontalScrollBarVisibility="Disabled"
-                                 TextOptions.TextFormattingMode="Display"/>
+                                 TextOptions.TextFormattingMode="Display"
+                                 Foreground="{x:Null}"/>
                         <!-- 表示領域 -->
                         <!-- 表示領域は文字位置の調整のため、Marginを "3,1,0,0" とる必要あり -->
                         <TextBlock Grid.Column="1"
