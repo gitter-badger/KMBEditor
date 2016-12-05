@@ -33,6 +33,7 @@
                 <!-- メインエディタ -->
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
                     <Grid>
+                        <!-- 以下は重ねて表示される -->
                         <!-- 縦線のずれ回避のため、必ず TextOptions.TextFormattingMode="Display" を指定すること -->
                         <!-- 編集領域 -->
                         <TextBox x:Name="textBox"
@@ -44,7 +45,7 @@
                                  HorizontalScrollBarVisibility="Disabled"
                                  TextOptions.TextFormattingMode="Display"/>
                         <!-- 表示領域 -->
-                        <!-- 文字位置の調整のため、Marginを "3,1,0,0" とる必要あり -->
+                        <!-- 表示領域は文字位置の調整のため、Marginを "3,1,0,0" とる必要あり -->
                         <TextBlock Grid.Column="1"
                                    FontFamily="MS PGothic"
                                    FontSize="12pt"
