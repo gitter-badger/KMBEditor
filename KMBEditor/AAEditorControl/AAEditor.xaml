@@ -31,16 +31,32 @@
                     </ListView.ItemContainerStyle>
                 </ListView>
                 <!-- メインエディタ -->
-                <!-- 縦線のずれ回避のため、必ず TextOptions.TextFormattingMode="Display" を指定すること -->
-                <TextBox x:Name="textBox"
-                         Text="{Binding Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         FontFamily="MS PGothic"
-                         FontSize="12pt"
-                         AcceptsReturn="True"
-                         VerticalScrollBarVisibility="Disabled"
-                         HorizontalScrollBarVisibility="Auto"
-                         Grid.Column="1"
-                         TextOptions.TextFormattingMode="Display"/>
+                <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+                    <Grid>
+                        <!-- 縦線のずれ回避のため、必ず TextOptions.TextFormattingMode="Display" を指定すること -->
+                        <!-- 編集領域 -->
+                        <TextBox x:Name="textBox"
+                                 Text="{Binding Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 FontFamily="MS PGothic"
+                                 FontSize="12pt"
+                                 AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Disabled"
+                                 HorizontalScrollBarVisibility="Disabled"
+                                 TextOptions.TextFormattingMode="Display"/>
+                        <!-- 表示領域 -->
+                        <!-- 文字位置の調整のため、Marginを "3,1,0,0" とる必要あり -->
+                        <TextBlock Grid.Column="1"
+                                   FontFamily="MS PGothic"
+                                   FontSize="12pt"
+                                   TextOptions.TextFormattingMode="Display"
+                                   IsHitTestVisible="False"
+                                   Margin="3,1,0,0">
+                            <TextBlock.Inlines>
+                                <Run Text="{Binding Path=Text.Value}" Foreground="Red"/>
+                            </TextBlock.Inlines>
+                        </TextBlock>
+                    </Grid>
+                </ScrollViewer>
             </Grid>
         </ScrollViewer>
     </Grid>
