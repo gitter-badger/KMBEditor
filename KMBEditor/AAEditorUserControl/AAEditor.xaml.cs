@@ -22,57 +22,15 @@ using System.Collections.Specialized;
 
 namespace KMBEditor.AAEditorUserControl
 {
-    public class BindableTextBlock : TextBlock
+    public class VisualLine
     {
-        public static readonly DependencyProperty InlineListProperty =
-            DependencyProperty.Register(
-                "InlineList",
-                typeof(ObservableCollection<Inline>),
-                typeof(BindableTextBlock),
-                new UIPropertyMetadata(null, OnPropertyChanged));
-
-        public ObservableCollection<Inline> InlineList
-        {
-            get { return (ObservableCollection<Inline>)GetValue(InlineListProperty); }
-            set { SetValue(InlineListProperty, value); }
-        }
-
-        private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            var textBlock = sender as BindableTextBlock;
-            var list = e.NewValue as ObservableCollection<Inline>;
-            list.CollectionChanged += new NotifyCollectionChangedEventHandler(textBlock.InlineCollectionChanged);
-        }
-
-        private void InlineCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    this.Inlines.AddRange(e.NewItems);
-                    break;
-                case NotifyCollectionChangedAction.Move:
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    break;
-                case NotifyCollectionChangedAction.Replace:
-                    this.Inlines.CopyTo(e.NewItems as Inline[], e.NewStartingIndex);
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                    this.Inlines.Clear();
-                    break;
-            }
-        }
-
-        public BindableTextBlock()
-        {
-        }
+        public string Line { get; set; }
     }
 
     public class AAEditorViewModel
     {
         public ObservableCollection<int> LineNumberList { get; private set; } = new ObservableCollection<int> { 1 };
-        public ObservableCollection<Inline> FormatList { get; private set; } = new ObservableCollection<Inline> {};
+        public ObservableCollection<VisualLine> VisualLineList { get; private set; } = new ObservableCollection<VisualLine>();
 
         public ReactiveProperty<string> Text { get; private set; }
 
@@ -119,9 +77,15 @@ namespace KMBEditor.AAEditorUserControl
         {
             // Visual Textの差し替え
             // FIXME: 1文字ごとに全差し替えなのでめっちゃ重い
-            this.FormatList.Clear();
+            this.VisualLineList.Clear();
+
             foreach (var line in s.ReadLine())
             {
+                this.VisualLineList.Add(new VisualLine
+                {
+                    Line = line
+                });
+#if false
                 var inlines = new List<Inline>();
 
                 // 先頭空白文字の判定
@@ -174,6 +138,7 @@ namespace KMBEditor.AAEditorUserControl
 
                 // アップデート
                 inlines.ForEach(this.FormatList.Add);
+#endif
             }
         }
 

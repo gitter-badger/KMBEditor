@@ -48,13 +48,17 @@
                                  Foreground="{x:Null}"/>
                         <!-- 表示領域 -->
                         <!-- 表示領域は文字位置の調整のため、Marginを "3,1,0,0" とる必要あり -->
-                        <local:BindableTextBlock Grid.Column="1"
-                                   InlineList="{Binding Path=FormatList, UpdateSourceTrigger=PropertyChanged}"
-                                   FontFamily="MS PGothic"
-                                   FontSize="12pt"
-                                   TextOptions.TextFormattingMode="Display"
-                                   IsHitTestVisible="False"
-                                   Margin="3,1,0,0"/>
+                        <ItemsControl Grid.Column="1" ItemsSource="{Binding Path=VisualLineList}" Margin="3,1,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Line}"
+                                               FontFamily="MS PGothic"
+                                               FontSize="12pt"
+                                               TextOptions.TextFormattingMode="Display"
+                                               IsHitTestVisible="False"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </Grid>
                 </ScrollViewer>
             </Grid>
