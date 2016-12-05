@@ -46,17 +46,21 @@ namespace KMBEditor.AAEditorUserControl
 
         private void InlineCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Add)
+            switch (e.Action)
             {
-                Debug.WriteLine("Inline Collection Add");
-                var idx = e.NewItems.Count - 1;
-                var run = e.NewItems[idx] as Inline;
-                this.Inlines.Add(run);
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Reset)
-            {
-                Debug.WriteLine("Inline Collection Reset");
-                this.Inlines.Clear();
+                case NotifyCollectionChangedAction.Add:
+                    this.Inlines.AddRange(e.NewItems);
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    this.Inlines.CopyTo(e.NewItems as Inline[], e.NewStartingIndex);
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    this.Inlines.Clear();
+                    break;
             }
         }
 
@@ -67,42 +71,48 @@ namespace KMBEditor.AAEditorUserControl
 
     public class AAEditorViewModel
     {
-        public ObservableCollection<int> LineNumberList { get; private set; } = new ObservableCollection<int> { 0 };
+        public ObservableCollection<int> LineNumberList { get; private set; } = new ObservableCollection<int> { 1 };
         public ObservableCollection<Inline> FormatList { get; private set; } = new ObservableCollection<Inline> {};
 
         public ReactiveProperty<string> Text { get; private set; }
-        public ReactiveProperty<int> LineCount { set; private get; } = new ReactiveProperty<int>(0);
-
-        public ReactiveCommand LineAddCommand { get; private set; } = new ReactiveCommand();
-        public ReactiveCommand LineDeleteCommand { get; private set; }
-        public ReactiveCommand LineResetCommand { get; private set; } = new ReactiveCommand();
 
         private bool isVisibleZenkakuSpace = true;
         private bool isVisibleHankakuSpace = true;
 
         private void TextUpdateEvent(string s)
         {
+            // テキストが未定義の場合はなにもしない
             if (s == null) {
                 return;
             }
 
-            // 一旦行番号をクリア
-            // FIXME: 差分更新対応
-            this.LineResetCommand.Execute();
+            // ライン数を計算
+            var new_count = s.GetLineCount();
+            var old_count = LineNumberList.Count;
 
-            // 行番号の設定
-            // FIXME: 初期化時には一度に更新したほうが良い
-            foreach (var c in s)
+            if (new_count == old_count)
             {
-                if (c == '\n')
+                // 更新がなければそのまま返す
+                return;
+            }
+            else if (new_count < old_count)
+            {
+                // ライン数が減少している場合
+                for (var i = old_count; i > new_count; --i)
                 {
-                    this.LineAddCommand.Execute();
+                    // 後ろから削除(indexなので-1する)
+                    this.LineNumberList.RemoveAt(i - 1);
                 }
             }
-
-            // +1
-            this.LineAddCommand.Execute();
-
+            else if (new_count > old_count)
+            {
+                // ライン数が増加している場合
+                for (var i = old_count; i < new_count; ++i)
+                {
+                    // 差分を追加
+                    this.LineNumberList.Add(i + 1);
+                }
+            }
         }
 
         private void updateVisualText(string s)
@@ -173,29 +183,6 @@ namespace KMBEditor.AAEditorUserControl
 
             this.Text.Subscribe(s => this.TextUpdateEvent(s));
             this.Text.Subscribe(s => this.updateVisualText(s));
-
-            this.LineDeleteCommand = this.LineCount
-                .Select(v => v != 0)
-                .ToReactiveCommand();
-
-            this.LineAddCommand
-                .Subscribe(_ =>
-                {
-                    this.LineNumberList.Add(this.LineNumberList.Count);
-                    this.LineCount.Value = this.LineNumberList.Count;
-                });
-            this.LineDeleteCommand
-                .Subscribe(_ =>
-                {
-                    this.LineNumberList.RemoveAt(this.LineNumberList.Count - 1);
-                    this.LineCount.Value = this.LineNumberList.Count;
-                });
-            this.LineResetCommand
-                .Subscribe(_ =>
-                {
-                    this.LineNumberList.Clear();
-                    this.LineCount.Value = this.LineNumberList.Count;
-                });
         }
     }
 
