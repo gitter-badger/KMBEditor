@@ -115,7 +115,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="StringExtentions\StringExtentions.cs" />
-    <Page Include="AAEditorControl\AAEditor.xaml">
+    <Page Include="AAEditorUserControl\AAEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -123,7 +123,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AAEditorControl\AAEditor.xaml.cs">
+    <Compile Include="AAEditorUserControl\AAEditor.xaml.cs">
       <DependentUpon>AAEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">

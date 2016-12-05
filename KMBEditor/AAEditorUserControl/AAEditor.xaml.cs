@@ -18,7 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 
-namespace KMBEditor
+namespace KMBEditor.AAEditorUserControl
 {
     public class AAEditorViewModel
     {
@@ -111,7 +111,7 @@ namespace KMBEditor
             this._vm = new AAEditorViewModel(
                 this.ToReactiveProperty<string>(TextProperty));
 
-            this.AAEditorUserControl.DataContext = _vm;
+            this.AAEditorUserControlGrid.DataContext = _vm;
         }
     }
 }
