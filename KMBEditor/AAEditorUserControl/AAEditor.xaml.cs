@@ -20,9 +20,51 @@ using System.Diagnostics;
 
 namespace KMBEditor.AAEditorUserControl
 {
+    public class BindableTextBlock : TextBlock
+    {
+        public static readonly DependencyProperty InlineListProperty =
+            DependencyProperty.Register(
+                "InlineList",
+                typeof(ObservableCollection<Inline>),
+                typeof(BindableTextBlock),
+                new UIPropertyMetadata(null, OnPropertyChanged));
+
+        public ObservableCollection<Inline> InlineList
+        {
+            get { return (ObservableCollection<Inline>)GetValue(InlineListProperty); }
+            set { SetValue(InlineListProperty, value); }
+        }
+
+        private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            Debug.WriteLine("Property Change");
+
+            BindableTextBlock textBlock = sender as BindableTextBlock;
+            ObservableCollection<Inline> list = e.NewValue as ObservableCollection<Inline>;
+            list.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(textBlock.InlineCollectionChanged);
+        }
+
+        private void InlineCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                Debug.WriteLine("Inline Collection Change");
+                var idx = e.NewItems.Count - 1;
+                var run = e.NewItems[idx] as Inline;
+                this.Inlines.Clear();
+                this.Inlines.Add(run);
+            }
+        }
+
+        public BindableTextBlock()
+        {
+        }
+    }
+
     public class AAEditorViewModel
     {
         public ObservableCollection<int> LineNumberList { get; private set; } = new ObservableCollection<int> { 0 };
+        public ObservableCollection<Inline> FormatList { get; private set; } = new ObservableCollection<Inline> {};
 
         public ReactiveProperty<string> Text { get; private set; }
         public ReactiveProperty<int> LineCount { set; private get; } = new ReactiveProperty<int>(0);
@@ -33,8 +75,6 @@ namespace KMBEditor.AAEditorUserControl
 
         private void TextUpdateEvent(string s)
         {
-            Debug.WriteLine("change Text");
-
             if (s == null) {
                 return;
             }
@@ -55,6 +95,19 @@ namespace KMBEditor.AAEditorUserControl
 
             // +1
             this.LineAddCommand.Execute();
+
+        }
+
+        private void UpdateVisualText(string s)
+        {
+            // Visual Textの差し替え
+            // FIXME: 1文字ごとに全差し替えなのでめっちゃ重い
+            this.FormatList.Clear();
+            this.FormatList.Add(new Run
+                {
+                    Text = s,
+                    Foreground = new SolidColorBrush(Colors.Red)
+                });
         }
 
         public AAEditorViewModel(ReactiveProperty<string> text_rp)
@@ -62,6 +115,7 @@ namespace KMBEditor.AAEditorUserControl
             this.Text = text_rp;
 
             this.Text.Subscribe(s => this.TextUpdateEvent(s));
+            this.Text.Subscribe(s => this.UpdateVisualText(s));
 
             this.LineDeleteCommand = this.LineCount
                 .Select(v => v != 0)

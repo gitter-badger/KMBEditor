@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:KMBEditor"
+             xmlns:local="clr-namespace:KMBEditor.AAEditorUserControl"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Width="Auto" Height="Auto" MinWidth="420" MinHeight="300">
     <Grid x:Name="AAEditorUserControlGrid">
@@ -48,16 +48,13 @@
                                  Foreground="{x:Null}"/>
                         <!-- 表示領域 -->
                         <!-- 表示領域は文字位置の調整のため、Marginを "3,1,0,0" とる必要あり -->
-                        <TextBlock Grid.Column="1"
+                        <local:BindableTextBlock Grid.Column="1"
+                                   InlineList="{Binding Path=FormatList, UpdateSourceTrigger=PropertyChanged}"
                                    FontFamily="MS PGothic"
                                    FontSize="12pt"
                                    TextOptions.TextFormattingMode="Display"
                                    IsHitTestVisible="False"
-                                   Margin="3,1,0,0">
-                            <TextBlock.Inlines>
-                                <Run Text="{Binding Path=Text.Value}" Foreground="Red"/>
-                            </TextBlock.Inlines>
-                        </TextBlock>
+                                   Margin="3,1,0,0"/>
                     </Grid>
                 </ScrollViewer>
             </Grid>
