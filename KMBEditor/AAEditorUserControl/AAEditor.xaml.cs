@@ -17,6 +17,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using KMBEditor.StringExtentions;
+using System.Collections.Specialized;
 
 namespace KMBEditor.AAEditorUserControl
 {
@@ -37,22 +39,24 @@ namespace KMBEditor.AAEditorUserControl
 
         private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            Debug.WriteLine("Property Change");
-
-            BindableTextBlock textBlock = sender as BindableTextBlock;
-            ObservableCollection<Inline> list = e.NewValue as ObservableCollection<Inline>;
-            list.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(textBlock.InlineCollectionChanged);
+            var textBlock = sender as BindableTextBlock;
+            var list = e.NewValue as ObservableCollection<Inline>;
+            list.CollectionChanged += new NotifyCollectionChangedEventHandler(textBlock.InlineCollectionChanged);
         }
 
-        private void InlineCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void InlineCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                Debug.WriteLine("Inline Collection Change");
+                Debug.WriteLine("Inline Collection Add");
                 var idx = e.NewItems.Count - 1;
                 var run = e.NewItems[idx] as Inline;
-                this.Inlines.Clear();
                 this.Inlines.Add(run);
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                Debug.WriteLine("Inline Collection Reset");
+                this.Inlines.Clear();
             }
         }
 
@@ -72,6 +76,9 @@ namespace KMBEditor.AAEditorUserControl
         public ReactiveCommand LineAddCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand LineDeleteCommand { get; private set; }
         public ReactiveCommand LineResetCommand { get; private set; } = new ReactiveCommand();
+
+        private bool isVisibleZenkakuSpace = true;
+        private bool isVisibleHankakuSpace = true;
 
         private void TextUpdateEvent(string s)
         {
@@ -98,16 +105,66 @@ namespace KMBEditor.AAEditorUserControl
 
         }
 
-        private void UpdateVisualText(string s)
+        private void updateVisualText(string s)
         {
             // Visual Textの差し替え
             // FIXME: 1文字ごとに全差し替えなのでめっちゃ重い
             this.FormatList.Clear();
-            this.FormatList.Add(new Run
+            foreach (var line in s.ReadLine())
+            {
+                var inlines = new List<Inline>();
+
+                // 先頭空白文字の判定
+                foreach (var c in line)
                 {
-                    Text = s,
-                    Foreground = new SolidColorBrush(Colors.Red)
-                });
+                    switch (c)
+                    {
+                        case ' ':  // 半角スペース
+                            if (this.isVisibleHankakuSpace) {
+                                var run = new Run
+                                {
+                                    Text = c.ToString(),
+                                    Foreground = new SolidColorBrush(Colors.LightBlue),
+                                    TextDecorations = TextDecorations.Underline
+                                };
+                                inlines.Add(run);
+                            }
+                            break;
+                        case '　': // 全角スペース
+                            if (this.isVisibleZenkakuSpace)
+                            {
+                                var run = new Run
+                                {
+                                    Text = c.ToString(),
+                                    Foreground = new SolidColorBrush(Colors.LightSlateGray),
+                                    TextDecorations = TextDecorations.Underline
+                                };
+                                inlines.Add(run);
+                            }
+                            break;
+                        default: // その他の文字
+                            {
+                                var run = new Run
+                                {
+                                    Text = c.ToString(),
+                                    Foreground = new SolidColorBrush(Colors.Black)
+                                };
+                                inlines.Add(run);
+                                break;
+                            }
+                    }
+                }
+                // 改行文字の追加
+                var runend = new Run
+                    {
+                        Text = "↓" + System.Environment.NewLine,
+                        Foreground = new SolidColorBrush(Colors.Green)
+                    };
+                inlines.Add(runend);
+
+                // アップデート
+                inlines.ForEach(this.FormatList.Add);
+            }
         }
 
         public AAEditorViewModel(ReactiveProperty<string> text_rp)
@@ -115,7 +172,7 @@ namespace KMBEditor.AAEditorUserControl
             this.Text = text_rp;
 
             this.Text.Subscribe(s => this.TextUpdateEvent(s));
-            this.Text.Subscribe(s => this.UpdateVisualText(s));
+            this.Text.Subscribe(s => this.updateVisualText(s));
 
             this.LineDeleteCommand = this.LineCount
                 .Select(v => v != 0)

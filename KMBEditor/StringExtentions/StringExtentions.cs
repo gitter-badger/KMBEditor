@@ -36,5 +36,17 @@ namespace KMBEditor.StringExtentions
             }
             return n + 1;
         }
+
+        public static IEnumerable<string> ReadLine(this string str)
+        {
+            if (str != null)
+            {
+                var lines = str.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.None);
+                foreach (var line in lines)
+                {
+                    yield return line;
+                }
+            }
+        }
     }
 }
