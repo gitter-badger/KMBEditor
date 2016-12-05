@@ -8,6 +8,9 @@ using KMBEditor.StringExtentions;
 
 namespace KMBEditor.MLT
 {
+    /// <summary>
+    /// MLTファイルに属するページ単位での状態管理クラス
+    /// </summary>
     public class MLTPage
     {
         /// <summary>
@@ -33,11 +36,7 @@ namespace KMBEditor.MLT
     }
 
     /// <summary>
-    /// MLT単位の状態を管理するクラス
-    /// 
-    /// MLTの基本単位:
-    /// `^[SPLIT]$` にてAAを区切る
-    /// 
+    /// MLTファイル単位の状態管理クラス
     /// </summary>
     public class MLTFile
     {
