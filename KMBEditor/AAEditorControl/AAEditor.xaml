@@ -33,7 +33,7 @@
                 <!-- メインエディタ -->
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
                     <Grid>
-                        <!-- 以下は重ねて表示される -->
+                        <!-- 以下は重ねて表示される、テキスト位置は一致している必要がある -->
                         <!-- 縦線のずれ回避のため、必ず TextOptions.TextFormattingMode="Display" を指定すること -->
                         <!-- 編集領域 -->
                         <!-- 編集領域は描画する必要がないため、Foreground をブラシなしに設定 -->
