@@ -22,9 +22,98 @@ using System.Collections.Specialized;
 
 namespace KMBEditor.AAEditorUserControl
 {
+    public class BindableTextBlock : TextBlock
+    {
+        public static readonly DependencyProperty InlineListProperty =
+            DependencyProperty.Register(
+                "InlineList",
+                typeof(ObservableCollection<Inline>),
+                typeof(BindableTextBlock),
+                new UIPropertyMetadata(null, OnPropertyChanged));
+
+        public ObservableCollection<Inline> InlineList
+        {
+            get { return (ObservableCollection<Inline>)GetValue(InlineListProperty); }
+            set { SetValue(InlineListProperty, value); }
+        }
+
+        private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            BindableTextBlock textBlock = (BindableTextBlock)sender;
+            textBlock.Inlines.AddRange((ObservableCollection<Inline>)e.NewValue);
+        }
+    }
+
     public class VisualLine
     {
-        public string Line { get; set; }
+        public ReactiveProperty<string> Line { get; private set; } = new ReactiveProperty<string>("");
+        public ObservableCollection<Inline> InlineList { get; private set; } = new ObservableCollection<Inline>();
+
+        private bool isVisibleZenkakuSpace = true;
+        private bool isVisibleHankakuSpace = true;
+
+        private void updateSyntaxHighlight(string line)
+        {
+            this.InlineList.Clear();
+
+            var inlines = new List<Inline>();
+
+            // 先頭空白文字の判定
+            foreach (var c in line)
+            {
+                switch (c)
+                {
+                    case ' ':  // 半角スペース
+                        if (this.isVisibleHankakuSpace) {
+                            var run = new Run
+                            {
+                                Text = c.ToString(),
+                                Foreground = new SolidColorBrush(Colors.LightBlue),
+                                TextDecorations = TextDecorations.Underline
+                            };
+                            inlines.Add(run);
+                        }
+                        break;
+                    case '　': // 全角スペース
+                        if (this.isVisibleZenkakuSpace)
+                        {
+                            var run = new Run
+                            {
+                                Text = c.ToString(),
+                                Foreground = new SolidColorBrush(Colors.LightSlateGray),
+                                TextDecorations = TextDecorations.Underline
+                            };
+                            inlines.Add(run);
+                        }
+                        break;
+                    default: // その他の文字
+                        {
+                            var run = new Run
+                            {
+                                Text = c.ToString(),
+                                Foreground = new SolidColorBrush(Colors.Black)
+                            };
+                            inlines.Add(run);
+                            break;
+                        }
+                }
+            }
+            // 改行文字の追加
+            var runend = new Run
+                {
+                    Text = "⇂",
+                    Foreground = new SolidColorBrush(Colors.Green)
+                };
+            inlines.Add(runend);
+
+            // アップデート
+            inlines.ForEach(this.InlineList.Add);
+        }
+
+        public VisualLine()
+        {
+            this.Line.Subscribe(s => this.updateSyntaxHighlight(s));
+        }
     }
 
     public class AAEditorViewModel
@@ -36,8 +125,6 @@ namespace KMBEditor.AAEditorUserControl
         public ReactiveProperty<string> EditAreaText { get; private set; } = new ReactiveProperty<string>();
 
         private bool isUpdatedOringinalText = false;
-        private bool isVisibleZenkakuSpace = true;
-        private bool isVisibleHankakuSpace = true;
 
         /// <summary>
         /// 行番号更新
@@ -79,64 +166,6 @@ namespace KMBEditor.AAEditorUserControl
             }
         }
 
-        private void SyntaxHighlight()
-        {
-#if false
-                var inlines = new List<Inline>();
-
-                // 先頭空白文字の判定
-                foreach (var c in line)
-                {
-                    switch (c)
-                    {
-                        case ' ':  // 半角スペース
-                            if (this.isVisibleHankakuSpace) {
-                                var run = new Run
-                                {
-                                    Text = c.ToString(),
-                                    Foreground = new SolidColorBrush(Colors.LightBlue),
-                                    TextDecorations = TextDecorations.Underline
-                                };
-                                inlines.Add(run);
-                            }
-                            break;
-                        case '　': // 全角スペース
-                            if (this.isVisibleZenkakuSpace)
-                            {
-                                var run = new Run
-                                {
-                                    Text = c.ToString(),
-                                    Foreground = new SolidColorBrush(Colors.LightSlateGray),
-                                    TextDecorations = TextDecorations.Underline
-                                };
-                                inlines.Add(run);
-                            }
-                            break;
-                        default: // その他の文字
-                            {
-                                var run = new Run
-                                {
-                                    Text = c.ToString(),
-                                    Foreground = new SolidColorBrush(Colors.Black)
-                                };
-                                inlines.Add(run);
-                                break;
-                            }
-                    }
-                }
-                // 改行文字の追加
-                var runend = new Run
-                    {
-                        Text = "↓" + System.Environment.NewLine,
-                        Foreground = new SolidColorBrush(Colors.Green)
-                    };
-                inlines.Add(runend);
-
-                // アップデート
-                inlines.ForEach(this.FormatList.Add);
-#endif
-        }
-
         /// <summary>
         /// 表示領域をすべて書き換え（初期化時）
         /// </summary>
@@ -147,10 +176,9 @@ namespace KMBEditor.AAEditorUserControl
 
             foreach (var line in s.ReadLine())
             {
-                this.VisualLineList.Add(new VisualLine
-                {
-                    Line = line
-                });
+                var vl = new VisualLine();
+                vl.Line.Value = line;
+                this.VisualLineList.Add(vl);
             }
         }
 
@@ -165,10 +193,9 @@ namespace KMBEditor.AAEditorUserControl
 
             foreach (var line in s.ReadLine())
             {
-                this.VisualLineList.Add(new VisualLine
-                {
-                    Line = line
-                });
+                var vl = new VisualLine();
+                vl.Line.Value = line;
+                this.VisualLineList.Add(vl);
             }
         }
 

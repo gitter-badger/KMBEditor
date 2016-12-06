@@ -51,11 +51,11 @@
                         <ItemsControl Grid.Column="1" ItemsSource="{Binding Path=VisualLineList}" Margin="3,1,0,0">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Path=Line}"
-                                               FontFamily="MS PGothic"
-                                               FontSize="12pt"
-                                               TextOptions.TextFormattingMode="Display"
-                                               IsHitTestVisible="False"/>
+                                    <local:BindableTextBlock InlineList="{Binding Path=InlineList, UpdateSourceTrigger=PropertyChanged}"
+                                                             FontFamily="MS PGothic"
+                                                             FontSize="12pt"
+                                                             TextOptions.TextFormattingMode="Display"
+                                                             IsHitTestVisible="False"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
