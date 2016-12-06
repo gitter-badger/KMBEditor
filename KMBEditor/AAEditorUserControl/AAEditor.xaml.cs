@@ -38,7 +38,11 @@ namespace KMBEditor.AAEditorUserControl
         private bool isVisibleZenkakuSpace = true;
         private bool isVisibleHankakuSpace = true;
 
-        private void TextUpdateEvent(string s)
+        /// <summary>
+        /// 行番号更新
+        /// </summary>
+        /// <param name="s">編集領域のテキスト</param>
+        private void updateLineNumber(string s)
         {
             // テキストが未定義の場合はなにもしない
             if (s == null) {
@@ -74,6 +78,10 @@ namespace KMBEditor.AAEditorUserControl
             }
         }
 
+        /// <summary>
+        /// 表示領域の更新
+        /// </summary>
+        /// <param name="s">編集領域のテキスト</param>
         private void updateVisualText(string s)
         {
             // Visual Textの差し替え
@@ -156,7 +164,7 @@ namespace KMBEditor.AAEditorUserControl
             this.BindingOriginalText.Subscribe(s => this.EditAreaText.Value = s ?? "");
 
             // 編集領域のテキストが更新された時の処理
-            this.EditAreaText.Subscribe(s => this.TextUpdateEvent(s));
+            this.EditAreaText.Subscribe(s => this.updateLineNumber(s));
             this.EditAreaText.Subscribe(s => this.updateVisualText(s));
         }
     }
