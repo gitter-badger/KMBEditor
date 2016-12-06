@@ -35,6 +35,7 @@ namespace KMBEditor.AAEditorUserControl
         public ReactiveProperty<string> BindingOriginalText { get; private set; }
         public ReactiveProperty<string> EditAreaText { get; private set; } = new ReactiveProperty<string>();
 
+        private bool isUpdatedOringinalText = false;
         private bool isVisibleZenkakuSpace = true;
         private bool isVisibleHankakuSpace = true;
 
@@ -78,22 +79,8 @@ namespace KMBEditor.AAEditorUserControl
             }
         }
 
-        /// <summary>
-        /// 表示領域の更新
-        /// </summary>
-        /// <param name="s">編集領域のテキスト</param>
-        private void updateVisualText(string s)
+        private void SyntaxHighlight()
         {
-            // Visual Textの差し替え
-            // FIXME: 1文字ごとに全差し替えなのでめっちゃ重い
-            this.VisualLineList.Clear();
-
-            foreach (var line in s.ReadLine())
-            {
-                this.VisualLineList.Add(new VisualLine
-                {
-                    Line = line
-                });
 #if false
                 var inlines = new List<Inline>();
 
@@ -148,7 +135,73 @@ namespace KMBEditor.AAEditorUserControl
                 // アップデート
                 inlines.ForEach(this.FormatList.Add);
 #endif
+        }
+
+        /// <summary>
+        /// 表示領域をすべて書き換え（初期化時）
+        /// </summary>
+        /// <param name="s"></param>
+        private void updateAllVisualText(string s)
+        {
+            this.VisualLineList.Clear();
+
+            foreach (var line in s.ReadLine())
+            {
+                this.VisualLineList.Add(new VisualLine
+                {
+                    Line = line
+                });
             }
+        }
+
+        /// <summary>
+        /// 表示領域を差分更新
+        /// </summary>
+        /// <param name="s"></param>
+        private void updateDifferenceVisualText(string s)
+        {
+            // FIXME: 1文字ごとに全差し替えなのでめっちゃ重い
+            this.VisualLineList.Clear();
+
+            foreach (var line in s.ReadLine())
+            {
+                this.VisualLineList.Add(new VisualLine
+                {
+                    Line = line
+                });
+            }
+        }
+
+        /// <summary>
+        /// 表示領域の更新
+        /// </summary>
+        /// <param name="s">編集領域のテキスト</param>
+        private void updateVisualText(string s)
+        {
+            // 全差し替えかの判定
+            if (this.isUpdatedOringinalText)
+            {
+                // 全更新
+                this.updateAllVisualText(s);
+            }
+            else
+            {
+                // 差分更新
+                this.updateDifferenceVisualText(s);
+            }
+        }
+
+        /// <summary>
+        /// バインディングされている元のテキストが変わった場合の処理 
+        /// </summary>
+        /// <param name="s">バインディングされている元のテキスト</param>
+        private void updateBindingOringinalText(string s)
+        {
+            // オリジナルのテキストがアップデートされたかの状態フラグ有効化
+            this.isUpdatedOringinalText = true;
+
+            // 編集領域のテキストの更新
+            this.EditAreaText.Value = s ?? "";
         }
 
         public AAEditorViewModel(ReactiveProperty<string> text_rp)
@@ -161,7 +214,7 @@ namespace KMBEditor.AAEditorUserControl
             // 編集中の処理が重くなりすぎるため、直接変更はせず内部でキャッシュする
             // AAEditor側からの書き戻しのタイミングは保存時
             // FIXME: 現状変更内容があっても無視されるため、保存確認ダイアログを出力する
-            this.BindingOriginalText.Subscribe(s => this.EditAreaText.Value = s ?? "");
+            this.BindingOriginalText.Subscribe(s => this.updateBindingOringinalText(s));
 
             // 編集領域のテキストが更新された時の処理
             this.EditAreaText.Subscribe(s => this.updateLineNumber(s));
