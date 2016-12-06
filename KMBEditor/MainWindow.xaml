@@ -74,6 +74,8 @@
             </Grid>
         </Grid>
         <!-- ステータスバー -->
-        <StatusBar Grid.Row="2" MinHeight="20"/>
+        <StatusBar Grid.Row="2" MinHeight="20">
+            <StatusBarItem Content="{Binding Path=OrignalPageBytes.Value}" Height="20" VerticalAlignment="Top"/>
+        </StatusBar>
     </Grid>
 </Window>

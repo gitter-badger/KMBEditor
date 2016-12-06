@@ -30,6 +30,7 @@ namespace KMBEditor
         public ReactiveProperty<string> GitLabIssueURL { get; private set; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> CurrentBoardURL { get; private set; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> DevelopperTwtterURL { get; private set; } = new ReactiveProperty<string>();
+        public ReactiveProperty<string> OrignalPageBytes { get; private set; } = new ReactiveProperty<string>();
 
         // コマンド
         public ReactiveCommand OpenCommand { get; private set; } = new ReactiveCommand();
@@ -91,6 +92,12 @@ namespace KMBEditor
             this.BrowserOpenCommand_GitLabIssueURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_DevelopperTwtterURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_CurrentBoardURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
+
+            // リアクティブプロパティ設定
+            this.OrignalPageBytes = this.Page
+                    .Select(obj => obj == null ? 0 : obj.Bytes)
+                    .Select(size => String.Format("{0} [Bytes]", size))
+                    .ToReactiveProperty<string>();
         }
     }
 
