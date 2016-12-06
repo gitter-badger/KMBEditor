@@ -38,7 +38,7 @@
                         <!-- 編集領域 -->
                         <!-- 編集領域は描画する必要がないため、Foreground をブラシなしに設定 -->
                         <TextBox x:Name="textBox"
-                                 Text="{Binding Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding Path=EditAreaText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  FontFamily="MS PGothic"
                                  FontSize="12pt"
                                  AcceptsReturn="True"

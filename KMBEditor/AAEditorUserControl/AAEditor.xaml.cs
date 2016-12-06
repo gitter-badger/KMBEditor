@@ -32,7 +32,8 @@ namespace KMBEditor.AAEditorUserControl
         public ObservableCollection<int> LineNumberList { get; private set; } = new ObservableCollection<int> { 1 };
         public ObservableCollection<VisualLine> VisualLineList { get; private set; } = new ObservableCollection<VisualLine>();
 
-        public ReactiveProperty<string> Text { get; private set; }
+        public ReactiveProperty<string> BindingOriginalText { get; private set; }
+        public ReactiveProperty<string> EditAreaText { get; private set; } = new ReactiveProperty<string>();
 
         private bool isVisibleZenkakuSpace = true;
         private bool isVisibleHankakuSpace = true;
@@ -144,10 +145,19 @@ namespace KMBEditor.AAEditorUserControl
 
         public AAEditorViewModel(ReactiveProperty<string> text_rp)
         {
-            this.Text = text_rp;
+            // AAEditorのDipendencyPropertyの取得
+            this.BindingOriginalText = text_rp;
 
-            this.Text.Subscribe(s => this.TextUpdateEvent(s));
-            this.Text.Subscribe(s => this.updateVisualText(s));
+            // バインディングされているテキストが入れ替わった場合の処理
+            // 入れ替わりのタイミングで編集領域のテキストを全書き換えする
+            // 編集中の処理が重くなりすぎるため、直接変更はせず内部でキャッシュする
+            // AAEditor側からの書き戻しのタイミングは保存時
+            // FIXME: 現状変更内容があっても無視されるため、保存確認ダイアログを出力する
+            this.BindingOriginalText.Subscribe(s => this.EditAreaText.Value = s ?? "");
+
+            // 編集領域のテキストが更新された時の処理
+            this.EditAreaText.Subscribe(s => this.TextUpdateEvent(s));
+            this.EditAreaText.Subscribe(s => this.updateVisualText(s));
         }
     }
 
