@@ -40,6 +40,7 @@ namespace KMBEditor.AAEditorUserControl
         private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             BindableTextBlock textBlock = (BindableTextBlock)sender;
+            textBlock.Inlines.Clear();
             textBlock.Inlines.AddRange((ObservableCollection<Inline>)e.NewValue);
         }
     }
@@ -88,6 +89,7 @@ namespace KMBEditor.AAEditorUserControl
                         break;
                     default: // その他の文字
                         {
+                            // FIXME: その他の文字が一文字ずつRunでラップされてしまってるのでまとめて一つにする
                             var run = new Run
                             {
                                 Text = c.ToString(),
@@ -188,14 +190,42 @@ namespace KMBEditor.AAEditorUserControl
         /// <param name="s"></param>
         private void updateDifferenceVisualText(string s)
         {
-            // FIXME: 1文字ごとに全差し替えなのでめっちゃ重い
-            this.VisualLineList.Clear();
+            // 現在の表示領域のインデックス最大値
+            var maxIndex = this.VisualLineList.Count - 1;
 
+            var index = 0;
             foreach (var line in s.ReadLine())
             {
-                var vl = new VisualLine();
-                vl.Line.Value = line;
-                this.VisualLineList.Add(vl);
+                if (index <= maxIndex)
+                {
+                    // 既存表示領域に存在するライン
+                    // 比較して差分があれば更新
+                    // シンタックスハイライトの更新負荷が高いため、できるだけ更新しない
+                    if (this.VisualLineList[index].Line.Value != line)
+                    {
+                        var vl = new VisualLine();
+                        vl.Line.Value = line;
+                        this.VisualLineList[index] = vl;
+                    }
+                }
+                else
+                {
+                    // 追加ライン
+                    var vl = new VisualLine();
+                    vl.Line.Value = line;
+                    this.VisualLineList.Add(vl);
+                }
+
+                index++;
+            }
+            
+            // 行の削除があれば、削除された表示領域行を削除
+            if (index - 1 < maxIndex)
+            {
+                for (var i = index - 1; i < maxIndex; i++)
+                {
+                    this.VisualLineList.RemoveAt(index);
+                }
             }
         }
 
@@ -210,6 +240,7 @@ namespace KMBEditor.AAEditorUserControl
             {
                 // 全更新
                 this.updateAllVisualText(s);
+                this.isUpdatedOringinalText = false;
             }
             else
             {
