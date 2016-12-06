@@ -38,7 +38,7 @@
                         <!-- 編集領域 -->
                         <!-- 編集領域は描画する必要がないため、Foreground をブラシなしに設定 -->
                         <TextBox x:Name="textBox"
-                                 Text="{Binding Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding Path=EditAreaText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  FontFamily="MS PGothic"
                                  FontSize="12pt"
                                  AcceptsReturn="True"
@@ -48,13 +48,17 @@
                                  Foreground="{x:Null}"/>
                         <!-- 表示領域 -->
                         <!-- 表示領域は文字位置の調整のため、Marginを "3,1,0,0" とる必要あり -->
-                        <local:BindableTextBlock Grid.Column="1"
-                                   InlineList="{Binding Path=FormatList, UpdateSourceTrigger=PropertyChanged}"
-                                   FontFamily="MS PGothic"
-                                   FontSize="12pt"
-                                   TextOptions.TextFormattingMode="Display"
-                                   IsHitTestVisible="False"
-                                   Margin="3,1,0,0"/>
+                        <ItemsControl Grid.Column="1" ItemsSource="{Binding Path=VisualLineList}" Margin="3,1,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <local:BindableTextBlock InlineList="{Binding Path=InlineList, UpdateSourceTrigger=PropertyChanged}"
+                                                             FontFamily="MS PGothic"
+                                                             FontSize="12pt"
+                                                             TextOptions.TextFormattingMode="Display"
+                                                             IsHitTestVisible="False"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </Grid>
                 </ScrollViewer>
             </Grid>

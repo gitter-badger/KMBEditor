@@ -39,47 +39,100 @@ namespace KMBEditor.AAEditorUserControl
 
         private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var textBlock = sender as BindableTextBlock;
-            var list = e.NewValue as ObservableCollection<Inline>;
-            list.CollectionChanged += new NotifyCollectionChangedEventHandler(textBlock.InlineCollectionChanged);
+            BindableTextBlock textBlock = (BindableTextBlock)sender;
+            textBlock.Inlines.Clear();
+            textBlock.Inlines.AddRange((ObservableCollection<Inline>)e.NewValue);
         }
+    }
 
-        private void InlineCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    public class VisualLine
+    {
+        public ReactiveProperty<string> Line { get; private set; } = new ReactiveProperty<string>("");
+        public ObservableCollection<Inline> InlineList { get; private set; } = new ObservableCollection<Inline>();
+
+        private bool isVisibleZenkakuSpace = true;
+        private bool isVisibleHankakuSpace = true;
+
+        private void updateSyntaxHighlight(string line)
         {
-            switch (e.Action)
+            this.InlineList.Clear();
+
+            var inlines = new List<Inline>();
+
+            // 先頭空白文字の判定
+            foreach (var c in line)
             {
-                case NotifyCollectionChangedAction.Add:
-                    this.Inlines.AddRange(e.NewItems);
-                    break;
-                case NotifyCollectionChangedAction.Move:
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    break;
-                case NotifyCollectionChangedAction.Replace:
-                    this.Inlines.CopyTo(e.NewItems as Inline[], e.NewStartingIndex);
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                    this.Inlines.Clear();
-                    break;
+                switch (c)
+                {
+                    case ' ':  // 半角スペース
+                        if (this.isVisibleHankakuSpace) {
+                            var run = new Run
+                            {
+                                Text = c.ToString(),
+                                Foreground = new SolidColorBrush(Colors.LightBlue),
+                                TextDecorations = TextDecorations.Underline
+                            };
+                            inlines.Add(run);
+                        }
+                        break;
+                    case '　': // 全角スペース
+                        if (this.isVisibleZenkakuSpace)
+                        {
+                            var run = new Run
+                            {
+                                Text = c.ToString(),
+                                Foreground = new SolidColorBrush(Colors.LightSlateGray),
+                                TextDecorations = TextDecorations.Underline
+                            };
+                            inlines.Add(run);
+                        }
+                        break;
+                    default: // その他の文字
+                        {
+                            // FIXME: その他の文字が一文字ずつRunでラップされてしまってるのでまとめて一つにする
+                            var run = new Run
+                            {
+                                Text = c.ToString(),
+                                Foreground = new SolidColorBrush(Colors.Black)
+                            };
+                            inlines.Add(run);
+                            break;
+                        }
+                }
             }
+            // 改行文字の追加
+            var runend = new Run
+                {
+                    Text = "⇂",
+                    Foreground = new SolidColorBrush(Colors.Green)
+                };
+            inlines.Add(runend);
+
+            // アップデート
+            inlines.ForEach(this.InlineList.Add);
         }
 
-        public BindableTextBlock()
+        public VisualLine()
         {
+            this.Line.Subscribe(s => this.updateSyntaxHighlight(s));
         }
     }
 
     public class AAEditorViewModel
     {
         public ObservableCollection<int> LineNumberList { get; private set; } = new ObservableCollection<int> { 1 };
-        public ObservableCollection<Inline> FormatList { get; private set; } = new ObservableCollection<Inline> {};
+        public ObservableCollection<VisualLine> VisualLineList { get; private set; } = new ObservableCollection<VisualLine>();
 
-        public ReactiveProperty<string> Text { get; private set; }
+        public ReactiveProperty<string> BindingOriginalText { get; private set; }
+        public ReactiveProperty<string> EditAreaText { get; private set; } = new ReactiveProperty<string>();
 
-        private bool isVisibleZenkakuSpace = true;
-        private bool isVisibleHankakuSpace = true;
+        private bool isUpdatedOringinalText = false;
 
-        private void TextUpdateEvent(string s)
+        /// <summary>
+        /// 行番号更新
+        /// </summary>
+        /// <param name="s">編集領域のテキスト</param>
+        private void updateLineNumber(string s)
         {
             // テキストが未定義の場合はなにもしない
             if (s == null) {
@@ -115,74 +168,115 @@ namespace KMBEditor.AAEditorUserControl
             }
         }
 
-        private void updateVisualText(string s)
+        /// <summary>
+        /// 表示領域をすべて書き換え（初期化時）
+        /// </summary>
+        /// <param name="s"></param>
+        private void updateAllVisualText(string s)
         {
-            // Visual Textの差し替え
-            // FIXME: 1文字ごとに全差し替えなのでめっちゃ重い
-            this.FormatList.Clear();
+            this.VisualLineList.Clear();
+
             foreach (var line in s.ReadLine())
             {
-                var inlines = new List<Inline>();
+                var vl = new VisualLine();
+                vl.Line.Value = line;
+                this.VisualLineList.Add(vl);
+            }
+        }
 
-                // 先頭空白文字の判定
-                foreach (var c in line)
+        /// <summary>
+        /// 表示領域を差分更新
+        /// </summary>
+        /// <param name="s"></param>
+        private void updateDifferenceVisualText(string s)
+        {
+            // 現在の表示領域のインデックス最大値
+            var maxIndex = this.VisualLineList.Count - 1;
+
+            var index = 0;
+            foreach (var line in s.ReadLine())
+            {
+                if (index <= maxIndex)
                 {
-                    switch (c)
+                    // 既存表示領域に存在するライン
+                    // 比較して差分があれば更新
+                    // シンタックスハイライトの更新負荷が高いため、できるだけ更新しない
+                    if (this.VisualLineList[index].Line.Value != line)
                     {
-                        case ' ':  // 半角スペース
-                            if (this.isVisibleHankakuSpace) {
-                                var run = new Run
-                                {
-                                    Text = c.ToString(),
-                                    Foreground = new SolidColorBrush(Colors.LightBlue),
-                                    TextDecorations = TextDecorations.Underline
-                                };
-                                inlines.Add(run);
-                            }
-                            break;
-                        case '　': // 全角スペース
-                            if (this.isVisibleZenkakuSpace)
-                            {
-                                var run = new Run
-                                {
-                                    Text = c.ToString(),
-                                    Foreground = new SolidColorBrush(Colors.LightSlateGray),
-                                    TextDecorations = TextDecorations.Underline
-                                };
-                                inlines.Add(run);
-                            }
-                            break;
-                        default: // その他の文字
-                            {
-                                var run = new Run
-                                {
-                                    Text = c.ToString(),
-                                    Foreground = new SolidColorBrush(Colors.Black)
-                                };
-                                inlines.Add(run);
-                                break;
-                            }
+                        var vl = new VisualLine();
+                        vl.Line.Value = line;
+                        this.VisualLineList[index] = vl;
                     }
                 }
-                // 改行文字の追加
-                var runend = new Run
-                    {
-                        Text = "↓" + System.Environment.NewLine,
-                        Foreground = new SolidColorBrush(Colors.Green)
-                    };
-                inlines.Add(runend);
+                else
+                {
+                    // 追加ライン
+                    var vl = new VisualLine();
+                    vl.Line.Value = line;
+                    this.VisualLineList.Add(vl);
+                }
 
-                // アップデート
-                inlines.ForEach(this.FormatList.Add);
+                index++;
             }
+            
+            // 行の削除があれば、削除された表示領域行を削除
+            if (index - 1 < maxIndex)
+            {
+                for (var i = index - 1; i < maxIndex; i++)
+                {
+                    this.VisualLineList.RemoveAt(index);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 表示領域の更新
+        /// </summary>
+        /// <param name="s">編集領域のテキスト</param>
+        private void updateVisualText(string s)
+        {
+            // 全差し替えかの判定
+            if (this.isUpdatedOringinalText)
+            {
+                // 全更新
+                this.updateAllVisualText(s);
+                this.isUpdatedOringinalText = false;
+            }
+            else
+            {
+                // 差分更新
+                this.updateDifferenceVisualText(s);
+            }
+        }
+
+        /// <summary>
+        /// バインディングされている元のテキストが変わった場合の処理 
+        /// </summary>
+        /// <param name="s">バインディングされている元のテキスト</param>
+        private void updateBindingOringinalText(string s)
+        {
+            // オリジナルのテキストがアップデートされたかの状態フラグ有効化
+            this.isUpdatedOringinalText = true;
+
+            // 編集領域のテキストの更新
+            this.EditAreaText.Value = s ?? "";
         }
 
         public AAEditorViewModel(ReactiveProperty<string> text_rp)
         {
-            this.Text = text_rp;
+            // AAEditorのDipendencyPropertyの取得
+            this.BindingOriginalText = text_rp;
 
-            this.Text.Subscribe(s => this.TextUpdateEvent(s));
-            this.Text.Subscribe(s => this.updateVisualText(s));
+            // バインディングされているテキストが入れ替わった場合の処理
+            // 入れ替わりのタイミングで編集領域のテキストを全書き換えする
+            // 編集中の処理が重くなりすぎるため、直接変更はせず内部でキャッシュする
+            // AAEditor側からの書き戻しのタイミングは保存時
+            // FIXME: 現状変更内容があっても無視されるため、保存確認ダイアログを出力する
+            this.BindingOriginalText.Subscribe(s => this.updateBindingOringinalText(s));
+
+            // 編集領域のテキストが更新された時の処理
+            this.EditAreaText.Subscribe(s => this.updateLineNumber(s));
+            this.EditAreaText.Subscribe(s => this.updateVisualText(s));
         }
     }
 
