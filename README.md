@@ -32,11 +32,7 @@ AA(アスキーアート) 作成用エディタ(になる予定のもの)です�
 + Windows 8 / 8.1
 + Windows 10
 
-※ Window Vista/XP 以前はサポート外となります
-
-## その他
-
-+ .NET Framework 4.5 以上
+※ Window Vista / XP 以前はサポート外となります
 
 # 開発環境
 ## 開発言語
