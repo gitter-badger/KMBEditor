@@ -115,6 +115,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="StringExtentions\StringExtentions.cs" />
+    <Compile Include="Util\BindableBase.cs" />
     <Page Include="AAEditorUserControl\AAEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
