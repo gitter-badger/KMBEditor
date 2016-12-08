@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace KMBEditor.Util
+namespace KMBEditor.Util.BindableBase
 {
     public class BindableBase : INotifyPropertyChanged
     {

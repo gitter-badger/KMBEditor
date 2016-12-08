@@ -1,4 +1,5 @@
 ﻿using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using KMBEditor.Model;
 
 namespace KMBEditor
 {
@@ -24,13 +26,15 @@ namespace KMBEditor
     /// </summary>
     public class MainWindowViewModel
     {
+        private GlobalSettings _global_settings = GlobalSettings.Instance; 
+
         // プロパティ
         public ReadOnlyObservableCollection<MLT.MLTPage> PageList { get; private set; }
         public ReactiveProperty<MLT.MLTPage> Page { get; private set; } = new ReactiveProperty<MLT.MLTPage>();
-        public ReactiveProperty<string> OnlineDocumentURL { get; private set; } = new ReactiveProperty<string>();
-        public ReactiveProperty<string> GitLabIssueURL { get; private set; } = new ReactiveProperty<string>();
-        public ReactiveProperty<string> CurrentBoardURL { get; private set; } = new ReactiveProperty<string>();
-        public ReactiveProperty<string> DevelopperTwtterURL { get; private set; } = new ReactiveProperty<string>();
+        public ReactiveProperty<string> OnlineDocumentURL { get; private set; }
+        public ReactiveProperty<string> GitLabIssueURL { get; private set; }
+        public ReactiveProperty<string> CurrentBoardURL { get; private set; }
+        public ReactiveProperty<string> DevelopperTwtterURL { get; private set; }
         public ReactiveProperty<string> OrignalPageBytes { get; private set; } = new ReactiveProperty<string>();
 
         // コマンド
@@ -75,11 +79,11 @@ namespace KMBEditor
         public MainWindowViewModel()
         {
 
-            // 変数初期化
-            this.OnlineDocumentURL.Value = "https://tar-bin.gitbooks.io/kmbeditor-document/content/";
-            this.GitLabIssueURL.Value = "https://gitlab.com/tar_bin/KMBEditor/issues";
-            this.CurrentBoardURL.Value = "";
-            this.DevelopperTwtterURL.Value = "https://twitter.com/tar_bin";
+            // 変数初期化(Model => ViewModel 単方向バインド)
+            this.OnlineDocumentURL = this._global_settings.ObserveProperty(x => x.OnlineDocumentURL).ToReactiveProperty();
+            this.GitLabIssueURL = this._global_settings.ObserveProperty(x => x.GitLabIssueURL).ToReactiveProperty();
+            this.DevelopperTwtterURL = this._global_settings.ObserveProperty(x => x.DevelopperTwtterURL).ToReactiveProperty();
+            this.CurrentBoardURL = this._global_settings.ObserveProperty(x => x.CurrentBoardURL).ToReactiveProperty();
             this.PageList = this._current_mlt_file.Pages.ToReadOnlyReactiveCollection();
 
             // コマンド初期化

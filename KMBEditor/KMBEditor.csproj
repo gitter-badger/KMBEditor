@@ -114,8 +114,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\GlobalSettings.cs" />
     <Compile Include="StringExtentions\StringExtentions.cs" />
-    <Compile Include="Util\BindableBase.cs" />
+    <Compile Include="Util\BindableBase\BindableBase.cs" />
     <Page Include="AAEditorUserControl\AAEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
