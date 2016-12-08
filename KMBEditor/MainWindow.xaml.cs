@@ -27,6 +27,7 @@ namespace KMBEditor
         // プロパティ
         public ReadOnlyObservableCollection<MLT.MLTPage> PageList { get; private set; }
         public ReactiveProperty<MLT.MLTPage> Page { get; private set; } = new ReactiveProperty<MLT.MLTPage>();
+        public ReactiveProperty<string> OnlineDocumentURL { get; private set; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> GitLabIssueURL { get; private set; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> CurrentBoardURL { get; private set; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> DevelopperTwtterURL { get; private set; } = new ReactiveProperty<string>();
@@ -39,6 +40,7 @@ namespace KMBEditor
         public ReactiveCommand PrevPageCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand NextPageCommand { get; private set; } = new ReactiveCommand();
 
+        public ReactiveCommand BrowserOpenCommand_OnlineDocumentURL { get; private set; }
         public ReactiveCommand BrowserOpenCommand_GitLabIssueURL { get; private set; }
         public ReactiveCommand BrowserOpenCommand_CurrentBoardURL { get; private set; }
         public ReactiveCommand BrowserOpenCommand_DevelopperTwtterURL { get; private set; }
@@ -74,12 +76,14 @@ namespace KMBEditor
         {
 
             // 変数初期化
+            this.OnlineDocumentURL.Value = "https://tar-bin.gitbooks.io/kmbeditor-document/content/";
             this.GitLabIssueURL.Value = "https://gitlab.com/tar_bin/KMBEditor/issues";
             this.CurrentBoardURL.Value = "";
             this.DevelopperTwtterURL.Value = "https://twitter.com/tar_bin";
             this.PageList = this._current_mlt_file.Pages.ToReadOnlyReactiveCollection();
 
             // コマンド初期化
+            this.BrowserOpenCommand_OnlineDocumentURL = this.OnlineDocumentURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
             this.BrowserOpenCommand_GitLabIssueURL = this.GitLabIssueURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
             this.BrowserOpenCommand_DevelopperTwtterURL = this.DevelopperTwtterURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
             this.BrowserOpenCommand_CurrentBoardURL = this.CurrentBoardURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
@@ -89,6 +93,7 @@ namespace KMBEditor
             this.OpenMLTViewerCommand.Subscribe(_ => this.MLTViewerWindowTogleVisible());
             this.PrevPageCommand.Subscribe(_ => this.Page.Value = this._current_mlt_file.GetPrevPage());
             this.NextPageCommand.Subscribe(_ => this.Page.Value = this._current_mlt_file.GetNextPage());
+            this.BrowserOpenCommand_OnlineDocumentURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_GitLabIssueURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_DevelopperTwtterURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_CurrentBoardURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
