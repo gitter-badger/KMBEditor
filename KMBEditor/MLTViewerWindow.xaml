@@ -12,70 +12,96 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="13*"/>
-            <RowDefinition Height="163*"/>
+            <RowDefinition/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="722*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="129*"/>
+            <ColumnDefinition Width="1112"/>
         </Grid.ColumnDefinitions>
         <!-- メニューバー -->
-        <Menu x:Name="menu" Grid.ColumnSpan="5">
+        <Menu x:Name="menu">
             <MenuItem Header="ファイル(_F)">
                 <MenuItem Header="リソースディレクトリを開く(_O)" HorizontalAlignment="Left" Command="{Binding Path=OpenResourceDirectoryCommand}" Margin="0,0,-48,0"/>
             </MenuItem>
         </Menu>
-        <!-- 左カラム -->
-        <TreeView x:Name="treeView" Grid.Row="1" ItemsSource="{Binding Path=MLTFileTreeNodes.Value}" Grid.RowSpan="2">
-            <!-- TreeViewの動的アイテム更新のためのTemplate -->
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="MLTFileTreeNode" ItemsSource="{Binding Path=Children}">
-                    <StackPanel x:Name="treeview_stackpanel" Orientation="Horizontal" Height="20">
-                        <Image Source="{Binding Icon}" Width="15" Margin="0,0,5,0"/>
-                        <TextBlock>
-                            <!-- Memo: ItemTemplateの中ではViewModelのコマンドが直接見えないためパスを変更している -->
-                            <Hyperlink TextDecorations="None" Foreground="Black"
-                                       Command="{Binding
-                                            Path=DataContext.PreviewTextUpdateCommand,
-                                            RelativeSource={RelativeSource Mode=FindAncestor,
-                                            AncestorType={x:Type Window}}}"
-                                       CommandParameter="{Binding
-                                            ElementName=treeview_stackpanel,
-                                            Path=DataContext}">
-                                <Run Text="{Binding Path=Name}"/>
-                            </Hyperlink>
-                        </TextBlock>
-                    </StackPanel>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
-        <!-- 左スプリッター -->
-        <GridSplitter x:Name="gridSplitter" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Stretch" MinWidth="3"/>
-        <!-- 右カラム -->
-        <CheckBox x:Name="checkBox" Content="全表示" Grid.Column="2" HorizontalAlignment="Left" Margin="294,14,0,0" Grid.Row="1" VerticalAlignment="Top" Command="{Binding Path=ShowAllPageCommand}" Height="15" Width="56"/>
-        <Button x:Name="button" Content="Prev" Grid.Column="2" HorizontalAlignment="Left" Margin="370,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Command="{Binding Path=PrevPageCommand}" Height="20"/>
-        <Button x:Name="button1" Content="Next" Grid.Column="2" HorizontalAlignment="Left" Margin="450,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Command="{Binding Path=NextPageCommand}" Height="20"/>
-        <TabControl x:Name="tabControl" Grid.Column="2" Grid.Row="2" Margin="0,0,0,19" Grid.RowSpan="2">
-            <TabItem Header="Preview">
-                <Grid Background="#FFE5E5E5">
-                    <TextBox Text="{Binding Path=PreviewText.Value.AA}"
-                             FontFamily="MS PGothic"
-                             FontSize="12pt"
-                             TextOptions.TextFormattingMode="Display"
-                             IsReadOnly="True"
-                             IsUndoEnabled="False"
-                             HorizontalScrollBarVisibility="Auto"
-                             VerticalScrollBarVisibility="Auto"/>
-                </Grid>
-            </TabItem>
-        </TabControl>
-        <!-- 右スプリッター -->
-        <GridSplitter x:Name="gridSplitter1" Grid.Column="3" HorizontalAlignment="Stretch" Grid.Row="1" Grid.RowSpan="2" MinWidth="3"/>
+        <!-- メインコンテンツグリッド -->
+        <Grid Grid.Row="1" d:LayoutOverrides="HorizontalAlignment, VerticalAlignment">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="209*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="651*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="226*"/>
+            </Grid.ColumnDefinitions>
+            <!-- 左カラム -->
+            <TabControl d:LayoutOverrides="VerticalAlignment, LeftMargin, RightMargin, TopMargin, BottomMargin">
+                <TabItem Header="TabItem">
+                    <Grid Background="#FFE5E5E5">
+                        <TreeView ItemsSource="{Binding MLTFileTreeNodes.Value}">
+                            <!-- TreeViewの動的アイテム更新のためのTemplate -->
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate DataType="MLTFileTreeNode" ItemsSource="{Binding Children}">
+                                    <StackPanel Orientation="Horizontal" Height="20">
+                                        <Image Source="{Binding Icon}" Width="15" Margin="0,0,5,0"/>
+                                        <TextBlock>
+                                            <!-- Memo: ItemTemplateの中ではViewModelのコマンドが直接見えないためパスを変更している -->
+                                            <Hyperlink TextDecorations="None" Foreground="Black"
+                                                Command="{Binding DataContext.PreviewTextUpdateCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                                                CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type StackPanel}, Mode=FindAncestor}}">
+                                                <Run Text="{Binding Name}"/>
+                                            </Hyperlink>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <!-- 左スプリッター -->
+            <GridSplitter HorizontalAlignment="Stretch" MinWidth="3" Grid.Column="1" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+            <!-- 中カラム -->
+            <!-- グループ機能用タブコントロール -->
+            <TabControl Grid.Column="2" Grid.ColumnSpan="2" d:LayoutOverrides="HorizontalAlignment, VerticalAlignment">
+                <TabItem Header="TabItem">
+                    <Grid Background="#FFE5E5E5">
+                        <!-- MLT複数表示用タブコントロール -->
+                        <TabControl x:Name="tabControl" Margin="0,10,0,0">
+                            <TabItem Header="Preview">
+                                <Grid Background="#FFE5E5E5">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="41*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="171*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <!-- 項目ジャンプ用ビュー -->
+                                        <TreeView d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+                                        <!-- スプリッター -->
+                                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" MinWidth="3"/>
+                                        <!-- AA表示用テキストボックス -->
+                                        <TextBox Text="{Binding PreviewText.Value.AA}"
+                                             FontFamily="MS PGothic"
+                                             FontSize="12pt"
+                                             TextOptions.TextFormattingMode="Display"
+                                             IsReadOnly="True"
+                                             IsUndoEnabled="False"
+                                             HorizontalScrollBarVisibility="Auto"
+                                             VerticalScrollBarVisibility="Auto"
+                                             Grid.Column="2"
+                                             d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+                                    </Grid>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <!-- 右スプリッター -->
+            <GridSplitter MinWidth="3" Grid.Column="3" HorizontalAlignment="Stretch" d:LayoutOverrides="TopMargin, BottomMargin"/>
+            <!-- 右カラム -->
+        </Grid>
         <!-- ステータスバー -->
-        <StatusBar Grid.ColumnSpan="5" Margin="0,1,0,0" Grid.Row="3"/>
+        <StatusBar Grid.Row="2"/>
     </Grid>
 </Window>
