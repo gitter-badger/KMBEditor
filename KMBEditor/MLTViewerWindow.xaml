@@ -35,7 +35,8 @@
             </Grid.ColumnDefinitions>
             <!-- 左カラム -->
             <TabControl d:LayoutOverrides="VerticalAlignment, LeftMargin, RightMargin, TopMargin, BottomMargin">
-                <TabItem Header="TabItem">
+                <!-- MLTのリソースツリー -->
+                <TabItem Header="エクスプローラ">
                     <Grid Background="#FFE5E5E5">
                         <TreeView ItemsSource="{Binding MLTFileTreeNodes.Value}">
                             <!-- TreeViewの動的アイテム更新のためのTemplate -->
