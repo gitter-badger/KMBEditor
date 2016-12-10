@@ -78,25 +78,24 @@
                                         <!-- スプリッター -->
                                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" MinWidth="3"/>
                                         <!-- AA表示用テキストボックス -->
+                                        <!-- UIの仮想化を有効化して、表示しているAAのみレンダリング -->
                                         <ListBox Grid.Column="2"
                                                  ItemsSource="{Binding Path=MLTPageList.Value}"
+                                                 VirtualizingStackPanel.IsVirtualizing="True"
                                                  VirtualizingStackPanel.VirtualizationMode="Recycling"
                                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                                  ScrollViewer.VerticalScrollBarVisibility="Auto">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <!-- 表示しているAAのみレンダリング -->
-                                                    <VirtualizingStackPanel>
-                                                        <TextBox Text="{Binding Path=AA}"
-                                                             FontFamily="MS PGothic"
-                                                             FontSize="12pt"
-                                                             TextOptions.TextFormattingMode="Display"
-                                                             IsReadOnly="True"
-                                                             IsUndoEnabled="False"
-                                                             HorizontalScrollBarVisibility="Disabled"
-                                                             VerticalScrollBarVisibility="Disabled"
-                                                             MinWidth="1000" Padding="5"/>
-                                                    </VirtualizingStackPanel>
+                                                    <TextBox Text="{Binding Path=AA}"
+                                                         FontFamily="MS PGothic"
+                                                         FontSize="12pt"
+                                                         TextOptions.TextFormattingMode="Display"
+                                                         IsReadOnly="True"
+                                                         IsUndoEnabled="False"
+                                                         HorizontalScrollBarVisibility="Disabled"
+                                                         VerticalScrollBarVisibility="Disabled"
+                                                         MinWidth="1000" Padding="5"/>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>
