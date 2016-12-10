@@ -53,6 +53,11 @@ namespace KMBEditor.StringExtentions
             return _caption_regx.IsMatch(str);
         }
 
+        /// <summary>
+        /// 文字列を行ごとに読み出し
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static IEnumerable<string> ReadLine(this string str)
         {
             if (str != null)
