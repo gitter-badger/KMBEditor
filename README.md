@@ -41,8 +41,7 @@ AA(アスキーアート) 作成用エディタ(になる予定のもの)です�
 
 ## 使用フレームワーク/ライブラリ
 
-+ .NET Framework 4.5
-+ OpenCV(予定)
++ [Microsoft .NET Framework 4.5 (Microsoft Reference Source License)](https://www.microsoft.com/ja-jp/download/details.aspx?id=30653)
 + [Livet 1.3.0 (zlib/libpng License)](http://ugaya40.hateblo.jp/entry/Livet)
 + [ReactiveProperty 3.4.0 (MIT License)](https://github.com/runceel/ReactiveProperty)
 + [Json.NET 9.0.1 (MIT License)](http://www.newtonsoft.com/json)
