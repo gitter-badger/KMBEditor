@@ -35,8 +35,8 @@
                 <!-- MLTのリソースツリー -->
                 <TabItem Header="エクスプローラ">
                     <Grid Background="#FFE5E5E5">
+                        <!-- エクスプローラ用ツリービュー -->
                         <TreeView ItemsSource="{Binding MLTFileTreeNodes.Value}">
-                            <!-- TreeViewの動的アイテム更新のためのTemplate -->
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate DataType="MLTFileTreeNode" ItemsSource="{Binding Children}">
                                     <StackPanel Orientation="Horizontal" Height="20">
