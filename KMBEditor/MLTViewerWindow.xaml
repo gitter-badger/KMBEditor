@@ -3,9 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
+        xmlns:livet="http://schemas.livet-mvvm.net/2011/wpf"
+        xmlns:Interactivity="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET45"
         xmlns:local="clr-namespace:KMBEditor"
         mc:Ignorable="d"
         Title="MLTViewerWindow" Height="599" Width="1120" Closing="Window_Closing">
+    <Window.Resources>
+        <!-- viewModel -->
+        <local:MLTViewerWindowViewModel x:Key="ViewModel"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -36,18 +44,19 @@
                         <TreeView ItemsSource="{Binding MLTFileTreeNodes.Value}"
                                   VirtualizingStackPanel.IsVirtualizing="True"
                                   VirtualizingStackPanel.VirtualizationMode="Recycling">
+                            <i:Interaction.Triggers>
+                                <!-- ツリービューのアイテムを左クリックした場合のイベント -->
+                                <i:EventTrigger EventName="SelectedItemChanged">
+                                    <Interactivity:EventToReactiveCommand Command="{Binding Path=treeItemSelectCommand, Mode=OneWay}">
+                                        <local:MLTFileTreeViewItemConverter/>
+                                    </Interactivity:EventToReactiveCommand>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate DataType="MLTFileTreeNode" ItemsSource="{Binding Children}">
                                     <StackPanel Orientation="Horizontal" Height="20">
                                         <Image Source="{Binding Icon}" Width="15" Margin="0,0,5,0"/>
-                                        <TextBlock>
-                                            <!-- Memo: ItemTemplateの中ではViewModelのコマンドが直接見えないためパスを変更している -->
-                                            <Hyperlink TextDecorations="None" Foreground="Black"
-                                                Command="{Binding DataContext.PreviewTextUpdateCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
-                                                CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type StackPanel}, Mode=FindAncestor}}">
-                                                <Run Text="{Binding Name}"/>
-                                            </Hyperlink>
-                                        </TextBlock>
+                                        <TextBlock Text="{Binding Name}"/>
                                     </StackPanel>
                                 </HierarchicalDataTemplate>
                             </TreeView.ItemTemplate>
@@ -80,7 +89,7 @@
                                                 <HierarchicalDataTemplate DataType="MLTPageIndex" ItemsSource="{Binding Children}">
                                                     <StackPanel Orientation="Horizontal" Height="20">
                                                         <TextBlock Text="{Binding Path=Text}"
-                                                                   FontFamily="Yu Gothic"/>
+                                                                   FontFamily="Yu Gothic Medium"/>
                                                     </StackPanel>
                                                 </HierarchicalDataTemplate>
                                             </TreeView.ItemTemplate>

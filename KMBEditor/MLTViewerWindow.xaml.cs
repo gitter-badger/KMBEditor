@@ -16,9 +16,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WinForms = System.Windows.Forms;
+using Reactive.Bindings.Interactivity;
 
 namespace KMBEditor
 {
+    public class MLTFileTreeViewItemConverter : ReactiveConverter<RoutedPropertyChangedEventArgs<object>, MLTFileTreeNode>
+    {
+        protected override IObservable<MLTFileTreeNode> OnConvert(IObservable<RoutedPropertyChangedEventArgs<object>> e)
+        {
+           return e.Select(x => x.NewValue as MLTFileTreeNode);
+        }
+    }
+
     /// <summary>
     /// MLTViewerWindow の ViewModel
     /// </summary>
@@ -42,7 +51,7 @@ namespace KMBEditor
         public ReactiveProperty<ObservableCollection<MLTPageIndex>> MLTPageIndexList { get; private set; } = new ReactiveProperty<ObservableCollection<MLTPageIndex>>();
 
         public ReactiveCommand OpenResourceDirectoryCommand { get; private set; } = new ReactiveCommand();
-        public ReactiveCommand PreviewTextUpdateCommand { get; private set; } = new ReactiveCommand();
+        public ReactiveCommand<MLTFileTreeNode> treeItemSelectCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
 
         private string openResourceDirectory()
         {
@@ -130,7 +139,7 @@ namespace KMBEditor
         {
             // コマンド定義
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.openResourceDirectory());
-            this.PreviewTextUpdateCommand.Subscribe(obj => this.updateTabItemContext(obj as MLTFileTreeNode));
+            this.treeItemSelectCommand.Subscribe(obj => this.updateTabItemContext(obj as MLTFileTreeNode));
 
             // FileTreeの初期化
             this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(@"C:\Users\user\Documents\AA\HukuTemp_v21.0_20161120\HukuTemp");
