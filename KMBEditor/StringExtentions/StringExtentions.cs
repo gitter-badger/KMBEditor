@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace KMBEditor.StringExtentions
 {
@@ -35,6 +36,21 @@ namespace KMBEditor.StringExtentions
                 if (c == '\n') n++;
             }
             return n + 1;
+        }
+
+        /// <summary>
+        /// IsCaptionで使用する正規表現の事前コンパイル
+        /// </summary>
+        private readonly static Regex _caption_regx = new Regex(@"^【.*】$", RegexOptions.Compiled);
+
+        /// <summary>
+        /// 見出しページかの判定
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static bool IsCaption(this string str)
+        {
+            return _caption_regx.IsMatch(str);
         }
 
         public static IEnumerable<string> ReadLine(this string str)

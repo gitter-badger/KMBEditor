@@ -30,6 +30,10 @@ namespace KMBEditor.MLT
         /// </summary>
         public int Lines { get; set; } = 1;
         /// <summary>
+        /// 見出し属性の有無
+        /// </summary>
+        public bool isCaption { get; set; } = false;
+        /// <summary>
         /// ページのAAテキストデータ
         /// </summary>
         public string AA { get; set; } = "";
@@ -163,6 +167,7 @@ namespace KMBEditor.MLT
                     Name = "",
                     Bytes = page.GetShift_JISByteCount(),
                     Lines = page.GetLineCount(),
+                    isCaption = page.IsCaption(),
                     AA = page
                 });
 
