@@ -43,7 +43,7 @@ AA(アスキーアート) 作成用エディタ(になる予定のもの)です�
 
 + .NET Framework 4.5
 + OpenCV(予定)
-+ [Livet 1.3.0 (zlib/libpng License)](http://www.newtonsoft.com/json)
++ [Livet 1.3.0 (zlib/libpng License)](http://ugaya40.hateblo.jp/entry/Livet)
 + [ReactiveProperty 3.4.0 (MIT License)](https://github.com/runceel/ReactiveProperty)
 + [Json.NET 9.0.1 (MIT License)](http://www.newtonsoft.com/json)
 
