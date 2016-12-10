@@ -108,28 +108,29 @@ namespace KMBEditor
             return mltPageIndexList;
         }
 
+        private void updateTabItemContext(MLTFileTreeNode node)
+        {
+            if (node.IsDirectory == false)
+            {
+                // MLTファイルのオープン
+                this._current_preview_mlt.OpenMLTFile(node.Path);
+
+                // タブ名の更新
+                this.TabName.Value = node.Name;
+
+                // インデックスリストの作成
+                this.MLTPageIndexList.Value = this.createMLTIndexList();
+
+                // AA一覧表示更新
+                this.MLTPageList.Value = this._current_preview_mlt.Pages;
+            }
+        }
+
         public MLTViewerWindowViewModel()
         {
             // コマンド定義
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.openResourceDirectory());
-            this.PreviewTextUpdateCommand.Subscribe(obj =>
-                {
-                    MLTFileTreeNode node = (MLTFileTreeNode)obj;
-                    if (node.IsDirectory == false)
-                    {
-                        // MLTファイルのオープン
-                        this._current_preview_mlt.OpenMLTFile(node.Path);
-
-                        // タブ名の更新
-                        this.TabName.Value = node.Name;
-
-                        // インデックスリストの作成
-                        this.MLTPageIndexList.Value = this.createMLTIndexList();
-
-                        // AA一覧表示更新
-                        this.MLTPageList.Value = this._current_preview_mlt.Pages;
-                    }
-                });
+            this.PreviewTextUpdateCommand.Subscribe(obj => this.updateTabItemContext(obj as MLTFileTreeNode));
 
             // FileTreeの初期化
             this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(@"C:\Users\user\Documents\AA\HukuTemp_v21.0_20161120\HukuTemp");
