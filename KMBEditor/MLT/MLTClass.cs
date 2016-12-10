@@ -48,12 +48,10 @@ namespace KMBEditor.MLT
         private string _raw_page { get; set; }
         private int current_page_num { get; set; }
 
-        public ObservableCollection<MLTPage> Pages { get; private set; }
+        public ObservableCollection<MLTPage> Pages { get; private set; } = new ObservableCollection<MLTPage> { new MLTPage() };
 
         public MLTFile()
         {
-            this.Pages = new ObservableCollection<MLTPage>();
-            this.Pages.Add(new MLTPage {});
         }
 
         /// <summary>
