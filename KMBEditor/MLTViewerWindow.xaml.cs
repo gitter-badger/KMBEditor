@@ -51,7 +51,7 @@ namespace KMBEditor
         public ReactiveProperty<ObservableCollection<MLTPageIndex>> MLTPageIndexList { get; private set; } = new ReactiveProperty<ObservableCollection<MLTPageIndex>>();
 
         public ReactiveCommand OpenResourceDirectoryCommand { get; private set; } = new ReactiveCommand();
-        public ReactiveCommand<MLTFileTreeNode> treeItemSelectCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
+        public ReactiveCommand<MLTFileTreeNode> TreeItemSelectCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
 
         private string openResourceDirectory()
         {
@@ -139,7 +139,7 @@ namespace KMBEditor
         {
             // コマンド定義
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.openResourceDirectory());
-            this.treeItemSelectCommand.Subscribe(obj => this.updateTabItemContext(obj as MLTFileTreeNode));
+            this.TreeItemSelectCommand.Subscribe(obj => this.updateTabItemContext(obj as MLTFileTreeNode));
 
             // FileTreeの初期化
             this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(@"C:\Users\user\Documents\AA\HukuTemp_v21.0_20161120\HukuTemp");
