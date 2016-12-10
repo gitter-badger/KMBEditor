@@ -24,6 +24,13 @@ namespace KMBEditor
     /// </summary>
     public class MLTViewerWindowViewModel
     {
+        public class MLTPageIndex
+        {
+            public string Text { get; set; }
+            public MLT.MLTPage Page { get; set; }
+            public ObservableCollection<MLTPageIndex> Children { get; set; }
+        }
+
         private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
         private MLT.MLTFile _current_preview_mlt { get; set; } = new MLT.MLTFile();
 
@@ -31,6 +38,7 @@ namespace KMBEditor
         public ReactiveProperty<string> ResourceDirectoryPath { get; private set; } = new ReactiveProperty<string>("");
         public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; } = new ReactiveProperty<List<MLTFileTreeNode>>();
         public ReactiveProperty<ObservableCollection<MLT.MLTPage>> MLTPageList { get; private set; } = new ReactiveProperty<ObservableCollection<MLT.MLTPage>>();
+        public ReactiveProperty<ObservableCollection<MLTPageIndex>> MLTPageIndexList { get; private set; } = new ReactiveProperty<ObservableCollection<MLTPageIndex>>();
 
         public ReactiveCommand OpenResourceDirectoryCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand PreviewTextUpdateCommand { get; private set; } = new ReactiveCommand();
@@ -56,6 +64,47 @@ namespace KMBEditor
             }
         }
 
+        private ObservableCollection<MLTPageIndex> createMLTIndexList()
+        {
+            var mltPageIndexList = new ObservableCollection<MLTPageIndex>();
+            ObservableCollection<MLTPageIndex> children = null;
+            var isCaptionChild = false;
+            foreach (var page in this._current_preview_mlt.Pages)
+            {
+                if (page.IsCaption)
+                {
+                    children = new ObservableCollection<MLTPageIndex>();
+                    mltPageIndexList.Add(new MLTPageIndex
+                        {
+                            Text = string.Format("{0, 3}. {1}", page.Index, page.AA),
+                            Page = page,
+                            Children = children
+                        });
+                    isCaptionChild = true;
+                }
+                else
+                {
+                    if (isCaptionChild)
+                    {
+                        children.Add(new MLTPageIndex
+                            {
+                                Text = string.Format("{0, 3}. {1}", page.Index, page.Name),
+                                Page = page
+                            });
+                    }
+                    else
+                    {
+                        mltPageIndexList.Add(new MLTPageIndex
+                            {
+                                Text = string.Format("{0, 3}. {1}", page.Index, page.Name),
+                                Page = page
+                            });
+                    }
+                }
+            }
+            return mltPageIndexList;
+        }
+
         public MLTViewerWindowViewModel()
         {
             // コマンド定義
@@ -67,6 +116,9 @@ namespace KMBEditor
                     {
                         // MLTファイルのオープン
                         this._current_preview_mlt.OpenMLTFile(node.Path);
+
+                        // インデックスリストの作成
+                        this.MLTPageIndexList.Value = this.createMLTIndexList();
 
                         // AA一覧表示更新
                         this.MLTPageList.Value = this._current_preview_mlt.Pages;

@@ -76,7 +76,17 @@
                                             <ColumnDefinition Width="171*"/>
                                         </Grid.ColumnDefinitions>
                                         <!-- 項目ジャンプ用ビュー -->
-                                        <TreeView/>
+                                        <TreeView ItemsSource="{Binding Path=MLTPageIndexList.Value}"
+                                                  VirtualizingStackPanel.IsVirtualizing="True"
+                                                  VirtualizingStackPanel.VirtualizationMode="Recycling">
+                                            <TreeView.ItemTemplate>
+                                                <HierarchicalDataTemplate DataType="MLTPageIndex" ItemsSource="{Binding Children}">
+                                                    <StackPanel Orientation="Horizontal" Height="20">
+                                                        <TextBlock Text="{Binding Path=Text}"/>
+                                                    </StackPanel>
+                                                </HierarchicalDataTemplate>
+                                            </TreeView.ItemTemplate>
+                                        </TreeView>
                                         <!-- スプリッター -->
                                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="3"/>
                                         <!-- AA表示用テキストボックス -->

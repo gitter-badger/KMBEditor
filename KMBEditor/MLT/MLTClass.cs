@@ -20,7 +20,7 @@ namespace KMBEditor.MLT
         /// <summary>
         /// AST形式でのページ名(MLTの場合は定義なし)
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; } = "[No Name]";
         /// <summary>
         /// ページの総バイト数
         /// </summary>
@@ -32,7 +32,7 @@ namespace KMBEditor.MLT
         /// <summary>
         /// 見出し属性の有無
         /// </summary>
-        public bool isCaption { get; set; } = false;
+        public bool IsCaption { get; set; } = false;
         /// <summary>
         /// ページのAAテキストデータ
         /// </summary>
@@ -142,10 +142,10 @@ namespace KMBEditor.MLT
                 Pages.Add(new MLTPage
                 {
                     Index = index,
-                    Name = "",
+                    Name = "[No Name]",
                     Bytes = page.GetShift_JISByteCount(),
                     Lines = page.GetLineCount(),
-                    isCaption = page.IsCaption(),
+                    IsCaption = page.IsCaption(),
                     AA = page
                 });
 
