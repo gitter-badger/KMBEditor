@@ -57,26 +57,6 @@ namespace KMBEditor.MLT
         }
 
         /// <summary>
-        /// 未加工のMLTファイルの取得
-        /// </summary>
-        /// <returns></returns>
-        public string GetRawMLT()
-        {
-            // ファイルの存在チェック
-            if (File.Exists(this._file_path) == false)
-            {
-                MessageBox.Show("指定されたファイルが見つかりませんでした");
-                return "";
-            }
-
-            // FIXME: メモリ優先か速度優先か
-            using (var reader = new StreamReader(this._file_path, System.Text.Encoding.Default))
-            {
-                return reader.ReadToEnd();
-            }
-        }
-
-        /// <summary>
         /// 現在のページを取得する
         /// </summary>
         /// <returns></returns>
