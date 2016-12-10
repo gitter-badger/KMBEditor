@@ -32,7 +32,7 @@ AA(アスキーアート) 作成用エディタ(になる予定のもの)です�
 + Windows 8 / 8.1
 + Windows 10
 
-※ Window Vista / XP 以前はサポート外となります
+※ Window Vista / XP 以前はサポート外となります。[OrinrinEditor](http://yaruo.wikia.com/wiki/OrinrinEditor)をご利用ください。
 
 # 開発環境
 ## 開発言語
