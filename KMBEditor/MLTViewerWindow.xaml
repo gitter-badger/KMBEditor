@@ -64,7 +64,7 @@
                     <Grid Background="#FFE5E5E5">
                         <!-- MLT複数表示用タブコントロール -->
                         <TabControl x:Name="tabControl" Margin="0,10,0,0">
-                            <TabItem Header="Preview">
+                            <TabItem Header="{Binding Path=TabName.Value}">
                                 <Grid Background="#FFE5E5E5">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
