@@ -43,7 +43,7 @@ namespace KMBEditor
         public ReactiveCommand OpenResourceDirectoryCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand PreviewTextUpdateCommand { get; private set; } = new ReactiveCommand();
 
-        public string OpenResourceDirectory()
+        private string openResourceDirectory()
         {
             using (var dialog = new WinForms.FolderBrowserDialog())
             {
@@ -110,7 +110,7 @@ namespace KMBEditor
         public MLTViewerWindowViewModel()
         {
             // コマンド定義
-            this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.OpenResourceDirectory());
+            this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.openResourceDirectory());
             this.PreviewTextUpdateCommand.Subscribe(obj =>
                 {
                     MLTFileTreeNode node = (MLTFileTreeNode)obj;
