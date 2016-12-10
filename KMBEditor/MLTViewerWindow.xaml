@@ -22,7 +22,7 @@
             </MenuItem>
         </Menu>
         <!-- メインコンテンツグリッド -->
-        <Grid Grid.Row="1" d:LayoutOverrides="HorizontalAlignment, VerticalAlignment">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="209*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -31,7 +31,7 @@
                 <ColumnDefinition Width="226*"/>
             </Grid.ColumnDefinitions>
             <!-- 左カラム -->
-            <TabControl d:LayoutOverrides="VerticalAlignment, LeftMargin, RightMargin, TopMargin, BottomMargin">
+            <TabControl>
                 <!-- MLTのリソースツリー -->
                 <TabItem Header="エクスプローラ">
                     <Grid Background="#FFE5E5E5">
@@ -57,10 +57,10 @@
                 </TabItem>
             </TabControl>
             <!-- 左スプリッター -->
-            <GridSplitter HorizontalAlignment="Stretch" MinWidth="3" Grid.Column="1" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+            <GridSplitter HorizontalAlignment="Stretch" MinWidth="3" Grid.Column="1"/>
             <!-- 中カラム -->
             <!-- グループ機能用タブコントロール -->
-            <TabControl Grid.Column="2" Grid.ColumnSpan="2" d:LayoutOverrides="HorizontalAlignment, VerticalAlignment">
+            <TabControl Grid.Column="2" Grid.ColumnSpan="2">
                 <TabItem Header="TabItem">
                     <Grid Background="#FFE5E5E5">
                         <!-- MLT複数表示用タブコントロール -->
@@ -74,9 +74,9 @@
                                             <ColumnDefinition Width="171*"/>
                                         </Grid.ColumnDefinitions>
                                         <!-- 項目ジャンプ用ビュー -->
-                                        <TreeView d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+                                        <TreeView/>
                                         <!-- スプリッター -->
-                                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" MinWidth="3"/>
+                                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="3"/>
                                         <!-- AA表示用テキストボックス -->
                                         <!-- UIの仮想化を有効化して、表示しているAAのみレンダリング -->
                                         <ListBox Grid.Column="2"
@@ -107,7 +107,7 @@
                 </TabItem>
             </TabControl>
             <!-- 右スプリッター -->
-            <GridSplitter MinWidth="3" Grid.Column="3" HorizontalAlignment="Stretch" d:LayoutOverrides="TopMargin, BottomMargin"/>
+            <GridSplitter MinWidth="3" Grid.Column="3" HorizontalAlignment="Stretch"/>
             <!-- 右カラム -->
         </Grid>
         <!-- ステータスバー -->
