@@ -66,6 +66,8 @@ namespace KMBEditor
 
         private ObservableCollection<MLTPageIndex> createMLTIndexList()
         {
+            // メモ：縦線が揃わなくて見た目がひどいので、インデックス値は０埋めで揃える
+
             var mltPageIndexList = new ObservableCollection<MLTPageIndex>();
             ObservableCollection<MLTPageIndex> children = null;
             var isCaptionChild = false;
@@ -76,7 +78,7 @@ namespace KMBEditor
                     children = new ObservableCollection<MLTPageIndex>();
                     mltPageIndexList.Add(new MLTPageIndex
                         {
-                            Text = string.Format("{0, 3}. {1}", page.Index, page.AA),
+                            Text = string.Format("{0:D3}. {1}", page.Index, page.AA),
                             Page = page,
                             Children = children
                         });
@@ -88,7 +90,7 @@ namespace KMBEditor
                     {
                         children.Add(new MLTPageIndex
                             {
-                                Text = string.Format("{0, 3}. {1}", page.Index, page.Name),
+                                Text = string.Format("{0:D3}. {1}", page.Index, page.Name),
                                 Page = page
                             });
                     }
@@ -96,7 +98,7 @@ namespace KMBEditor
                     {
                         mltPageIndexList.Add(new MLTPageIndex
                             {
-                                Text = string.Format("{0, 3}. {1}", page.Index, page.Name),
+                                Text = string.Format("{0:D3}. {1}", page.Index, page.Name),
                                 Page = page
                             });
                     }
@@ -140,9 +142,13 @@ namespace KMBEditor
     /// </summary>
     public partial class MLTViewerWindow : Window
     {
+        private MLTViewerWindowViewModel _vm = new MLTViewerWindowViewModel();
+
         public MLTViewerWindow()
         {
             InitializeComponent();
+
+            this.DataContext = _vm;
         }
 
         /// <summary>

@@ -6,9 +6,6 @@
         xmlns:local="clr-namespace:KMBEditor"
         mc:Ignorable="d"
         Title="MLTViewerWindow" Height="599" Width="1120" Closing="Window_Closing">
-    <Window.DataContext>
-        <local:MLTViewerWindowViewModel/>
-    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -82,7 +79,8 @@
                                             <TreeView.ItemTemplate>
                                                 <HierarchicalDataTemplate DataType="MLTPageIndex" ItemsSource="{Binding Children}">
                                                     <StackPanel Orientation="Horizontal" Height="20">
-                                                        <TextBlock Text="{Binding Path=Text}"/>
+                                                        <TextBlock Text="{Binding Path=Text}"
+                                                                   FontFamily="Yu Gothic"/>
                                                     </StackPanel>
                                                 </HierarchicalDataTemplate>
                                             </TreeView.ItemTemplate>
