@@ -203,28 +203,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Folder_48.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\Folder_48.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\File_48.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\File_48.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Add_Folder_48.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\Add_Folder_48.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Add Folder-48.png" />
+    <Resource Include="Resources\Add Folder-48.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\File-48.png" />
+    <Resource Include="Resources\File-48.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Folder-48.png" />
+    <Resource Include="Resources\Folder-48.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

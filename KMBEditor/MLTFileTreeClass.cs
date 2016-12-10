@@ -25,8 +25,8 @@ namespace KMBEditor
         /// TODO: astのサポート
         /// </summary>
         private string _file_search_pattarn { get; set; } = "*.mlt";
-        private BitmapImage _file_icon { get; set; } = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/File_48.png", UriKind.Absolute));
-        private BitmapImage _folder_icon { get; set; } = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/Folder_48.png", UriKind.Absolute)); 
+        private BitmapImage _file_icon { get; set; } = new BitmapImage(new Uri(@"pack://application:,,,/Resources/File_48.png", UriKind.Absolute));
+        private BitmapImage _folder_icon { get; set; } = new BitmapImage(new Uri(@"pack://application:,,,/Resources/Folder_48.png", UriKind.Absolute)); 
 
         /// <summary>
         /// リソースディレクトリ配下のMLTファイルを再帰的に探索しツリー化を行う
