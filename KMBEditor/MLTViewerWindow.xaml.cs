@@ -1,6 +1,7 @@
 ﻿using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
@@ -29,12 +30,10 @@ namespace KMBEditor
         public ReactiveProperty<MLT.MLTPage> PreviewText { get; private set; } = new ReactiveProperty<MLT.MLTPage>();
         public ReactiveProperty<string> ResourceDirectoryPath { get; private set; } = new ReactiveProperty<string>("");
         public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; } = new ReactiveProperty<List<MLTFileTreeNode>>();
+        public ReactiveProperty<ObservableCollection<MLT.MLTPage>> MLTPageList { get; private set; } = new ReactiveProperty<ObservableCollection<MLT.MLTPage>>();
 
         public ReactiveCommand OpenResourceDirectoryCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand PreviewTextUpdateCommand { get; private set; } = new ReactiveCommand();
-        public ReactiveCommand PrevPageCommand { get; private set; } = new ReactiveCommand();
-        public ReactiveCommand NextPageCommand { get; private set; } = new ReactiveCommand();
-        public ReactiveCommand ShowAllPageCommand { get; private set; } = new ReactiveCommand();
 
         public string OpenResourceDirectory()
         {
@@ -66,11 +65,13 @@ namespace KMBEditor
                     MLTFileTreeNode node = (MLTFileTreeNode)obj;
                     if (node.IsDirectory == false)
                     {
-                        this.PreviewText.Value = this._current_preview_mlt.OpenMLTFile(node.Path);
+                        // MLTファイルのオープン
+                        this._current_preview_mlt.OpenMLTFile(node.Path);
+
+                        // AA一覧表示更新
+                        this.MLTPageList.Value = this._current_preview_mlt.Pages;
                     }
                 });
-            this.PrevPageCommand.Subscribe(_ => this.PreviewText.Value = this._current_preview_mlt.GetPrevPage());
-            this.NextPageCommand.Subscribe(_ => this.PreviewText.Value = this._current_preview_mlt.GetNextPage());
 
             // FileTreeの初期化
             this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(@"C:\Users\user\Documents\AA\HukuTemp_v21.0_20161120\HukuTemp");
