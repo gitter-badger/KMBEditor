@@ -36,7 +36,9 @@
                 <TabItem Header="エクスプローラ">
                     <Grid Background="#FFE5E5E5">
                         <!-- エクスプローラ用ツリービュー -->
-                        <TreeView ItemsSource="{Binding MLTFileTreeNodes.Value}">
+                        <TreeView ItemsSource="{Binding MLTFileTreeNodes.Value}"
+                                  VirtualizingStackPanel.IsVirtualizing="True"
+                                  VirtualizingStackPanel.VirtualizationMode="Recycling">
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate DataType="MLTFileTreeNode" ItemsSource="{Binding Children}">
                                     <StackPanel Orientation="Horizontal" Height="20">
