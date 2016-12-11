@@ -1,4 +1,5 @@
-﻿using KMBEditor.Model;
+﻿using KMBEditor.MLTViewer.View;
+using KMBEditor.Model;
 using KMBEditor.Model.MLT;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -6,7 +7,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
-using KMBEditor.MLTViewer.View;
 
 namespace KMBEditor.MainWindow.ViewModel
 {
