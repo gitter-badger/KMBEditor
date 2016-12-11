@@ -67,11 +67,11 @@
             <!-- 中カラム -->
             <!-- グループ機能用タブコントロール -->
             <TabControl Grid.Column="2" Grid.ColumnSpan="2">
-                <TabItem Header="TabItem">
+                <TabItem Header="Group 1">
                     <Grid Background="#FFE5E5E5">
                         <!-- MLT複数表示用タブコントロール -->
                         <TabControl x:Name="tabControl" Margin="0,10,0,0">
-                            <TabItem Header="{Binding Path=TabName.Value}">
+                            <TabItem Header="{Binding Path=PreviewTabName.Value}">
                                 <Grid Background="#FFE5E5E5">
                                     <Grid>
                                         <Grid.ColumnDefinitions>

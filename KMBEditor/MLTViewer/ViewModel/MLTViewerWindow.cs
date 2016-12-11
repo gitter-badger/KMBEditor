@@ -50,7 +50,7 @@ namespace KMBEditor.MLTViewer.ViewModel
         private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
         private MLTFile _current_preview_mlt { get; set; } = new MLTFile();
 
-        public ReactiveProperty<string> TabName { get; private set; } = new ReactiveProperty<string>("");
+        public ReactiveProperty<string> PreviewTabName { get; private set; } = new ReactiveProperty<string>("[Preview]");
         public ReactiveProperty<MLTPage> PreviewText { get; private set; } = new ReactiveProperty<MLTPage>();
         public ReactiveProperty<string> ResourceDirectoryPath { get; private set; } = new ReactiveProperty<string>("");
         public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; } = new ReactiveProperty<List<MLTFileTreeNode>>();
@@ -133,7 +133,7 @@ namespace KMBEditor.MLTViewer.ViewModel
                 this._current_preview_mlt.OpenMLTFile(node.Path);
 
                 // タブ名の更新
-                this.TabName.Value = node.Name;
+                this.PreviewTabName.Value = string.Format("[Preview] {0}", node.Name);
 
                 // インデックスリストの作成
                 this.MLTPageIndexList.Value = this.createMLTIndexList();
