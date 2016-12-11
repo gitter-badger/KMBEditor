@@ -62,6 +62,10 @@
                         </ItemsControl>
                     </Grid>
                 </ScrollViewer>
+                <!-- 横ガイド線 800dot -->
+                <Rectangle Grid.Column="1" Fill="Red" Height="1" VerticalAlignment="Top" Margin="{Binding Path=HorizontalLineMargin.Value}"/>
+                <!-- 縦ガイド線 30行   -->
+                <Rectangle Grid.Column="1" VerticalAlignment="Stretch" Fill="Red" Width="1" HorizontalAlignment="Left" Margin="{Binding Path=VirticalLineMargin.Value}"/>
             </Grid>
         </ScrollViewer>
     </Grid>

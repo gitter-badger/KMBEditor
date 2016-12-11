@@ -114,6 +114,9 @@ namespace KMBEditor.AAEditorUserControl.ViewModel
         public ReactiveProperty<string> BindingOriginalText { get; private set; }
         public ReactiveProperty<string> EditAreaText { get; private set; } = new ReactiveProperty<string>();
 
+        public ReactiveProperty<Thickness> VirticalLineMargin { get; set; } = new ReactiveProperty<Thickness>();
+        public ReactiveProperty<Thickness> HorizontalLineMargin { get; set; } = new ReactiveProperty<Thickness>();
+
         private bool isUpdatedOringinalText = false;
 
         /// <summary>
@@ -254,6 +257,12 @@ namespace KMBEditor.AAEditorUserControl.ViewModel
         {
             // AAEditorのDipendencyPropertyの取得
             this.BindingOriginalText = text_rp;
+
+            // ガイド線の設定
+            double top  = 1 + (16 * 30); // ofset + 1行当たりのpixel数 * 行数
+            double left = 3 + (1 * 800); // ofset + 1dot当たりのpixel数 * 800dot
+            this.HorizontalLineMargin.Value = new Thickness(0,top,0,0);
+            this.VirticalLineMargin.Value = new Thickness(left,0,0,0);
 
             // バインディングされているテキストが入れ替わった場合の処理
             // 入れ替わりのタイミングで編集領域のテキストを全書き換えする
