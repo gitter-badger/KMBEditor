@@ -1,4 +1,4 @@
-﻿<Window x:Class="KMBEditor.MLTViewerWindow"
+﻿<Window x:Class="KMBEditor.MLTViewer.View.MLTViewerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,13 +7,14 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
         xmlns:livet="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:Interactivity="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET45"
-        xmlns:local="clr-namespace:KMBEditor"
+        xmlns:v="clr-namespace:KMBEditor.MLTViewer.View"
+        xmlns:vm="clr-namespace:KMBEditor.MLTViewer.ViewModel"
         mc:Ignorable="d"
         Title="MLTViewerWindow" Height="599" Width="1120"
         Closing="Window_Closing">
     <Window.Resources>
         <!-- viewModel -->
-        <local:MLTViewerWindowViewModel x:Key="ViewModel"/>
+        <vm:MLTViewerWindowViewModel x:Key="ViewModel"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -49,7 +50,7 @@
                                 <!-- ツリービューのアイテムを左クリックした場合のイベント -->
                                 <i:EventTrigger EventName="SelectedItemChanged">
                                     <Interactivity:EventToReactiveCommand Command="{Binding Path=TreeItemSelectCommand, Mode=OneWay}">
-                                        <local:MLTFileTreeViewItemConverter/>
+                                        <vm:MLTFileTreeViewItemConverter/>
                                     </Interactivity:EventToReactiveCommand>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>

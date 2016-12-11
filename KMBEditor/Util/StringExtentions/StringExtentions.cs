@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-namespace KMBEditor.StringExtentions
+namespace KMBEditor.Util.StringExtentions
 {
     /// <summary>
     /// stringの拡張メソッドを定義

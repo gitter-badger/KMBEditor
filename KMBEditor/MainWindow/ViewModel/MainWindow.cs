@@ -1,25 +1,14 @@
-﻿using Reactive.Bindings;
+﻿using KMBEditor.Model;
+using KMBEditor.Model.MLT;
+using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using KMBEditor.Model;
+using KMBEditor.MLTViewer.View;
 
-namespace KMBEditor
+namespace KMBEditor.MainWindow.ViewModel
 {
     /// <summary>
     /// MainWindow の ViewModel
@@ -29,8 +18,8 @@ namespace KMBEditor
         private GlobalSettings _global_settings = GlobalSettings.Instance; 
 
         // プロパティ
-        public ReadOnlyObservableCollection<MLT.MLTPage> PageList { get; private set; }
-        public ReactiveProperty<MLT.MLTPage> Page { get; private set; } = new ReactiveProperty<MLT.MLTPage>();
+        public ReadOnlyObservableCollection<MLTPage> PageList { get; private set; }
+        public ReactiveProperty<MLTPage> Page { get; private set; } = new ReactiveProperty<MLTPage>();
         public ReactiveProperty<string> OnlineDocumentURL { get; private set; }
         public ReactiveProperty<string> GitLabIssueURL { get; private set; }
         public ReactiveProperty<string> CurrentBoardURL { get; private set; }
@@ -50,7 +39,7 @@ namespace KMBEditor
         public ReactiveCommand BrowserOpenCommand_DevelopperTwtterURL { get; private set; }
 
         // データ
-        private MLT.MLTFile _current_mlt_file = new MLT.MLTFile();
+        private MLTFile _current_mlt_file = new MLTFile();
         private MLTViewerWindow _mlt_viewer;
 
         /// <summary>
@@ -110,31 +99,4 @@ namespace KMBEditor
         }
     }
 
-    /// <summary>
-    /// MainWindow.xaml の相互作用ロジック
-    /// </summary>
-    public partial class MainWindow : Window
-    {
-        private MainWindowViewModel _vm;
-
-        public MainWindow()
-        {
-            InitializeComponent();
-
-            _vm = new MainWindowViewModel();
-
-            this.DataContext = _vm;
-        }
-
-        private void dataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "AA":
-                    // AAは表示しない
-                    e.Cancel = true;
-                    break;
-            }
-        }
-    }
 }

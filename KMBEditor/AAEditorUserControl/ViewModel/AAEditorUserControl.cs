@@ -1,26 +1,14 @@
-﻿using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
+﻿using KMBEditor.Util.StringExtentions;
+using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Diagnostics;
-using KMBEditor.StringExtentions;
-using System.Collections.Specialized;
 
-namespace KMBEditor.AAEditorUserControl
+namespace KMBEditor.AAEditorUserControl.ViewModel
 {
     public class BindableTextBlock : TextBlock
     {
@@ -280,30 +268,4 @@ namespace KMBEditor.AAEditorUserControl
         }
     }
 
-    /// <summary>
-    /// AAEditor.xaml の相互作用ロジック
-    /// </summary>
-    public partial class AAEditor : UserControl
-    {
-        private AAEditorViewModel _vm;
-
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(AAEditor));
-
-        public string Text
-        {
-            get { return (string)this.GetValue(TextProperty); }
-            set { this.SetValue(TextProperty, value); }
-        }
-
-        public AAEditor()
-        {
-            InitializeComponent();
-
-            this._vm = new AAEditorViewModel(
-                this.ToReactiveProperty<string>(TextProperty));
-
-            this.AAEditorUserControlGrid.DataContext = _vm;
-        }
-    }
 }

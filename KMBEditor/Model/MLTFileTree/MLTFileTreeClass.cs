@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace KMBEditor
+namespace KMBEditor.Model.MLTFileTree
 {
     public class MLTFileTreeNode
     {

@@ -138,37 +138,40 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AAEditorUserControl\ViewModel\AAEditorUserControl.cs" />
+    <Compile Include="MainWindow\ViewModel\MainWindow.cs" />
+    <Compile Include="MLTViewer\ViewModel\MLTViewerWindow.cs" />
     <Compile Include="Model\GlobalSettings.cs" />
-    <Compile Include="StringExtentions\StringExtentions.cs" />
+    <Compile Include="Util\StringExtentions\StringExtentions.cs" />
     <Compile Include="Util\BindableBase\BindableBase.cs" />
-    <Page Include="AAEditorUserControl\AAEditor.xaml">
+    <Page Include="AAEditorUserControl\View\AAEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="MainWindow\View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AAEditorUserControl\AAEditor.xaml.cs">
+    <Compile Include="AAEditorUserControl\View\AAEditor.xaml.cs">
       <DependentUpon>AAEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MLT\MLTClass.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Model\MLT\MLTClass.cs" />
+    <Compile Include="MainWindow\View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MLTViewerWindow.xaml">
+    <Page Include="MLTViewer\View\MLTViewerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MLTFileTreeClass.cs" />
-    <Compile Include="MLTViewerWindow.xaml.cs">
+    <Compile Include="Model\MLTFileTree\MLTFileTreeClass.cs" />
+    <Compile Include="MLTViewer\View\MLTViewerWindow.xaml.cs">
       <DependentUpon>MLTViewerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -232,6 +235,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

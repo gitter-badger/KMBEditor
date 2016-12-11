@@ -1,24 +1,16 @@
-﻿using Reactive.Bindings;
+﻿using KMBEditor.Model.MLT;
+using KMBEditor.Model.MLTFileTree;
+using Reactive.Bindings;
+using Reactive.Bindings.Interactivity;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using WinForms = System.Windows.Forms;
-using Reactive.Bindings.Interactivity;
 
-namespace KMBEditor
+namespace KMBEditor.MLTViewer.ViewModel
 {
     public class MLTFileTreeViewItemConverter : ReactiveConverter<RoutedPropertyChangedEventArgs<object>, MLTFileTreeNode>
     {
@@ -36,18 +28,18 @@ namespace KMBEditor
         public class MLTPageIndex
         {
             public string Text { get; set; }
-            public MLT.MLTPage Page { get; set; }
+            public MLTPage Page { get; set; }
             public ObservableCollection<MLTPageIndex> Children { get; set; }
         }
 
         private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
-        private MLT.MLTFile _current_preview_mlt { get; set; } = new MLT.MLTFile();
+        private MLTFile _current_preview_mlt { get; set; } = new MLTFile();
 
         public ReactiveProperty<string> TabName { get; private set; } = new ReactiveProperty<string>("");
-        public ReactiveProperty<MLT.MLTPage> PreviewText { get; private set; } = new ReactiveProperty<MLT.MLTPage>();
+        public ReactiveProperty<MLTPage> PreviewText { get; private set; } = new ReactiveProperty<MLTPage>();
         public ReactiveProperty<string> ResourceDirectoryPath { get; private set; } = new ReactiveProperty<string>("");
         public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; } = new ReactiveProperty<List<MLTFileTreeNode>>();
-        public ReactiveProperty<ObservableCollection<MLT.MLTPage>> MLTPageList { get; private set; } = new ReactiveProperty<ObservableCollection<MLT.MLTPage>>();
+        public ReactiveProperty<ObservableCollection<MLTPage>> MLTPageList { get; private set; } = new ReactiveProperty<ObservableCollection<MLTPage>>();
         public ReactiveProperty<ObservableCollection<MLTPageIndex>> MLTPageIndexList { get; private set; } = new ReactiveProperty<ObservableCollection<MLTPageIndex>>();
 
         public ReactiveCommand OpenResourceDirectoryCommand { get; private set; } = new ReactiveCommand();
@@ -146,37 +138,4 @@ namespace KMBEditor
         }
     }
 
-    /// <summary>
-    /// MLTViewerWindow.xaml の相互作用ロジック
-    /// 
-    /// 機能要件:
-    /// ・MLTのZipファイルの一覧表示機能を提供
-    /// ・編集機能は持たない、閲覧機能のみを提供
-    /// 
-    /// </summary>
-    public partial class MLTViewerWindow : Window
-    {
-        private MLTViewerWindowViewModel _vm = new MLTViewerWindowViewModel();
-
-        public MLTViewerWindow()
-        {
-            InitializeComponent();
-
-            this.DataContext = _vm;
-        }
-
-        /// <summary>
-        /// <para>クローズボタンが押された時のイベント</para>
-        /// <para>ファイルツリーの再インデックスに時間がかかるため、Closeはせずに隠すだけにする</para>
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            // Windowは終了させない
-            e.Cancel = true;
-            // Windowを隠す。再表示はMainWindow側で行う
-            this.Hide();
-        }
-    }
 }

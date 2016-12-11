@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using WinForms = System.Windows.Forms;
-using KMBEditor.StringExtentions;
+using KMBEditor.Util.StringExtentions;
 
-namespace KMBEditor.MLT
+namespace KMBEditor.Model.MLT
 {
     /// <summary>
     /// MLTファイルに属するページ単位での状態管理クラス
