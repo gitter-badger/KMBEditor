@@ -26,7 +26,13 @@
             </MenuItem>
             <!-- メニューバー：表示 -->
             <MenuItem Header="表示(_N)">
-                <MenuItem Header="MLTViewerを表示(_A)" Command="{Binding OpenMLTViewerCommand}"/>
+                <MenuItem Header="空白文字の表示(_W)"/>
+                <MenuItem Header="右ガイド線の表示(_M)"/>
+                <MenuItem Header="左ガイド線の表示(_S)"/>
+            </MenuItem>
+            <!-- メニューバー：ウィンドウ -->
+            <MenuItem Header="ウィンドウ(_W)">
+                <MenuItem Header="MLTViewerを表示(_M)" Command="{Binding OpenMLTViewerCommand}"/>
             </MenuItem>
             <!-- メニューバー：ヘルプ -->
             <MenuItem Header="ヘルプ(_H)">
