@@ -27,11 +27,14 @@ AA(アスキーアート) 作成用エディタ(になる予定のもの)です�
 
 # サポート環境
 
-+ Windows 7 (.Net Framework 4.5のランタイムインストール必須)
++ Windows 7 ( .Net Framework 4.5 以上のランタイム必須 ※1 )
 + Windows 8 / 8.1
 + Windows 10
 
-※ Window Vista / XP 以前はサポート外となります。[OrinrinEditor](http://yaruo.wikia.com/wiki/OrinrinEditor)をご利用ください。
+※ Window Vista / XP 以前はサポート外となります。[OrinrinEditor](http://yaruo.wikia.com/wiki/OrinrinEditor)をご利用ください。  
+※1 :  .Net Framework 4.5 以上のランタイムについて  
+必要に応じて[Microsoftの公式ページ](https://msdn.microsoft.com/ja-jp/library/5a4x27ek(v=vs.110).aspx)から、.NET Framework 4.5 以上のランタイムをインストールしてください。  
+Windows 8 以降は標準で .NET Framework 4.5 以上がインストールされているため、基本的に対応は必要ありません。  
 
 # 免責事項
 + 当ソフトウェアおよび当ソフトウェアを改変/再配布されたものを利用したことによるいかなる損害も作者は一切の責任を負いません。自己の責任の上でご利用ください。
