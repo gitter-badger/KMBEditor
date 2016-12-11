@@ -12,10 +12,6 @@
         mc:Ignorable="d"
         Title="MLTViewerWindow" Height="599" Width="1120"
         Closing="Window_Closing">
-    <Window.Resources>
-        <!-- viewModel -->
-        <vm:MLTViewerWindowViewModel x:Key="ViewModel"/>
-    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -87,6 +83,14 @@
                                         <TreeView ItemsSource="{Binding Path=MLTPageIndexList.Value}"
                                                   VirtualizingStackPanel.IsVirtualizing="True"
                                                   VirtualizingStackPanel.VirtualizationMode="Recycling">
+                                            <i:Interaction.Triggers>
+                                                <!-- ツリービューのアイテムを左クリックした場合のイベント -->
+                                                <i:EventTrigger EventName="SelectedItemChanged">
+                                                    <Interactivity:EventToReactiveCommand Command="{Binding Path=MLTPageTreeViewItemSelectCommand, Mode=OneWay}">
+                                                        <vm:MLTPageTreeViewItemConverter/>
+                                                    </Interactivity:EventToReactiveCommand>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
                                             <TreeView.ItemTemplate>
                                                 <HierarchicalDataTemplate DataType="MLTPageIndex" ItemsSource="{Binding Children}">
                                                     <StackPanel Orientation="Horizontal" Height="20">
@@ -100,7 +104,8 @@
                                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="3"/>
                                         <!-- AA表示用テキストボックス -->
                                         <!-- UIの仮想化を有効化して、表示しているAAのみレンダリング -->
-                                        <ListBox Grid.Column="2"
+                                        <ListBox x:Name="AAListBox" Grid.Column="2"
+                                                 SelectedItem="{Binding MLTPageSelectedItem.Value}"
                                                  ItemsSource="{Binding Path=MLTPageList.Value}"
                                                  VirtualizingStackPanel.IsVirtualizing="True"
                                                  VirtualizingStackPanel.VirtualizationMode="Recycling"

@@ -13,11 +13,13 @@ namespace KMBEditor.MLTViewer.View
     /// </summary>
     public partial class MLTViewerWindow : Window
     {
-        private MLTViewerWindowViewModel _vm = new MLTViewerWindowViewModel();
+        private MLTViewerWindowViewModel _vm;
 
         public MLTViewerWindow()
         {
             InitializeComponent();
+
+            _vm = new MLTViewerWindowViewModel(this);
 
             this.DataContext = _vm;
         }
