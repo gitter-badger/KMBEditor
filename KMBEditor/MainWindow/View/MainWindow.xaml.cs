@@ -24,7 +24,8 @@ namespace KMBEditor.MainWindow.View
         {
             switch (e.PropertyName)
             {
-                case "AA":
+                case "RawText":
+                case "DecodeText":
                     // AAは表示しない
                     e.Cancel = true;
                     break;

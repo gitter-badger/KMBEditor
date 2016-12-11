@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace KMBEditor.Util.StringExtentions
 {
@@ -51,6 +50,17 @@ namespace KMBEditor.Util.StringExtentions
         public static bool IsCaption(this string str)
         {
             return _caption_regx.IsMatch(str);
+        }
+
+        /// <summary>
+        /// ユニコードのエスケープ文字のデコード
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string UnicodeEscapeDecode(this string str)
+        {
+            // &#123 のようなエスケープされている文字をUnicodeに変換する
+            return HttpUtility.HtmlDecode(str);
         }
 
         /// <summary>

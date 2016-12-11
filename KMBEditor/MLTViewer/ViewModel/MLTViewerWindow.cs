@@ -96,7 +96,7 @@ namespace KMBEditor.MLTViewer.ViewModel
                     children = new ObservableCollection<MLTPageIndex>();
                     mltPageIndexList.Add(new MLTPageIndex
                         {
-                            Text = string.Format("{0:D3}. {1}", page.Index, page.AA),
+                            Text = string.Format("{0:D3}. {1}", page.Index, page.RawText),
                             Page = page,
                             Children = children
                         });

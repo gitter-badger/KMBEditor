@@ -36,7 +36,11 @@ namespace KMBEditor.Model.MLT
         /// <summary>
         /// ページのAAテキストデータ
         /// </summary>
-        public string AA { get; set; } = "";
+        public string RawText { get; set; } = "";
+        /// <summary>
+        /// ページのAAテキストデータ
+        /// </summary>
+        public string DecodeText { get; set; } = "";
     }
 
     /// <summary>
@@ -146,7 +150,8 @@ namespace KMBEditor.Model.MLT
                     Bytes = page.GetShift_JISByteCount(),
                     Lines = page.GetLineCount(),
                     IsCaption = page.IsCaption(),
-                    AA = page
+                    RawText = page,
+                    DecodeText = page.UnicodeEscapeDecode(),
                 });
 
                 index++;
@@ -165,7 +170,7 @@ namespace KMBEditor.Model.MLT
         /// <returns></returns>
         private IEnumerable<string> ReadMLT(string filepath)
         {
-            using (var reader = new StreamReader(filepath, System.Text.Encoding.Default))
+            using (var reader = new StreamReader(filepath, System.Text.Encoding.GetEncoding("shift_jis")))
             {
                 var page = "";
 

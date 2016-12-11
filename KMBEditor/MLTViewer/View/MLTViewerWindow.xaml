@@ -113,7 +113,7 @@
                                                  ScrollViewer.VerticalScrollBarVisibility="Auto">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBox Text="{Binding Path=AA}"
+                                                    <TextBox Text="{Binding Path=DecodeText}"
                                                          FontFamily="MS PGothic"
                                                          FontSize="12pt"
                                                          TextOptions.TextFormattingMode="Display"
