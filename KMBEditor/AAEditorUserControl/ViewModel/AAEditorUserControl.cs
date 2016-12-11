@@ -38,8 +38,8 @@ namespace KMBEditor.AAEditorUserControl.ViewModel
         public ReactiveProperty<string> Line { get; private set; } = new ReactiveProperty<string>("");
         public ObservableCollection<Inline> InlineList { get; private set; } = new ObservableCollection<Inline>();
 
-        private bool isVisibleZenkakuSpace = true;
-        private bool isVisibleHankakuSpace = true;
+        private bool isVisibleZenkakuSpace = false;
+        private bool isVisibleHankakuSpace = false;
 
         private void updateSyntaxHighlight(string line)
         {
@@ -53,12 +53,22 @@ namespace KMBEditor.AAEditorUserControl.ViewModel
                 switch (c)
                 {
                     case ' ':  // 半角スペース
-                        if (this.isVisibleHankakuSpace) {
+                        if (this.isVisibleHankakuSpace)
+                        {
                             var run = new Run
                             {
                                 Text = c.ToString(),
                                 Foreground = new SolidColorBrush(Colors.LightBlue),
                                 TextDecorations = TextDecorations.Underline
+                            };
+                            inlines.Add(run);
+                        }
+                        else
+                        {
+                            var run = new Run
+                            {
+                                Text = c.ToString(),
+                                Foreground = new SolidColorBrush(Colors.Black),
                             };
                             inlines.Add(run);
                         }
@@ -71,6 +81,15 @@ namespace KMBEditor.AAEditorUserControl.ViewModel
                                 Text = c.ToString(),
                                 Foreground = new SolidColorBrush(Colors.LightSlateGray),
                                 TextDecorations = TextDecorations.Underline
+                            };
+                            inlines.Add(run);
+                        }
+                        else
+                        {
+                            var run = new Run
+                            {
+                                Text = c.ToString(),
+                                Foreground = new SolidColorBrush(Colors.Black),
                             };
                             inlines.Add(run);
                         }
