@@ -140,6 +140,9 @@ namespace KMBEditor.MLTViewer.ViewModel
 
                 // AA一覧表示更新
                 this.MLTPageList.Value = this._current_preview_mlt.Pages;
+
+                // AA一覧表示を一番上までスクロール
+                this.View.AAListBox.ScrollIntoView(this._current_preview_mlt.Pages.First());
             }
         }
 
