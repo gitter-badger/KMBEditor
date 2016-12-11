@@ -134,6 +134,17 @@
             <!-- 右スプリッター -->
             <GridSplitter MinWidth="3" Grid.Column="3" HorizontalAlignment="Stretch"/>
             <!-- 右カラム -->
+            <TabControl Grid.Column="4">
+                <TabItem Header="サムネイル表示">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="編集中ページ">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="パレット">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+            </TabControl>
         </Grid>
         <!-- ステータスバー -->
         <StatusBar Grid.Row="2"/>
