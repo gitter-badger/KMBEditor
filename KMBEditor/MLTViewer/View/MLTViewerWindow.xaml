@@ -105,7 +105,6 @@
                                         <!-- AA表示用テキストボックス -->
                                         <!-- UIの仮想化を有効化して、表示しているAAのみレンダリング -->
                                         <ListBox x:Name="AAListBox" Grid.Column="2"
-                                                 SelectedItem="{Binding MLTPageSelectedItem.Value}"
                                                  ItemsSource="{Binding Path=MLTPageList.Value}"
                                                  VirtualizingStackPanel.IsVirtualizing="True"
                                                  VirtualizingStackPanel.VirtualizationMode="Recycling"
