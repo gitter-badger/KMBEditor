@@ -139,13 +139,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AAEditorUserControl\ViewModel\AAEditorUserControl.cs" />
+    <Compile Include="MyUserControl\AAEditor\ViewModel\AAEditor.cs" />
     <Compile Include="MainWindow\ViewModel\MainWindow.cs" />
     <Compile Include="MLTViewer\ViewModel\MLTViewerWindow.cs" />
     <Compile Include="Model\GlobalSettings.cs" />
     <Compile Include="Util\StringExtentions\StringExtentions.cs" />
     <Compile Include="Util\BindableBase\BindableBase.cs" />
-    <Page Include="AAEditorUserControl\View\AAEditor.xaml">
+    <Page Include="MyUserControl\AAEditor\View\AAEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -153,7 +153,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AAEditorUserControl\View\AAEditor.xaml.cs">
+    <Compile Include="MyUserControl\AAEditor\View\AAEditor.xaml.cs">
       <DependentUpon>AAEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">

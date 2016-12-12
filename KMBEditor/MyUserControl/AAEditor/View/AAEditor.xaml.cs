@@ -1,10 +1,10 @@
-﻿using KMBEditor.AAEditorUserControl.ViewModel;
+﻿using KMBEditor.MyUserControl.AAEditor.ViewModel;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace KMBEditor.AAEditorUserControl.View
+namespace KMBEditor.MyUserControl.AAEditor.View
 {
     /// <summary>
     /// AAEditor.xaml の相互作用ロジック
