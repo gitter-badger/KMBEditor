@@ -278,8 +278,8 @@ namespace KMBEditor.AAEditorUserControl.ViewModel
             this.BindingOriginalText = text_rp;
 
             // ガイド線の設定
-            double top  = 1 + (16 * 30); // ofset + 1行当たりのpixel数 * 行数
-            double left = 3 + (1 * 800); // ofset + 1dot当たりのpixel数 * 800dot
+            double top  = 1 + (16 * 30); // offset + 1行当たりのpixel数 * 行数
+            double left = 3 + (1 * 800); // offset + 1dot当たりのpixel数 * 800dot
             this.HorizontalLineMargin.Value = new Thickness(0,top,0,0);
             this.VirticalLineMargin.Value = new Thickness(left,0,0,0);
 
