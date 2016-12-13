@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:v="clr-namespace:KMBEditor.MyUserControl.AAEditor.View"
              xmlns:vm="clr-namespace:KMBEditor.MyUserControl.AAEditor.ViewModel"
+             xmlns:r="clr-namespace:KMBEditor.MyUserControl.Ruler.View"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Width="Auto" Height="Auto" MinWidth="420" MinHeight="300">
     <Grid x:Name="AAEditorUserControlGrid">
@@ -23,7 +24,7 @@
                           HorizontalContentAlignment="Right"
                           MinWidth="20"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                          ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0,15,0,0">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="{x:Type ListViewItem}">
                             <Setter Property="Padding" Value="0"/>
@@ -34,6 +35,12 @@
                 <!-- メインエディタ -->
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
                     <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="286*"/>
+                        </Grid.RowDefinitions>
+                        <!-- ルーラー -->
+                        <r:Ruler/>
                         <!-- 以下は重ねて表示される、テキスト位置は一致している必要がある -->
                         <!-- 縦線のずれ回避のため、必ず TextOptions.TextFormattingMode="Display" を指定すること -->
                         <!-- 編集領域 -->
@@ -46,10 +53,10 @@
                                  VerticalScrollBarVisibility="Disabled"
                                  HorizontalScrollBarVisibility="Disabled"
                                  TextOptions.TextFormattingMode="Display"
-                                 Foreground="{x:Null}"/>
+                                 Foreground="{x:Null}" Grid.Row="1"/>
                         <!-- 表示領域 -->
                         <!-- 表示領域は文字位置の調整のため、Marginを "3,1,0,0" とる必要あり -->
-                        <ItemsControl Grid.Column="1" ItemsSource="{Binding Path=VisualLineList}" Margin="3,1,0,0">
+                        <ItemsControl ItemsSource="{Binding Path=VisualLineList}" Margin="3,1,0,0" Grid.Row="1">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <vm:BindableTextBlock InlineList="{Binding Path=InlineList, UpdateSourceTrigger=PropertyChanged}"

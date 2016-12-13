@@ -143,6 +143,10 @@
     <Compile Include="MainWindow\ViewModel\MainWindow.cs" />
     <Compile Include="MLTViewer\ViewModel\MLTViewerWindow.cs" />
     <Compile Include="Model\GlobalSettings.cs" />
+    <Compile Include="MyUserControl\Ruler\ViewModel\Ruler.cs" />
+    <Compile Include="MyUserControl\Ruler\View\Ruler.xaml.cs">
+      <DependentUpon>Ruler.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Util\StringExtentions\StringExtentions.cs" />
     <Compile Include="Util\BindableBase\BindableBase.cs" />
     <Page Include="MyUserControl\AAEditor\View\AAEditor.xaml">
@@ -166,6 +170,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MLTViewer\View\MLTViewerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyUserControl\Ruler\View\Ruler.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

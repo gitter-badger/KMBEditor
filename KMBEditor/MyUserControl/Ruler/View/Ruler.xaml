@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="KMBEditor.MyUserControl.Ruler.View.Ruler"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KMBEditor.MyUserControl.Ruler.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="15" d:DesignWidth="500">
+    <!-- left: 枠線1 + Margin 3 -->
+    <Grid x:Name="RulerUserControl" Background="White" Margin="4,0,0,0">
+        <!-- 下横線 -->
+        <Rectangle Height="1" Fill="Black" VerticalAlignment="Bottom"/>
+        <!-- 左端縦線 left: 枠線1 + Margin 3 -->
+        <Rectangle Height="12" Width="1" Fill="Black" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        <!-- ここからは横幅に合わせて繰り返し -->
+        <!-- 見えていないところの描画をしないように仮想化を有効にすること -->
+        <ItemsControl ItemsSource="{Binding Path=RulerList}"
+                      VirtualizingPanel.IsVirtualizing="True"
+                      VirtualizingPanel.VirtualizationMode="Recycling">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Horizontal" CanHorizontallyScroll="True"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <!-- ドット数値(100単位ごと) -->
+                        <TextBlock Text="{Binding Path=Number}" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="10" Margin="2,0,0,4"/>
+                        <StackPanel Orientation="Horizontal">
+                            <!-- 10dotごとの縦線x4 -->
+                            <Rectangle Height="4" Width="1" Fill="Black" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="9,0,0,0"/>
+                            <Rectangle Height="4" Width="1" Fill="Black" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="9,0,0,0"/>
+                            <Rectangle Height="4" Width="1" Fill="Black" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="9,0,0,0"/>
+                            <Rectangle Height="4" Width="1" Fill="Black" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="9,0,0,0"/>
+                            <!-- 50dotごとの縦線 -->
+                            <Rectangle Height="8" Width="1" Fill="Black" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="9,0,0,0"/>
+                            <!-- 10dotごとの縦線x4 -->
+                            <Rectangle Height="4" Width="1" Fill="Black" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="9,0,0,0"/>
+                            <Rectangle Height="4" Width="1" Fill="Black" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="9,0,0,0"/>
+                            <Rectangle Height="4" Width="1" Fill="Black" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="9,0,0,0"/>
+                            <Rectangle Height="4" Width="1" Fill="Black" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="9,0,0,0"/>
+                            <!-- 100dotごとの縦線 -->
+                            <Rectangle Height="12" Width="1" Fill="Black" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="9,0,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>
