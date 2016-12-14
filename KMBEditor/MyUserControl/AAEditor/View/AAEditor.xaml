@@ -23,8 +23,16 @@
                           BorderThickness="0"
                           HorizontalContentAlignment="Right"
                           MinWidth="20"
+                          VirtualizingPanel.IsVirtualizing="True"
+                          VirtualizingPanel.VirtualizationMode="Recycling"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0,15,0,0">
+                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                          Margin="0,15,0,0">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="{x:Type ListViewItem}">
                             <Setter Property="Padding" Value="0"/>
@@ -56,7 +64,16 @@
                                  Foreground="{x:Null}" Grid.Row="1"/>
                         <!-- 表示領域 -->
                         <!-- 表示領域は文字位置の調整のため、Marginを "3,1,0,0" とる必要あり -->
-                        <ItemsControl ItemsSource="{Binding Path=VisualLineList}" Margin="3,1,0,0" Grid.Row="1">
+                        <ItemsControl ItemsSource="{Binding Path=VisualLineList}"
+                                      Margin="3,1,0,0"
+                                      Grid.Row="1"
+                                      VirtualizingPanel.IsVirtualizing="True"
+                                      VirtualizingPanel.VirtualizationMode="Recycling">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <vm:BindableTextBlock InlineList="{Binding Path=InlineList, UpdateSourceTrigger=PropertyChanged}"
