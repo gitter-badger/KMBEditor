@@ -1,4 +1,4 @@
-version: 0.1.{build}
+version: 0.0.{build}
 skip_tags: true
 platform:
   - Any CPU
@@ -13,7 +13,8 @@ artifacts:
     name: KMBEditor-v$(appveyor_build_version)
     type: zip
 deploy:
-  release: KMBEditor-v$(appveyor_build_version)
+  release: KMBEditor Release v$(appveyor_build_version)
+  tag: release-v$(appveyor_build_version)
   provider: GitHub
   auth_token:
     secure: xpDdb0OSvRlU6PlkMz+pDl+zKB63f0w6vnuekIlI7UBBKHHYOIremWWVTWkYIOpj # your encrypted token from GitHub
@@ -22,4 +23,3 @@ deploy:
   prerelease: false
   on:
     branch: master                 # release from master branch only
-    appveyor_repo_tag: true        # deploy on tag push only
