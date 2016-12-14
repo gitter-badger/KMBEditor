@@ -40,7 +40,7 @@ namespace KMBEditor.Model
         /// <summary>
         /// GitLab Issue ページのURL
         /// </summary>
-        public string GitLabIssueURL { get; } = "https://gitlab.com/tar_bin/KMBEditor/issues";
+        public string GitHubIssueURL { get; } = "https://github.com/tar-bin/KMBEditor/issues";
 
         /// <summary>
         /// サポート掲示板のURL

@@ -21,7 +21,7 @@ namespace KMBEditor.MainWindow.ViewModel
         public ReadOnlyObservableCollection<MLTPage> PageList { get; private set; }
         public ReactiveProperty<MLTPage> Page { get; private set; } = new ReactiveProperty<MLTPage>();
         public ReactiveProperty<string> OnlineDocumentURL { get; private set; }
-        public ReactiveProperty<string> GitLabIssueURL { get; private set; }
+        public ReactiveProperty<string> GitHubIssueURL { get; private set; }
         public ReactiveProperty<string> CurrentBoardURL { get; private set; }
         public ReactiveProperty<string> DevelopperTwtterURL { get; private set; }
         public ReactiveProperty<string> OrignalPageBytes { get; private set; } = new ReactiveProperty<string>();
@@ -34,7 +34,7 @@ namespace KMBEditor.MainWindow.ViewModel
         public ReactiveCommand NextPageCommand { get; private set; } = new ReactiveCommand();
 
         public ReactiveCommand BrowserOpenCommand_OnlineDocumentURL { get; private set; }
-        public ReactiveCommand BrowserOpenCommand_GitLabIssueURL { get; private set; }
+        public ReactiveCommand BrowserOpenCommand_GitHubIssueURL { get; private set; }
         public ReactiveCommand BrowserOpenCommand_CurrentBoardURL { get; private set; }
         public ReactiveCommand BrowserOpenCommand_DevelopperTwtterURL { get; private set; }
 
@@ -70,14 +70,14 @@ namespace KMBEditor.MainWindow.ViewModel
 
             // 変数初期化(Model => ViewModel 単方向バインド)
             this.OnlineDocumentURL = this._global_settings.ObserveProperty(x => x.OnlineDocumentURL).ToReactiveProperty();
-            this.GitLabIssueURL = this._global_settings.ObserveProperty(x => x.GitLabIssueURL).ToReactiveProperty();
+            this.GitHubIssueURL = this._global_settings.ObserveProperty(x => x.GitHubIssueURL).ToReactiveProperty();
             this.DevelopperTwtterURL = this._global_settings.ObserveProperty(x => x.DevelopperTwtterURL).ToReactiveProperty();
             this.CurrentBoardURL = this._global_settings.ObserveProperty(x => x.CurrentBoardURL).ToReactiveProperty();
             this.PageList = this._current_mlt_file.Pages.ToReadOnlyReactiveCollection();
 
             // コマンド初期化
             this.BrowserOpenCommand_OnlineDocumentURL = this.OnlineDocumentURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
-            this.BrowserOpenCommand_GitLabIssueURL = this.GitLabIssueURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
+            this.BrowserOpenCommand_GitHubIssueURL = this.GitHubIssueURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
             this.BrowserOpenCommand_DevelopperTwtterURL = this.DevelopperTwtterURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
             this.BrowserOpenCommand_CurrentBoardURL = this.CurrentBoardURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
 
@@ -87,7 +87,7 @@ namespace KMBEditor.MainWindow.ViewModel
             this.PrevPageCommand.Subscribe(_ => this.Page.Value = this._current_mlt_file.GetPrevPage());
             this.NextPageCommand.Subscribe(_ => this.Page.Value = this._current_mlt_file.GetNextPage());
             this.BrowserOpenCommand_OnlineDocumentURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
-            this.BrowserOpenCommand_GitLabIssueURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
+            this.BrowserOpenCommand_GitHubIssueURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_DevelopperTwtterURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_CurrentBoardURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
 

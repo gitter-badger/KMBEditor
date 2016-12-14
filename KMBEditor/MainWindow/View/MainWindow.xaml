@@ -40,9 +40,9 @@
                           Command="{Binding BrowserOpenCommand_OnlineDocumentURL}"
                           CommandParameter="{Binding OnlineDocumentURL.Value}"/>
                 <MenuItem Header="バグレポート・機能追加要望(_U)">
-                    <MenuItem Header="GitLab Issue の作成ページを開く[推奨:要ログイン](_G)"
-                              Command="{Binding BrowserOpenCommand_GitLabIssueURL}"
-                              CommandParameter="{Binding GitLabIssueURL.Value}"/>
+                    <MenuItem Header="GitHub Issue の作成ページを開く[推奨:要ログイン](_G)"
+                              Command="{Binding BrowserOpenCommand_GitHubIssueURL}"
+                              CommandParameter="{Binding GitHubIssueURL.Value}"/>
                     <MenuItem Header="現行スレを開く(_S)"
                               Command="{Binding BrowserOpenCommand_CurrentBoardURL}"
                               CommandParameter="{Binding CurrentBoardURL.Value}"/>
