@@ -1,5 +1,6 @@
 ﻿using KMBEditor.Util.StringExtentions;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace KMBEditor.MyUserControl.AAEditor.ViewModel
+namespace KMBEditor.MyUserControl.AAEditor
 {
     public class BindableTextBlock : TextBlock
     {
@@ -295,5 +296,30 @@ namespace KMBEditor.MyUserControl.AAEditor.ViewModel
             this.EditAreaText.Subscribe(s => this.updateVisualText(s));
         }
     }
+    /// <summary>
+    /// AAEditor.xaml の相互作用ロジック
+    /// </summary>
+    public partial class AAEditor : UserControl
+    {
+        private AAEditorViewModel _vm;
 
+        public static readonly DependencyProperty TextProperty =
+            DependencyProperty.Register("Text", typeof(string), typeof(AAEditor));
+
+        public string Text
+        {
+            get { return (string)this.GetValue(TextProperty); }
+            set { this.SetValue(TextProperty, value); }
+        }
+
+        public AAEditor()
+        {
+            InitializeComponent();
+
+            this._vm = new AAEditorViewModel(
+                this.ToReactiveProperty<string>(TextProperty));
+
+            this.AAEditorUserControlGrid.DataContext = _vm;
+        }
+    }
 }

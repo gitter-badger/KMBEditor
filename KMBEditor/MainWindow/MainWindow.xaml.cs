@@ -1,4 +1,4 @@
-﻿using KMBEditor.MLTViewer.View;
+﻿using KMBEditor.MLTViewer;
 using KMBEditor.Model;
 using KMBEditor.Model.MLT;
 using Reactive.Bindings;
@@ -7,8 +7,10 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Windows;
+using System.Windows.Controls;
 
-namespace KMBEditor.MainWindow.ViewModel
+namespace KMBEditor.MainWindow
 {
     /// <summary>
     /// MainWindow の ViewModel
@@ -99,4 +101,32 @@ namespace KMBEditor.MainWindow.ViewModel
         }
     }
 
+    /// <summary>
+    /// MainWindow.xaml の相互作用ロジック
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        private MainWindowViewModel _vm;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            _vm = new MainWindowViewModel();
+
+            this.DataContext = _vm;
+        }
+
+        private void dataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "RawText":
+                case "DecodeText":
+                    // AAは表示しない
+                    e.Cancel = true;
+                    break;
+            }
+        }
+    }
 }

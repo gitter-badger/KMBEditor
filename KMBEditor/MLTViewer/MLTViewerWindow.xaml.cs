@@ -1,6 +1,5 @@
 ﻿using KMBEditor.Model.MLT;
 using KMBEditor.Model.MLTFileTree;
-using KMBEditor.MLTViewer.View;
 using Reactive.Bindings;
 using Reactive.Bindings.Interactivity;
 using System;
@@ -10,9 +9,8 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using WinForms = System.Windows.Forms;
-using System.Windows.Data;
 
-namespace KMBEditor.MLTViewer.ViewModel
+namespace KMBEditor.MLTViewer
 {
     public class MLTFileTreeViewItemConverter : ReactiveConverter<RoutedPropertyChangedEventArgs<object>, MLTFileTreeNode>
     {
@@ -173,5 +171,39 @@ namespace KMBEditor.MLTViewer.ViewModel
             this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(@"C:\Users\user\Documents\AA\HukuTemp_v21.0_20161120\HukuTemp");
         }
     }
+    /// <summary>
+    /// MLTViewerWindow.xaml の相互作用ロジック
+    /// 
+    /// 機能要件:
+    /// ・MLTのZipファイルの一覧表示機能を提供
+    /// ・編集機能は持たない、閲覧機能のみを提供
+    /// 
+    /// </summary>
+    public partial class MLTViewerWindow : Window
+    {
+        private MLTViewerWindowViewModel _vm;
 
+        public MLTViewerWindow()
+        {
+            InitializeComponent();
+
+            _vm = new MLTViewerWindowViewModel(this);
+
+            this.DataContext = _vm;
+        }
+
+        /// <summary>
+        /// <para>クローズボタンが押された時のイベント</para>
+        /// <para>ファイルツリーの再インデックスに時間がかかるため、Closeはせずに隠すだけにする</para>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Windowは終了させない
+            e.Cancel = true;
+            // Windowを隠す。再表示はMainWindow側で行う
+            this.Hide();
+        }
+    }
 }
