@@ -12,23 +12,32 @@ using System.Windows.Controls;
 
 namespace KMBEditor.MainWindow
 {
+    public class TabItemContent
+    {
+        public MLTFile File { get; set; }
+        public ReactiveProperty<MLTPage> Page { get; set; }
+    }
     /// <summary>
     /// MainWindow の ViewModel
     /// </summary>
     public class MainWindowViewModel
     {
-        private GlobalSettings _global_settings = GlobalSettings.Instance; 
+        // Viewのインスタンス
+        private MainWindow _view;
+
+        private GlobalSettings _global_settings = GlobalSettings.Instance;
 
         // プロパティ
         public ReadOnlyObservableCollection<MLTPage> PageList { get; private set; }
-        public ReactiveProperty<MLTPage> Page { get; private set; } = new ReactiveProperty<MLTPage>();
         public ReactiveProperty<string> OnlineDocumentURL { get; private set; }
         public ReactiveProperty<string> GitHubIssueURL { get; private set; }
         public ReactiveProperty<string> CurrentBoardURL { get; private set; }
         public ReactiveProperty<string> DevelopperTwtterURL { get; private set; }
         public ReactiveProperty<string> OrignalPageBytes { get; private set; } = new ReactiveProperty<string>();
+        public ObservableCollection<TabItemContent> TabItems { get; private set; } = new ObservableCollection<TabItemContent>();
 
         // コマンド
+        public ReactiveCommand CreateNewMLTFileCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand OpenCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand OpenMLTViewerCommand { get; private set; } = new ReactiveCommand();
 
@@ -67,8 +76,71 @@ namespace KMBEditor.MainWindow
             }
         }
 
-        public MainWindowViewModel()
+        /// <summary>
+        /// MLTファイルの作成とタブへの追加
+        /// </summary>
+        private void createNewMLTFile()
         {
+            var new_mlt_file = new MLTFile();
+
+            this.TabItems.Add(
+                new TabItemContent
+                {
+                    File = new_mlt_file,
+                    Page = new ReactiveProperty<MLTPage>(new_mlt_file.GetCurrentPage())
+                });
+
+            // 追加したタブに遷移
+            var tab = this._view.EditorTabControl;
+            tab.SelectedIndex = tab.Items.Count;
+        }
+
+        /// <summary>
+        /// 既存MLTファイルのオープンとタブへの追加
+        /// </summary>
+        private void openMLTFile()
+        {
+            var new_mlt_file = new MLTFile();
+
+            new_mlt_file.OpemMLTFileWithDialog();
+
+            this.TabItems.Add(
+                new TabItemContent
+                {
+                    File = new_mlt_file,
+                    Page = new ReactiveProperty<MLTPage>(new_mlt_file.GetCurrentPage())
+                });
+
+            // 追加したタブに遷移
+            var tab = this._view.EditorTabControl;
+            tab.SelectedIndex = tab.Items.Count;
+        }
+
+        private void movePrevPage()
+        {
+            // 追加したタブに遷移
+            var tab = this._view.EditorTabControl;
+            var tabindex = tab.SelectedIndex;
+            var tabitem = this.TabItems[tabindex];
+            tabitem.Page.Value = tabitem.File.GetPrevPage();
+        }
+
+        private void moveNextPage()
+        {
+            // 追加したタブに遷移
+            var tab = this._view.EditorTabControl;
+            var tabindex = tab.SelectedIndex;
+            var tabitem = this.TabItems[tabindex];
+            tabitem.Page.Value = tabitem.File.GetNextPage();
+        }
+
+        public MainWindowViewModel(MainWindow view)
+        {
+            // Viewのインスタンス
+            this._view = view;
+
+            // タブの初期化
+            this.createNewMLTFile();
 
             // 変数初期化(Model => ViewModel 単方向バインド)
             this.OnlineDocumentURL = this._global_settings.ObserveProperty(x => x.OnlineDocumentURL).ToReactiveProperty();
@@ -84,20 +156,21 @@ namespace KMBEditor.MainWindow
             this.BrowserOpenCommand_CurrentBoardURL = this.CurrentBoardURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
 
             // コマンド定義
-            this.OpenCommand.Subscribe(_ => this.Page.Value = this._current_mlt_file.OpemMLTFileWithDialog());
+            this.CreateNewMLTFileCommand.Subscribe(_ => this.createNewMLTFile());
+            this.OpenCommand.Subscribe(_ => this.openMLTFile());
             this.OpenMLTViewerCommand.Subscribe(_ => this.MLTViewerWindowTogleVisible());
-            this.PrevPageCommand.Subscribe(_ => this.Page.Value = this._current_mlt_file.GetPrevPage());
-            this.NextPageCommand.Subscribe(_ => this.Page.Value = this._current_mlt_file.GetNextPage());
+            this.PrevPageCommand.Subscribe(_ => this.movePrevPage());
+            this.NextPageCommand.Subscribe(_ => this.moveNextPage());
             this.BrowserOpenCommand_OnlineDocumentURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_GitHubIssueURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_DevelopperTwtterURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_CurrentBoardURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
 
             // リアクティブプロパティ設定
-            this.OrignalPageBytes = this.Page
-                    .Select(obj => obj == null ? 0 : obj.Bytes)
-                    .Select(size => String.Format("{0} [Bytes]", size))
-                    .ToReactiveProperty<string>();
+            //this.OrignalPageBytes = this.Page
+            //        .Select(obj => obj == null ? 0 : obj.Bytes)
+            //        .Select(size => String.Format("{0} [Bytes]", size))
+            //        .ToReactiveProperty<string>();
         }
     }
 
@@ -112,7 +185,7 @@ namespace KMBEditor.MainWindow
         {
             InitializeComponent();
 
-            _vm = new MainWindowViewModel();
+            _vm = new MainWindowViewModel(this);
 
             this.DataContext = _vm;
         }

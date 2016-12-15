@@ -48,6 +48,11 @@ namespace KMBEditor.Model.MLT
     /// </summary>
     public class MLTFile
     {
+        /// <summary>
+        /// 現在管理しているファイル名
+        /// </summary>
+        public string Name { get; private set; } = "(無題).mlt";
+
         private string _file_path { get; set; }
         private string _raw_page { get; set; }
         private int current_page_num { get; set; }
@@ -134,6 +139,9 @@ namespace KMBEditor.Model.MLT
 
             // 現在ページのPATHの更新
             this._file_path = file_path;
+
+            // タイトルの更新
+            this.Name = Path.GetFileName(file_path);
 
             // ページリストの初期化
             this.Pages.Clear();
