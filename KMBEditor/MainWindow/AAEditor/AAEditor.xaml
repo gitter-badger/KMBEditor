@@ -1,10 +1,10 @@
-﻿<UserControl x:Class="KMBEditor.MyUserControl.AAEditor.AAEditor"
+﻿<UserControl x:Class="KMBEditor.MainWindow.AAEditor.AAEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:KMBEditor.MyUserControl.AAEditor"
-             xmlns:r="clr-namespace:KMBEditor.MyUserControl.Ruler"
+             xmlns:local="clr-namespace:KMBEditor.MainWindow.AAEditor"
+             xmlns:r="clr-namespace:KMBEditor.MainWindow.AAEditor.Ruler"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Width="Auto" Height="Auto" MinWidth="420" MinHeight="300">
     <Grid x:Name="AAEditorUserControlGrid">

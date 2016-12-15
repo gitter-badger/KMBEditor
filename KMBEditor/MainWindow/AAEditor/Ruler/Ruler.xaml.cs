@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace KMBEditor.MyUserControl.Ruler
+namespace KMBEditor.MainWindow.AAEditor.Ruler
 {
     public class RulerNumber
     {
@@ -26,6 +26,7 @@ namespace KMBEditor.MyUserControl.Ruler
             }
         }
     }
+
     /// <summary>
     /// Ruler.xaml の相互作用ロジック
     /// </summary>

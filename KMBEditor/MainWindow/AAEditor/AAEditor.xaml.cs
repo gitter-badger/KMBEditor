@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace KMBEditor.MyUserControl.AAEditor
+namespace KMBEditor.MainWindow.AAEditor
 {
     public class BindableTextBlock : TextBlock
     {
