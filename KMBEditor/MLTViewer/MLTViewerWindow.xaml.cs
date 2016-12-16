@@ -20,13 +20,6 @@ namespace KMBEditor.MLTViewer
         }
     }
 
-    public class MLTPageIndex
-    {
-        public string Text { get; set; }
-        public MLTPage Page { get; set; }
-        public ObservableCollection<MLTPageIndex> Children { get; set; }
-    }
-
     /// <summary>
     /// MLTViewerWindow の ViewModel
     /// </summary>
