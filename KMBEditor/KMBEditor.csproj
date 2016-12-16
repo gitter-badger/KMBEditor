@@ -139,6 +139,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MLTViewer\PageListView\PageListView.xaml.cs">
+      <DependentUpon>PageListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MLTViewer\PageTreeView\PageTreeView.xaml.cs">
+      <DependentUpon>PageTreeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\GlobalSettings.cs" />
     <Compile Include="MainWindow\AAEditor\Ruler\Ruler.xaml.cs">
       <DependentUpon>Ruler.xaml</DependentUpon>
@@ -170,6 +176,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow\AAEditor\Ruler\Ruler.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MLTViewer\PageListView\PageListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MLTViewer\PageTreeView\PageTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

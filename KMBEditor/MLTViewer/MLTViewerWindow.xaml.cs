@@ -20,14 +20,6 @@ namespace KMBEditor.MLTViewer
         }
     }
 
-    public class MLTPageTreeViewItemConverter : ReactiveConverter<RoutedPropertyChangedEventArgs<object>, MLTPageIndex>
-    {
-        protected override IObservable<MLTPageIndex> OnConvert(IObservable<RoutedPropertyChangedEventArgs<object>> e)
-        {
-            return e.Select(x => x.NewValue as MLTPageIndex);
-        }
-    }
-
     public class MLTPageIndex
     {
         public string Text { get; set; }
@@ -57,7 +49,6 @@ namespace KMBEditor.MLTViewer
 
         public ReactiveCommand OpenResourceDirectoryCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand<MLTFileTreeNode> TreeItemSelectCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
-        public ReactiveCommand<MLTPageIndex> MLTPageTreeViewItemSelectCommand { get; private set; } = new ReactiveCommand<MLTPageIndex>();
 
         private string openResourceDirectory()
         {
@@ -140,20 +131,7 @@ namespace KMBEditor.MLTViewer
                 this.MLTPageList.Value = this._current_preview_mlt.Pages;
 
                 // AA一覧表示を一番上までスクロール
-                this.View.AAListBox.ScrollIntoView(this._current_preview_mlt.Pages.First());
-            }
-        }
-
-        /// <summary>
-        /// 項目リストの選択時のイベント
-        /// </summary>
-        /// <param name="node"></param>
-        private void updateSelectMLTPage(MLTPageIndex node)
-        {
-            if (node != null)
-            {
-                // MLTページ項目リストを選択時にAAListBoxを該当のページまでスクロール
-                this.View.AAListBox.ScrollIntoView(node.Page);
+                //this.View.AAListBox.ScrollIntoView(this._current_preview_mlt.Pages.First());
             }
         }
 
@@ -165,7 +143,6 @@ namespace KMBEditor.MLTViewer
             // コマンド定義
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.openResourceDirectory());
             this.TreeItemSelectCommand.Subscribe(obj => this.updateTabItemContext(obj));
-            this.MLTPageTreeViewItemSelectCommand.Subscribe(obj => this.updateSelectMLTPage(obj));
 
             // FileTreeの初期化
             this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(@"C:\Users\user\Documents\AA\HukuTemp_v21.0_20161120\HukuTemp");
