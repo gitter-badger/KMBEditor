@@ -20,18 +20,9 @@ namespace KMBEditor.MLTViewer.PageTreeView
         public ReactiveProperty<MLTPage> SelectedItem { get; set; }
 
         /// <summary>
-        /// 項目リストの選択時のイベント
+        /// ListViewの選択に合わせて、TreeViewの状態を更新
         /// </summary>
-        /// <param name="node"></param>
-        private void updateCurrentPage(MLTPageIndex node)
-        {
-            if (node != null)
-            {
-                // 選択されているページのバインディング
-                this.View.SelectedItem = node.Page;
-            }
-        }
-
+        /// <param name="page"></param>
         private void updateSelectedItemFromListView(MLTPage page)
         {
             if (page != null)
