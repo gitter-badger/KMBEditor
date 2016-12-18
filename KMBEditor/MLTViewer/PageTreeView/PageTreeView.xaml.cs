@@ -11,35 +11,78 @@ using System.Windows.Controls;
 
 namespace KMBEditor.MLTViewer.PageTreeView
 {
-    public class MLTPageTreeViewItemConverter : ReactiveConverter<RoutedPropertyChangedEventArgs<object>, MLTPageIndex>
+    public class MLTPageTreeViewItemConverter : ReactiveConverter<RoutedPropertyChangedEventArgs<object>, Tuple<TreeViewItem, MLTPageIndex>>
     {
-        protected override IObservable<MLTPageIndex> OnConvert(IObservable<RoutedPropertyChangedEventArgs<object>> e)
+        protected override IObservable<Tuple<TreeViewItem, MLTPageIndex>> OnConvert(IObservable<RoutedPropertyChangedEventArgs<object>> e)
         {
-            return e.Select(x => x.NewValue as MLTPageIndex);
+            var item = this.AssociateObject as TreeViewItem;
+            return e.Select(x => new Tuple<TreeViewItem, MLTPageIndex>(item, x.NewValue as MLTPageIndex));
         }
     }
 
     public class PageTreeViewViewModel
     {
-        public ReactiveCommand<MLTPageIndex> MLTPageTreeViewItemSelectCommand { get; private set; } = new ReactiveCommand<MLTPageIndex>();
+        public PageTreeView View { get; set; }
+
+        public ReactiveCommand<Tuple<TreeViewItem, MLTPageIndex>> MLTPageTreeViewItemSelectCommand { get; private set; }
+            = new ReactiveCommand<Tuple<TreeViewItem, MLTPageIndex>>();
+
         public ReactiveProperty<ObservableCollection<MLTPageIndex>> MLTPageIndexList { get; set; }
+        public ReactiveProperty<MLTPage> SelectedItem { get; set; }
 
         /// <summary>
         /// 項目リストの選択時のイベント
         /// </summary>
         /// <param name="node"></param>
-        private void updateSelectMLTPage(MLTPageIndex node)
+        private void updateSelectMLTPage(Tuple<TreeViewItem, MLTPageIndex> node)
         {
-            if (node != null)
+            if (node != null && node.Item2 != null)
             {
-                // MLTページ項目リストを選択時にAAListBoxを該当のページまでスクロール
-                //this.View.AAListBox.ScrollIntoView(node.Page);
+                // 選択されているページのバインディング
+                this.View.SelectedItem = node.Item2.Page;
+                //node.Item1.BringIntoView();
             }
+        }
+
+        private void updateSelectedItemFromListView(MLTPage page)
+        {
+            if (page != null)
+            {
+                foreach (var node in this.MLTPageIndexList.Value)
+                {
+                    if (node.Page == page)
+                    {
+                        node.IsSelected = true;
+                        break;
+                    }
+                    else
+                    {
+                        if (node.Children == null)
+                        {
+                            continue;
+                        }
+
+                        foreach (var child in node.Children)
+                        {
+                            if (child.Page == page)
+                            {
+                                node.IsSelected = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void Init()
+        {
+            this.MLTPageTreeViewItemSelectCommand.Subscribe(obj => this.updateSelectMLTPage(obj));
+            this.SelectedItem.Subscribe(x => this.updateSelectedItemFromListView(x));
         }
 
         public PageTreeViewViewModel()
         {
-            this.MLTPageTreeViewItemSelectCommand.Subscribe(obj => this.updateSelectMLTPage(obj));
         }
     }
 
@@ -50,6 +93,7 @@ namespace KMBEditor.MLTViewer.PageTreeView
     {
         private PageTreeViewViewModel _vm;
 
+        #region ItemSource
         public static readonly DependencyProperty MLTPageIndexListProperty =
             DependencyProperty.Register(
                 "ItemSource",
@@ -61,14 +105,33 @@ namespace KMBEditor.MLTViewer.PageTreeView
             get { return (ObservableCollection<MLTPageIndex>)this.GetValue(MLTPageIndexListProperty); }
             set { this.SetValue(MLTPageIndexListProperty, value); }
         }
+        #endregion
+
+        #region SelectedItem
+        public static readonly DependencyProperty SelectedItemProperty =
+            DependencyProperty.Register(
+                "SelectedItem",
+                typeof(MLTPage),
+                typeof(PageTreeView));
+
+        public MLTPage SelectedItem
+        {
+            get { return (MLTPage)this.GetValue(SelectedItemProperty); }
+            set { this.SetValue(SelectedItemProperty, value); }
+        }
+        #endregion
 
         public PageTreeView()
         {
             InitializeComponent();
 
             this._vm = new PageTreeViewViewModel();
+            this._vm.View = this;
 
             this._vm.MLTPageIndexList = this.ToReactiveProperty<ObservableCollection<MLTPageIndex>>(MLTPageIndexListProperty);
+            this._vm.SelectedItem = this.ToReactiveProperty<MLTPage>(SelectedItemProperty);
+
+            this._vm.Init();
 
             this.PageTreeViewUserControl.DataContext = _vm;
         }

@@ -35,10 +35,12 @@ namespace KMBEditor.MLTViewer
 
         public ReactiveProperty<string> PreviewTabName { get; private set; } = new ReactiveProperty<string>("[Preview]");
         public ReactiveProperty<MLTPage> PreviewText { get; private set; } = new ReactiveProperty<MLTPage>();
+
         public ReactiveProperty<string> ResourceDirectoryPath { get; private set; } = new ReactiveProperty<string>("");
         public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; } = new ReactiveProperty<List<MLTFileTreeNode>>();
         public ReactiveProperty<ObservableCollection<MLTPage>> MLTPageList { get; private set; } = new ReactiveProperty<ObservableCollection<MLTPage>>();
         public ReactiveProperty<ObservableCollection<MLTPageIndex>> MLTPageIndexList { get; private set; } = new ReactiveProperty<ObservableCollection<MLTPageIndex>>();
+        public ReactiveProperty<MLTPage> SelectedItem { get; set; } = new ReactiveProperty<MLTPage>();
 
         public ReactiveCommand OpenResourceDirectoryCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand<MLTFileTreeNode> TreeItemSelectCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
@@ -133,6 +135,8 @@ namespace KMBEditor.MLTViewer
             // Viewのインスタンスを取得
             this.View = view;
 
+            this.SelectedItem.Subscribe(x => Console.WriteLine("SelectedItem.Index: {0}", x?.Index));
+
             // コマンド定義
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.openResourceDirectory());
             this.TreeItemSelectCommand.Subscribe(obj => this.updateTabItemContext(obj));
@@ -141,6 +145,7 @@ namespace KMBEditor.MLTViewer
             this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(@"C:\Users\user\Documents\AA\HukuTemp_v21.0_20161120\HukuTemp");
         }
     }
+
     /// <summary>
     /// MLTViewerWindow.xaml の相互作用ロジック
     /// 

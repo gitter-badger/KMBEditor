@@ -11,7 +11,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid x:Name="PageTreeViewUserControl">
-        <TreeView ItemsSource="{Binding Path=MLTPageIndexList.Value}"
+        <TreeView x:Name="PageListTreeView"
+                  ItemsSource="{Binding Path=MLTPageIndexList.Value}"
                   VirtualizingPanel.IsVirtualizing="True"
                   VirtualizingPanel.VirtualizationMode="Recycling">
             <i:Interaction.Triggers>
@@ -23,6 +24,12 @@
                     </Interactivity:EventToReactiveCommand>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsSelected"
+                        Value="{Binding Path=IsSelected, Mode=TwoWay}" />
+                </Style>
+            </TreeView.ItemContainerStyle>
             <TreeView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel/>

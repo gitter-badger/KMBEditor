@@ -81,11 +81,13 @@
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <!-- 項目ジャンプ用ビュー -->
-                                        <ptv:PageTreeView ItemSource="{Binding Path=MLTPageIndexList.Value}"/>
+                                        <ptv:PageTreeView ItemSource="{Binding Path=MLTPageIndexList.Value}"
+                                                          SelectedItem="{Binding Path=SelectedItem.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                         <!-- スプリッター -->
                                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="3"/>
                                         <!-- AA表示用テキストボックス -->
-                                        <plv:PageListView Grid.Column="2" ItemSource="{Binding Path=MLTPageList.Value}"/>
+                                        <plv:PageListView Grid.Column="2" ItemSource="{Binding Path=MLTPageList.Value}"
+                                                          SelectedItem="{Binding Path=SelectedItem.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                     </Grid>
                                 </Grid>
                             </TabItem>

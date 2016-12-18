@@ -22,6 +22,10 @@ namespace KMBEditor.Model.MLT
         /// </summary>
         public MLTPage Page { get; set; }
         /// <summary>
+        /// TreeViewで選択されているかの状態
+        /// </summary>
+        public bool IsSelected { get; set; }
+        /// <summary>
         /// 見出しページ以下のAAページを管理（MLTの仕様では、通常は1階層のみ）
         /// </summary>
         public ObservableCollection<MLTPageIndex> Children { get; set; }
