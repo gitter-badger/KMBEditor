@@ -8,24 +8,13 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace KMBEditor.MLTViewer.PageTreeView
 {
-    public class MLTPageTreeViewItemConverter : ReactiveConverter<RoutedPropertyChangedEventArgs<object>, Tuple<TreeViewItem, MLTPageIndex>>
-    {
-        protected override IObservable<Tuple<TreeViewItem, MLTPageIndex>> OnConvert(IObservable<RoutedPropertyChangedEventArgs<object>> e)
-        {
-            var item = this.AssociateObject as TreeViewItem;
-            return e.Select(x => new Tuple<TreeViewItem, MLTPageIndex>(item, x.NewValue as MLTPageIndex));
-        }
-    }
-
     public class PageTreeViewViewModel
     {
         public PageTreeView View { get; set; }
-
-        public ReactiveCommand<Tuple<TreeViewItem, MLTPageIndex>> MLTPageTreeViewItemSelectCommand { get; private set; }
-            = new ReactiveCommand<Tuple<TreeViewItem, MLTPageIndex>>();
 
         public ReactiveProperty<ObservableCollection<MLTPageIndex>> MLTPageIndexList { get; set; }
         public ReactiveProperty<MLTPage> SelectedItem { get; set; }
@@ -34,13 +23,12 @@ namespace KMBEditor.MLTViewer.PageTreeView
         /// 項目リストの選択時のイベント
         /// </summary>
         /// <param name="node"></param>
-        private void updateSelectMLTPage(Tuple<TreeViewItem, MLTPageIndex> node)
+        private void updateCurrentPage(MLTPageIndex node)
         {
-            if (node != null && node.Item2 != null)
+            if (node != null)
             {
                 // 選択されているページのバインディング
-                this.View.SelectedItem = node.Item2.Page;
-                //node.Item1.BringIntoView();
+                this.View.SelectedItem = node.Page;
             }
         }
 
@@ -52,13 +40,15 @@ namespace KMBEditor.MLTViewer.PageTreeView
                 {
                     if (node.Page == page)
                     {
-                        node.IsSelected = true;
+                        node.IsExpanded.Value = false;
+                        node.IsSelected.Value = true;
                         break;
                     }
                     else
                     {
                         if (node.Children == null)
                         {
+                            node.IsExpanded.Value = false;
                             continue;
                         }
 
@@ -66,9 +56,11 @@ namespace KMBEditor.MLTViewer.PageTreeView
                         {
                             if (child.Page == page)
                             {
-                                node.IsSelected = true;
+                                node.IsExpanded.Value = true;
+                                child.IsSelected.Value = true;
                                 break;
                             }
+                            node.IsExpanded.Value = false;
                         }
                     }
                 }
@@ -77,7 +69,6 @@ namespace KMBEditor.MLTViewer.PageTreeView
 
         public void Init()
         {
-            this.MLTPageTreeViewItemSelectCommand.Subscribe(obj => this.updateSelectMLTPage(obj));
             this.SelectedItem.Subscribe(x => this.updateSelectedItemFromListView(x));
         }
 
@@ -134,6 +125,24 @@ namespace KMBEditor.MLTViewer.PageTreeView
             this._vm.Init();
 
             this.PageTreeViewUserControl.DataContext = _vm;
+        }
+
+        private void TreeViewItem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // SelectedItemChangedイベントの処理だと、ListBoxの選択時に交互に更新が走ってデッドロックする可能性がある
+            // そのため、TreeViewのほうはMouseLeftButtonDownイベントで実装する(Selectでは更新はかけない）
+
+            TreeViewItem item = (TreeViewItem)sender;
+
+            var pageIndex = item.DataContext as MLTPageIndex;
+            this.SelectedItem = pageIndex.Page;
+
+            // ここら辺のFocusの処理がなんで必要なのかはいまいち不明瞭
+            // http://stackoverflow.com/questions/30356236/mouseleftbuttondown-event-not-raised-in-treeviewitem-why
+            item.Focusable = true;
+            item.Focus();
+            item.Focusable = false;
+            e.Handled = true;
         }
     }
 }

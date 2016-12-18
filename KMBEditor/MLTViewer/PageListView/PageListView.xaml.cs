@@ -25,7 +25,8 @@ namespace KMBEditor.MLTViewer.PageListView
     {
         protected override IObservable<MLTPage> OnConvert(IObservable<SelectionChangedEventArgs> e)
         {
-            return e.Select(x => x.AddedItems[0] as MLTPage);
+            // AddItemsが空のリストの場合があるため、回避を入れる必要がある
+            return e.Select(x => x.AddedItems.Count > 0 ? x.AddedItems[0] as MLTPage : null);
         }
     }
 

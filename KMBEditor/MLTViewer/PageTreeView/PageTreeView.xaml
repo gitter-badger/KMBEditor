@@ -15,19 +15,15 @@
                   ItemsSource="{Binding Path=MLTPageIndexList.Value}"
                   VirtualizingPanel.IsVirtualizing="True"
                   VirtualizingPanel.VirtualizationMode="Recycling">
-            <i:Interaction.Triggers>
-                <!-- ツリービューのアイテムを左クリックした場合のイベント -->
-                <i:EventTrigger EventName="SelectedItemChanged">
-                    <Interactivity:EventToReactiveCommand
-                        Command="{Binding Path=MLTPageTreeViewItemSelectCommand, Mode=OneWay}">
-                        <local:MLTPageTreeViewItemConverter/>
-                    </Interactivity:EventToReactiveCommand>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
             <TreeView.ItemContainerStyle>
-                <Style TargetType="TreeViewItem">
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="Focusable" Value="False"/>
+                    <EventSetter Event="TreeViewItem.MouseLeftButtonDown"
+                                 Handler="TreeViewItem_MouseLeftButtonDown"/>
+                    <Setter Property="IsExpanded"
+                        Value="{Binding Path=IsExpanded.Value, Mode=TwoWay}" />
                     <Setter Property="IsSelected"
-                        Value="{Binding Path=IsSelected, Mode=TwoWay}" />
+                        Value="{Binding Path=IsSelected.Value, Mode=TwoWay}" />
                 </Style>
             </TreeView.ItemContainerStyle>
             <TreeView.ItemsPanel>

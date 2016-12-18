@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using WinForms = System.Windows.Forms;
 using KMBEditor.Util.StringExtentions;
+using Reactive.Bindings;
 
 namespace KMBEditor.Model.MLT
 {
@@ -22,9 +23,13 @@ namespace KMBEditor.Model.MLT
         /// </summary>
         public MLTPage Page { get; set; }
         /// <summary>
+        /// TreeViewで下位ツリーを表示されているかの状態
+        /// </summary>
+        public ReactiveProperty<bool> IsExpanded { get; set; } = new ReactiveProperty<bool>(false);
+        /// <summary>
         /// TreeViewで選択されているかの状態
         /// </summary>
-        public bool IsSelected { get; set; }
+        public ReactiveProperty<bool> IsSelected { get; set; } = new ReactiveProperty<bool>(false);
         /// <summary>
         /// 見出しページ以下のAAページを管理（MLTの仕様では、通常は1階層のみ）
         /// </summary>
