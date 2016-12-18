@@ -1,6 +1,5 @@
 ﻿using KMBEditor.Model.MLT;
 using KMBEditor.Model.MLTFileTree;
-using KMBEditor.MLTViewer.View;
 using Reactive.Bindings;
 using Reactive.Bindings.Interactivity;
 using System;
@@ -10,9 +9,8 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using WinForms = System.Windows.Forms;
-using System.Windows.Data;
 
-namespace KMBEditor.MLTViewer.ViewModel
+namespace KMBEditor.MLTViewer
 {
     public class MLTFileTreeViewItemConverter : ReactiveConverter<RoutedPropertyChangedEventArgs<object>, MLTFileTreeNode>
     {
@@ -20,21 +18,6 @@ namespace KMBEditor.MLTViewer.ViewModel
         {
             return e.Select(x => x.NewValue as MLTFileTreeNode);
         }
-    }
-
-    public class MLTPageTreeViewItemConverter : ReactiveConverter<RoutedPropertyChangedEventArgs<object>, MLTPageIndex>
-    {
-        protected override IObservable<MLTPageIndex> OnConvert(IObservable<RoutedPropertyChangedEventArgs<object>> e)
-        {
-            return e.Select(x => x.NewValue as MLTPageIndex);
-        }
-    }
-
-    public class MLTPageIndex
-    {
-        public string Text { get; set; }
-        public MLTPage Page { get; set; }
-        public ObservableCollection<MLTPageIndex> Children { get; set; }
     }
 
     /// <summary>
@@ -52,14 +35,15 @@ namespace KMBEditor.MLTViewer.ViewModel
 
         public ReactiveProperty<string> PreviewTabName { get; private set; } = new ReactiveProperty<string>("[Preview]");
         public ReactiveProperty<MLTPage> PreviewText { get; private set; } = new ReactiveProperty<MLTPage>();
+
         public ReactiveProperty<string> ResourceDirectoryPath { get; private set; } = new ReactiveProperty<string>("");
         public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; } = new ReactiveProperty<List<MLTFileTreeNode>>();
         public ReactiveProperty<ObservableCollection<MLTPage>> MLTPageList { get; private set; } = new ReactiveProperty<ObservableCollection<MLTPage>>();
         public ReactiveProperty<ObservableCollection<MLTPageIndex>> MLTPageIndexList { get; private set; } = new ReactiveProperty<ObservableCollection<MLTPageIndex>>();
+        public ReactiveProperty<MLTPage> SelectedItem { get; set; } = new ReactiveProperty<MLTPage>();
 
         public ReactiveCommand OpenResourceDirectoryCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand<MLTFileTreeNode> TreeItemSelectCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
-        public ReactiveCommand<MLTPageIndex> MLTPageTreeViewItemSelectCommand { get; private set; } = new ReactiveCommand<MLTPageIndex>();
 
         private string openResourceDirectory()
         {
@@ -142,20 +126,7 @@ namespace KMBEditor.MLTViewer.ViewModel
                 this.MLTPageList.Value = this._current_preview_mlt.Pages;
 
                 // AA一覧表示を一番上までスクロール
-                this.View.AAListBox.ScrollIntoView(this._current_preview_mlt.Pages.First());
-            }
-        }
-
-        /// <summary>
-        /// 項目リストの選択時のイベント
-        /// </summary>
-        /// <param name="node"></param>
-        private void updateSelectMLTPage(MLTPageIndex node)
-        {
-            if (node != null)
-            {
-                // MLTページ項目リストを選択時にAAListBoxを該当のページまでスクロール
-                this.View.AAListBox.ScrollIntoView(node.Page);
+                //this.View.AAListBox.ScrollIntoView(this._current_preview_mlt.Pages.First());
             }
         }
 
@@ -164,14 +135,50 @@ namespace KMBEditor.MLTViewer.ViewModel
             // Viewのインスタンスを取得
             this.View = view;
 
+            this.SelectedItem.Subscribe(x => Console.WriteLine("SelectedItem.Index: {0}", x?.Index));
+
             // コマンド定義
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.openResourceDirectory());
             this.TreeItemSelectCommand.Subscribe(obj => this.updateTabItemContext(obj));
-            this.MLTPageTreeViewItemSelectCommand.Subscribe(obj => this.updateSelectMLTPage(obj));
 
             // FileTreeの初期化
             this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(@"C:\Users\user\Documents\AA\HukuTemp_v21.0_20161120\HukuTemp");
         }
     }
 
+    /// <summary>
+    /// MLTViewerWindow.xaml の相互作用ロジック
+    /// 
+    /// 機能要件:
+    /// ・MLTのZipファイルの一覧表示機能を提供
+    /// ・編集機能は持たない、閲覧機能のみを提供
+    /// 
+    /// </summary>
+    public partial class MLTViewerWindow : Window
+    {
+        private MLTViewerWindowViewModel _vm;
+
+        public MLTViewerWindow()
+        {
+            InitializeComponent();
+
+            _vm = new MLTViewerWindowViewModel(this);
+
+            this.DataContext = _vm;
+        }
+
+        /// <summary>
+        /// <para>クローズボタンが押された時のイベント</para>
+        /// <para>ファイルツリーの再インデックスに時間がかかるため、Closeはせずに隠すだけにする</para>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Windowは終了させない
+            e.Cancel = true;
+            // Windowを隠す。再表示はMainWindow側で行う
+            this.Hide();
+        }
+    }
 }

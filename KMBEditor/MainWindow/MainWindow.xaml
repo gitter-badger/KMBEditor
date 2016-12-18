@@ -1,11 +1,10 @@
-﻿<Window x:Class="KMBEditor.MainWindow.View.MainWindow"
+﻿<Window x:Class="KMBEditor.MainWindow.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:v="clr-namespace:KMBEditor.MainWindow.View"
-        xmlns:vm="clr-namespace:KMBEditor.MainWindow.ViewModel"
-        xmlns:editor="clr-namespace:KMBEditor.MyUserControl.AAEditor.View"
+        xmlns:local="clr-namespace:KMBEditor.MainWindow"
+        xmlns:editor="clr-namespace:KMBEditor.MainWindow.AAEditor"
         mc:Ignorable="d"
         Title="KMBEditor" Height="600" Width="800">
     <Grid>
@@ -21,7 +20,7 @@
         <Menu>
             <!-- メニューバー：ファイル -->
             <MenuItem Header="ファイル(_F)">
-                <MenuItem Header="新規作成(_N)"/>
+                <MenuItem Header="新規作成(_N)" Command="{Binding CreateNewMLTFileCommand}"/>
                 <MenuItem Header="開く(_O)" Command="{Binding OpenCommand}"/>
             </MenuItem>
             <!-- メニューバー：表示 -->
@@ -61,12 +60,18 @@
                 <ColumnDefinition Width="45*"/>
             </Grid.ColumnDefinitions>
             <!-- 左カラム -->
-            <TabControl x:Name="tabControl">
-                <TabItem Header="TabItem">
-                    <Grid Background="#FFE5E5E5">
+            <TabControl x:Name="EditorTabControl"
+                        ItemsSource="{Binding Path=TabItems}">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=File.Name}"/>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
                         <editor:AAEditor Text="{Binding Path=Page.Value.DecodeText}"/>
-                    </Grid>
-                </TabItem>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
             </TabControl>
             <!-- グリッドスプリッター -->
             <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Stretch" MinWidth="3" Margin="0" Grid.Column="1"/>

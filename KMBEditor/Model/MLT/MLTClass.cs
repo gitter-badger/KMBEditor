@@ -5,9 +5,37 @@ using System.Linq;
 using System.Windows;
 using WinForms = System.Windows.Forms;
 using KMBEditor.Util.StringExtentions;
+using Reactive.Bindings;
 
 namespace KMBEditor.Model.MLT
 {
+    /// <summary>
+    /// 見出し管理用ツリー
+    /// </summary>
+    public class MLTPageIndex
+    {
+        /// <summary>
+        /// 見出し名('^【.*】$'の場合) or ASTでのページ名
+        /// </summary>
+        public string Text { get; set; }
+        /// <summary>
+        /// 見出しページ or AAページ
+        /// </summary>
+        public MLTPage Page { get; set; }
+        /// <summary>
+        /// TreeViewで下位ツリーを表示されているかの状態
+        /// </summary>
+        public ReactiveProperty<bool> IsExpanded { get; set; } = new ReactiveProperty<bool>(false);
+        /// <summary>
+        /// TreeViewで選択されているかの状態
+        /// </summary>
+        public ReactiveProperty<bool> IsSelected { get; set; } = new ReactiveProperty<bool>(false);
+        /// <summary>
+        /// 見出しページ以下のAAページを管理（MLTの仕様では、通常は1階層のみ）
+        /// </summary>
+        public ObservableCollection<MLTPageIndex> Children { get; set; }
+    }
+
     /// <summary>
     /// MLTファイルに属するページ単位での状態管理クラス
     /// </summary>
@@ -48,6 +76,11 @@ namespace KMBEditor.Model.MLT
     /// </summary>
     public class MLTFile
     {
+        /// <summary>
+        /// 現在管理しているファイル名
+        /// </summary>
+        public string Name { get; private set; } = "(無題).mlt";
+
         private string _file_path { get; set; }
         private string _raw_page { get; set; }
         private int current_page_num { get; set; }
@@ -134,6 +167,9 @@ namespace KMBEditor.Model.MLT
 
             // 現在ページのPATHの更新
             this._file_path = file_path;
+
+            // タイトルの更新
+            this.Name = Path.GetFileName(file_path);
 
             // ページリストの初期化
             this.Pages.Clear();

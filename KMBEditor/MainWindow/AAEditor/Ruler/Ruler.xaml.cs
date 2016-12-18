@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Reactive.Bindings;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Reactive.Bindings;
-using System.Collections.ObjectModel;
+using System.Windows.Controls;
 
-namespace KMBEditor.MyUserControl.Ruler.ViewModel
+namespace KMBEditor.MainWindow.AAEditor.Ruler
 {
     public class RulerNumber
     {
@@ -23,6 +24,19 @@ namespace KMBEditor.MyUserControl.Ruler.ViewModel
             {
                 this.RulerList.Add(new RulerNumber { Number = i });
             }
+        }
+    }
+
+    /// <summary>
+    /// Ruler.xaml の相互作用ロジック
+    /// </summary>
+    public partial class Ruler : UserControl
+    {
+        public Ruler()
+        {
+            InitializeComponent();
+
+            this.RulerUserControl.DataContext = new RulerViewModel();
         }
     }
 }

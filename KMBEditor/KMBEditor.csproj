@@ -139,25 +139,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="MyUserControl\AAEditor\ViewModel\AAEditor.cs" />
-    <Compile Include="MainWindow\ViewModel\MainWindow.cs" />
-    <Compile Include="MLTViewer\ViewModel\MLTViewerWindow.cs" />
+    <Compile Include="MLTViewer\PageListView\PageListView.xaml.cs">
+      <DependentUpon>PageListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MLTViewer\PageTreeView\PageTreeView.xaml.cs">
+      <DependentUpon>PageTreeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\GlobalSettings.cs" />
-    <Compile Include="MyUserControl\Ruler\ViewModel\Ruler.cs" />
-    <Compile Include="MyUserControl\Ruler\View\Ruler.xaml.cs">
+    <Compile Include="MainWindow\AAEditor\Ruler\Ruler.xaml.cs">
       <DependentUpon>Ruler.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\StringExtentions\StringExtentions.cs" />
     <Compile Include="Util\BindableBase\BindableBase.cs" />
-    <Page Include="MyUserControl\AAEditor\View\AAEditor.xaml">
+    <Page Include="MainWindow\AAEditor\AAEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow\View\MainWindow.xaml">
+    <Page Include="MainWindow\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="MyUserControl\AAEditor\View\AAEditor.xaml.cs">
+    <Compile Include="MainWindow\AAEditor\AAEditor.xaml.cs">
       <DependentUpon>AAEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
@@ -165,22 +167,30 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\MLT\MLTClass.cs" />
-    <Compile Include="MainWindow\View\MainWindow.xaml.cs">
+    <Compile Include="MainWindow\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MLTViewer\View\MLTViewerWindow.xaml">
+    <Page Include="MLTViewer\MLTViewerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MyUserControl\Ruler\View\Ruler.xaml">
+    <Page Include="MainWindow\AAEditor\Ruler\Ruler.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MLTViewer\PageListView\PageListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MLTViewer\PageTreeView\PageTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\MLTFileTree\MLTFileTreeClass.cs" />
-    <Compile Include="MLTViewer\View\MLTViewerWindow.xaml.cs">
+    <Compile Include="MLTViewer\MLTViewerWindow.xaml.cs">
       <DependentUpon>MLTViewerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
