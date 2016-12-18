@@ -26,7 +26,7 @@
                 <!-- ツリービューのアイテムを左クリックした場合のイベント -->
                 <i:EventTrigger EventName="SelectionChanged">
                     <Interactivity:EventToReactiveCommand
-                        Command="{Binding Path=ViewModel.MLTPageListItemSelectCommand, Mode=OneWay}">
+                        Command="{Binding Path=MLTPageListItemSelectCommand, Mode=OneWay}">
                         <local:MLTPageListItemConverter/>
                     </Interactivity:EventToReactiveCommand>
                 </i:EventTrigger>
