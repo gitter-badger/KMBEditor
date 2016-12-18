@@ -20,6 +20,8 @@
                     <Setter Property="Focusable" Value="False"/>
                     <EventSetter Event="TreeViewItem.MouseLeftButtonDown"
                                  Handler="TreeViewItem_MouseLeftButtonDown"/>
+                    <EventSetter Event="TreeViewItem.Selected"
+                                 Handler="TreeViewItem_Selected"/>
                     <Setter Property="IsExpanded"
                         Value="{Binding Path=IsExpanded.Value, Mode=TwoWay}" />
                     <Setter Property="IsSelected"

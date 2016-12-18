@@ -144,5 +144,13 @@ namespace KMBEditor.MLTViewer.PageTreeView
             item.Focusable = false;
             e.Handled = true;
         }
+
+        private void TreeViewItem_Selected(object sender, RoutedEventArgs e)
+        {
+            var s = sender as TreeViewItem;
+            // 選択されているアイテムが可視領域に入るまでスクロール
+            s.BringIntoView();
+            e.Handled = true;
+        }
     }
 }
