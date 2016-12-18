@@ -31,27 +31,36 @@ namespace KMBEditor.MLTViewer.PageTreeView
                 {
                     if (node.Page == page)
                     {
+                        // 一致したら選択状態にする(一応子要素は閉じる)
                         node.IsExpanded.Value = false;
                         node.IsSelected.Value = true;
                         break;
                     }
                     else
                     {
+                        // 子要素のチェック
                         if (node.Children == null)
                         {
+                            // なければ選択状態を解除
                             node.IsExpanded.Value = false;
                             continue;
                         }
 
+                        // 子要素のチェック
+                        // MLTの仕様として、子要素の確認は１段のみでよい
                         foreach (var child in node.Children)
                         {
                             if (child.Page == page)
                             {
+                                // 一致ししたら子要素を開いて、選択状態にする
                                 node.IsExpanded.Value = true;
                                 child.IsSelected.Value = true;
                                 break;
                             }
+
+                            // 一致しなかったら子要素を閉じて、選択状態を解除
                             node.IsExpanded.Value = false;
+                            child.IsSelected.Value = false;
                         }
                     }
                 }
