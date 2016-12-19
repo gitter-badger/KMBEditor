@@ -46,7 +46,8 @@
                              IsUndoEnabled="False"
                              HorizontalScrollBarVisibility="Disabled"
                              VerticalScrollBarVisibility="Disabled"
-                             MinWidth="1000" Padding="5"/>
+                             MinWidth="1000" Padding="5"
+                             Focusable="False"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
