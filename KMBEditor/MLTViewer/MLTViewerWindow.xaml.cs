@@ -34,7 +34,6 @@ namespace KMBEditor.MLTViewer
         private MLTFile _current_preview_mlt { get; set; } = new MLTFile();
 
         public ReactiveProperty<string> PreviewTabName { get; private set; } = new ReactiveProperty<string>("[Preview]");
-        public ReactiveProperty<MLTPage> PreviewText { get; private set; } = new ReactiveProperty<MLTPage>();
 
         public ReactiveProperty<string> ResourceDirectoryPath { get; private set; } = new ReactiveProperty<string>("");
         public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; } = new ReactiveProperty<List<MLTFileTreeNode>>();
