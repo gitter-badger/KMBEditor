@@ -31,16 +31,11 @@ namespace KMBEditor.MLTViewer
         public MLTViewerWindow View { get; private set; }
 
         private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
-        private MLTFile _current_preview_mlt { get; set; } = new MLTFile();
 
-        public ReactiveProperty<string> PreviewTabName { get; private set; } = new ReactiveProperty<string>("[Preview]");
+        public ObservableCollection<MLTFile> TabFileList { get; private set; } = new ObservableCollection<MLTFile>();
 
         public ReactiveProperty<string> ResourceDirectoryPath { get; private set; } = new ReactiveProperty<string>("");
         public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; } = new ReactiveProperty<List<MLTFileTreeNode>>();
-        public ReactiveProperty<ObservableCollection<MLTPage>> MLTPageList { get; private set; } = new ReactiveProperty<ObservableCollection<MLTPage>>();
-        public ReactiveProperty<ObservableCollection<MLTPageIndex>> MLTPageIndexList { get; private set; } = new ReactiveProperty<ObservableCollection<MLTPageIndex>>();
-        public ReactiveProperty<MLTPage> SelectedItem { get; set; } = new ReactiveProperty<MLTPage>();
-
         public ReactiveCommand OpenResourceDirectoryCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand<MLTFileTreeNode> TreeItemSelectCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
 
@@ -65,67 +60,17 @@ namespace KMBEditor.MLTViewer
             }
         }
 
-        private ObservableCollection<MLTPageIndex> createMLTIndexList()
-        {
-            // メモ：縦線が揃わなくて見た目がひどいので、インデックス値は０埋めで揃える
-
-            var mltPageIndexList = new ObservableCollection<MLTPageIndex>();
-            ObservableCollection<MLTPageIndex> children = null;
-            var isCaptionChild = false;
-            foreach (var page in this._current_preview_mlt.Pages)
-            {
-                if (page.IsCaption)
-                {
-                    children = new ObservableCollection<MLTPageIndex>();
-                    mltPageIndexList.Add(new MLTPageIndex
-                        {
-                            Text = string.Format("{0:D3}. {1}", page.Index, page.RawText),
-                            Page = page,
-                            Children = children
-                        });
-                    isCaptionChild = true;
-                }
-                else
-                {
-                    if (isCaptionChild)
-                    {
-                        children.Add(new MLTPageIndex
-                            {
-                                Text = string.Format("{0:D3}. {1}", page.Index, page.Name),
-                                Page = page
-                            });
-                    }
-                    else
-                    {
-                        mltPageIndexList.Add(new MLTPageIndex
-                            {
-                                Text = string.Format("{0:D3}. {1}", page.Index, page.Name),
-                                Page = page
-                            });
-                    }
-                }
-            }
-            return mltPageIndexList;
-        }
-
         private void updateTabItemContext(MLTFileTreeNode node)
         {
             if (node.IsDirectory == false)
             {
+                var file = new MLTFile();
+
                 // MLTファイルのオープン
-                this._current_preview_mlt.OpenMLTFile(node.Path);
+                file.OpenMLTFile(node.Path);
 
-                // タブ名の更新
-                this.PreviewTabName.Value = string.Format("[Preview] {0}", node.Name);
-
-                // インデックスリストの作成
-                this.MLTPageIndexList.Value = this.createMLTIndexList();
-
-                // AA一覧表示更新
-                this.MLTPageList.Value = this._current_preview_mlt.Pages;
-
-                // AA一覧表示を一番上までスクロール
-                //this.View.AAListBox.ScrollIntoView(this._current_preview_mlt.Pages.First());
+                // タブの要素追加
+                this.TabFileList.Add(file);
             }
         }
 
@@ -133,8 +78,6 @@ namespace KMBEditor.MLTViewer
         {
             // Viewのインスタンスを取得
             this.View = view;
-
-            this.SelectedItem.Subscribe(x => Console.WriteLine("SelectedItem.Index: {0}", x?.Index));
 
             // コマンド定義
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.openResourceDirectory());
