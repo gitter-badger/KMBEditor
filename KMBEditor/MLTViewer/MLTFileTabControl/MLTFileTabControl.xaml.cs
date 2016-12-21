@@ -62,9 +62,8 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
         /// <summary>
         /// TabControlバインド用データ
         /// </summary>
-        public ReactiveProperty<ObservableCollection<TabContext>> TabContextList { get; private set; }
-            = new ReactiveProperty<ObservableCollection<TabContext>>(
-                new ObservableCollection<TabContext>());
+        public ObservableCollection<TabContext> TabContextList { get; private set; }
+                = new ObservableCollection<TabContext>();
 
         /// <summary>
         /// MLTFileが入れ替わった場合の処理。TabContextListを生成
@@ -82,7 +81,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             tabContext.TabHeaderName.Value = file.Name;
             tabContext.MLTPageList.Value = file.Pages;
             tabContext.MLTPageIndexList.Value = this.createMLTIndexList(file);
-            this.TabContextList.Value.Add(tabContext);
+            this.TabContextList.Add(tabContext);
         }
 
         private ObservableCollection<MLTPageIndex> createMLTIndexList(MLTFile file)
@@ -145,7 +144,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             // 初期状態としてPreviewタブを追加
             var tabContext = new TabContext();
             tabContext.TabHeaderName.Value = "[Preview]";
-            this.TabContextList.Value.Add(tabContext);
+            this.TabContextList.Add(tabContext);
 
             // MLTFileList自体が入れ替わった時の処理
             this.MLTFileList.Subscribe(this.initMLTFileList);

@@ -25,43 +25,45 @@ namespace KMBEditor.MLTViewer.PageTreeView
         /// <param name="page"></param>
         private void updateSelectedItemFromListView(MLTPage page)
         {
-            if (page != null)
+            if (page == null || this.MLTPageIndexList.Value == null)
             {
-                foreach (var node in this.MLTPageIndexList.Value)
+                return;
+            }
+
+            foreach (var node in this.MLTPageIndexList.Value)
+            {
+                if (node.Page == page)
                 {
-                    if (node.Page == page)
+                    // 一致したら選択状態にする(一応子要素は閉じる)
+                    node.IsExpanded.Value = false;
+                    node.IsSelected.Value = true;
+                    break;
+                }
+                else
+                {
+                    // 子要素のチェック
+                    if (node.Children == null)
                     {
-                        // 一致したら選択状態にする(一応子要素は閉じる)
+                        // なければ選択状態を解除
                         node.IsExpanded.Value = false;
-                        node.IsSelected.Value = true;
-                        break;
+                        continue;
                     }
-                    else
+
+                    // 子要素のチェック
+                    // MLTの仕様として、子要素の確認は１段のみでよい
+                    foreach (var child in node.Children)
                     {
-                        // 子要素のチェック
-                        if (node.Children == null)
+                        if (child.Page == page)
                         {
-                            // なければ選択状態を解除
-                            node.IsExpanded.Value = false;
-                            continue;
+                            // 一致ししたら子要素を開いて、選択状態にする
+                            node.IsExpanded.Value = true;
+                            child.IsSelected.Value = true;
+                            break;
                         }
 
-                        // 子要素のチェック
-                        // MLTの仕様として、子要素の確認は１段のみでよい
-                        foreach (var child in node.Children)
-                        {
-                            if (child.Page == page)
-                            {
-                                // 一致ししたら子要素を開いて、選択状態にする
-                                node.IsExpanded.Value = true;
-                                child.IsSelected.Value = true;
-                                break;
-                            }
-
-                            // 一致しなかったら子要素を閉じて、選択状態を解除
-                            node.IsExpanded.Value = false;
-                            child.IsSelected.Value = false;
-                        }
+                        // 一致しなかったら子要素を閉じて、選択状態を解除
+                        node.IsExpanded.Value = false;
+                        child.IsSelected.Value = false;
                     }
                 }
             }

@@ -10,7 +10,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid x:Name="MLTFileTabControlGrid">
         <TabControl x:Name="tabControl" Margin="0,10,0,0"
-                    ItemsSource="{Binding Path=TabContextList.Value, UpdateSourceTrigger=PropertyChanged}">
+                    ItemsSource="{Binding Path=TabContextList, UpdateSourceTrigger=PropertyChanged}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Path=TabHeaderName.Value}"/>
