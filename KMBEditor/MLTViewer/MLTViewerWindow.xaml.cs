@@ -28,11 +28,12 @@ namespace KMBEditor.MLTViewer
         /// <summary>
         /// Viewのインスタンスを保持
         /// </summary>
-        public MLTViewerWindow View { get; private set; }
+        public MLTViewerWindow View { get; set; }
 
         private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
 
-        public ObservableCollection<MLTFile> TabFileList { get; private set; } = new ObservableCollection<MLTFile>();
+        public ObservableCollection<MLTFile> TabFileList { get; private set; }
+            = new ObservableCollection<MLTFile> { new MLTFile() };
 
         public ReactiveProperty<string> ResourceDirectoryPath { get; private set; } = new ReactiveProperty<string>("");
         public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; } = new ReactiveProperty<List<MLTFileTreeNode>>();
@@ -60,7 +61,7 @@ namespace KMBEditor.MLTViewer
             }
         }
 
-        private void updateTabItemContext(MLTFileTreeNode node)
+        private void addNewTab(MLTFileTreeNode node)
         {
             if (node.IsDirectory == false)
             {
@@ -74,14 +75,25 @@ namespace KMBEditor.MLTViewer
             }
         }
 
-        public MLTViewerWindowViewModel(MLTViewerWindow view)
+        private void updatePreviewTab(MLTFileTreeNode node)
         {
-            // Viewのインスタンスを取得
-            this.View = view;
+            if (node.IsDirectory == false)
+            {
+                var file = new MLTFile();
 
+                // MLTファイルのオープン
+                file.OpenMLTFile(node.Path);
+
+                // MLTファイルの更新
+                this.TabFileList[0] = file;
+            }
+        }
+
+        public MLTViewerWindowViewModel()
+        {
             // コマンド定義
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.openResourceDirectory());
-            this.TreeItemSelectCommand.Subscribe(obj => this.updateTabItemContext(obj));
+            this.TreeItemSelectCommand.Subscribe(this.updatePreviewTab);
 
             // FileTreeの初期化
             this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(@"C:\Users\user\Documents\AA\HukuTemp_v21.0_20161120\HukuTemp");
@@ -98,14 +110,16 @@ namespace KMBEditor.MLTViewer
     /// </summary>
     public partial class MLTViewerWindow : Window
     {
-        private MLTViewerWindowViewModel _vm;
+        private MLTViewerWindowViewModel _vm = new MLTViewerWindowViewModel();
 
         public MLTViewerWindow()
         {
             InitializeComponent();
 
-            _vm = new MLTViewerWindowViewModel(this);
+            // ViewModelの初期化
+            this._vm.View = this;
 
+            // DataContextの設定
             this.DataContext = _vm;
         }
 

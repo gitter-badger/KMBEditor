@@ -12,7 +12,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid x:Name="PageTreeViewUserControl">
         <TreeView x:Name="PageListTreeView"
-                  ItemsSource="{Binding Path=MLTPageIndexList.Value}"
+                  ItemsSource="{Binding Path=MLTPageIndexList.Value, UpdateSourceTrigger=PropertyChanged}"
                   VirtualizingPanel.IsVirtualizing="True"
                   VirtualizingPanel.VirtualizationMode="Recycling">
             <TreeView.ItemContainerStyle>

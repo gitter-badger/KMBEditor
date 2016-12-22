@@ -60,7 +60,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
                 = new ObservableCollection<TabContext>();
 
         /// <summary>
-        /// MLTFileが入れ替わった場合の処理。TabContextListを生成
+        /// MLTFileが追加された場合の処理。TabContextListを生成
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
@@ -75,8 +75,45 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             tabContext.TabHeaderName.Value = file.Name;
             tabContext.MLTFile.Value = file;
             this.TabContextList.Add(tabContext);
+
+            // 追加したタブを選択
+            this.View.tabControl.SelectedIndex = this.TabContextList.Count - 1;
         }
 
+        /// <summary>
+        /// MLTFileの入れ替えが発生した場合の処理
+        /// </summary>
+        /// <param name="newFile"></param>
+        /// <param name="oldFile"></param>
+        private void replaceTabContext(MLTFile newFile, MLTFile oldFile)
+        {
+            var item = this.TabContextList.First(x => x.MLTFile.Value == oldFile);
+            var index = this.TabContextList.IndexOf(item);
+
+            // indexが0ならプレビュー用のプレフィックスを追加
+            Func<string> getName = () => {
+                if (index == 0)
+                {
+                    return $"[Preview] {newFile.Name}";
+                }
+                return newFile.Name;
+            };
+
+            var tabContext = new TabContext();
+            tabContext.TabHeaderName.Value = getName();
+            tabContext.MLTFile.Value = newFile;
+
+            // 入れ替え
+            this.TabContextList[index] = tabContext;
+
+            // 入れ替えたタブを選択
+            this.View.tabControl.SelectedIndex = index;
+        }
+
+        /// <summary>
+        /// MLTFileListの初期化
+        /// </summary>
+        /// <param name="files"></param>
         private void initMLTFileList(ObservableCollection<MLTFile> files)
         {
             if (files == null)
@@ -84,22 +121,30 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
                 return;
             }
 
-            // コレクションが追加された場合の処理
-            files.ObserveAddChanged()
-                .Subscribe(this.addTabContextToList);
+            // 既存のファイルのタブを追加
+            // 基本的にはPreviewTabのみの追加
+            foreach (var file in files)
+            {
+                this.addTabContextToList(file);
+            }
+
+            // コレクション状態変更時の処理を追加
+            files.ObserveAddChanged().Subscribe(this.addTabContextToList);
+            files.ObserveReplaceChanged().Subscribe(x => this.replaceTabContext(x.NewItem, x.OldItem));
         }
 
+        /// <summary>
+        /// ViewModelの初期化
+        /// </summary>
         public void Init()
         {
-            // 初期状態としてPreviewタブを追加
-            var tabContext = new TabContext();
-            tabContext.TabHeaderName.Value = "[Preview]";
-            this.TabContextList.Add(tabContext);
-
             // MLTFileList自体が入れ替わった時の処理
             this.MLTFileList.Subscribe(this.initMLTFileList);
         }
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
         public MLTFileTabControlViewModel()
         {
             // Dependency Propertyの設定等が必要なため、ここで初期化はしない
