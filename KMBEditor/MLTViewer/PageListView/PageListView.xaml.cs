@@ -120,7 +120,7 @@ namespace KMBEditor.MLTViewer.PageListView
         #region ItemSource
         public static readonly DependencyProperty MLTFileProperty =
             DependencyProperty.Register(
-                "ItemSource",
+                nameof(ItemSource),
                 typeof(MLTFile),
                 typeof(PageListView));
 
@@ -134,7 +134,7 @@ namespace KMBEditor.MLTViewer.PageListView
         #region SelectedItem
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register(
-                "SelectedItem",
+                nameof(SelectedItem),
                 typeof(MLTPage),
                 typeof(PageListView));
 
