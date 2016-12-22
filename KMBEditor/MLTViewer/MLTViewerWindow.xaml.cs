@@ -28,7 +28,7 @@ namespace KMBEditor.MLTViewer
         /// <summary>
         /// Viewのインスタンスを保持
         /// </summary>
-        public MLTViewerWindow View { get; set; }
+        public WeakReference<MLTViewerWindow> View { get; set; }
 
         private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
 
@@ -117,7 +117,7 @@ namespace KMBEditor.MLTViewer
             InitializeComponent();
 
             // ViewModelの初期化
-            this._vm.View = this;
+            this._vm.View = new WeakReference<MLTViewerWindow>(this);
 
             // DataContextの設定
             this.DataContext = _vm;

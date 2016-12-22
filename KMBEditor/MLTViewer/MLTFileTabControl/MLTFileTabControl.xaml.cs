@@ -34,7 +34,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
         /// <summary>
         /// Viewのインスタンス
         /// </summary>
-        public MLTFileTabControl View { get; set; }
+        public WeakReference<MLTFileTabControl> View { get; set; }
 
         /// <summary>
         /// ViewのItemSourceと連動するリスト
@@ -66,7 +66,11 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             this.TabContextList.Add(tabContext);
 
             // 追加したタブを選択
-            this.View.tabControl.SelectedIndex = this.TabContextList.Count - 1;
+            MLTFileTabControl obj;
+            if (this.View.TryGetTarget(out obj))
+            {
+                obj.tabControl.SelectedIndex = this.TabContextList.Count - 1;
+            }
         }
 
         /// <summary>
@@ -96,7 +100,11 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             this.TabContextList[index] = tabContext;
 
             // 入れ替えたタブを選択
-            this.View.tabControl.SelectedIndex = index;
+            MLTFileTabControl obj;
+            if (this.View.TryGetTarget(out obj))
+            {
+                obj.tabControl.SelectedIndex = index;
+            }
         }
 
         /// <summary>
@@ -172,7 +180,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             InitializeComponent();
 
             // ViewModelの初期化
-            this._vm.View = this;
+            this._vm.View = new WeakReference<MLTFileTabControl>(this);
             this._vm.MLTFileList = this.ToReactiveProperty<ObservableCollection<MLTFile>>(MLTFileListProperty);
 
             this._vm.Init();

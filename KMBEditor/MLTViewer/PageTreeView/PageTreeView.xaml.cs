@@ -49,7 +49,7 @@ namespace KMBEditor.MLTViewer.PageTreeView
         /// <summary>
         /// Viewのインスタンス
         /// </summary>
-        public PageTreeView View { get; set; }
+        public WeakReference<PageTreeView> View { get; set; }
 
         /// <summary>
         /// 表示対象のMLTFileの保持
@@ -255,7 +255,7 @@ namespace KMBEditor.MLTViewer.PageTreeView
             InitializeComponent();
 
             // ViewModelの初期化
-            this._vm.View = this;
+            this._vm.View = new WeakReference<PageTreeView>(this);
             this._vm.MLTFile = this.ToReactiveProperty<MLTFile>(MLTFileProperty);
             this._vm.SelectedItem = this.ToReactiveProperty<MLTPage>(SelectedItemProperty);
 

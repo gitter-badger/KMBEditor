@@ -33,7 +33,7 @@ namespace KMBEditor.MLTViewer.PageListView
         /// <summary>
         /// Viewのインスタンス
         /// </summary>
-        public PageListView View { get; set; }
+        public WeakReference<PageListView> View { get; set; }
 
         /// <summary>
         /// 表示対象のMLTFile
@@ -79,7 +79,11 @@ namespace KMBEditor.MLTViewer.PageListView
         {
             if (page != null)
             {
-                this.View.SelectedItem = page;
+                PageListView obj;
+                if (this.View.TryGetTarget(out obj))
+                {
+                    obj.SelectedItem = page;
+                }
             }
         }
 
@@ -89,7 +93,11 @@ namespace KMBEditor.MLTViewer.PageListView
         /// <param name="page"></param>
         private void updateSelectedItemFromTreeView(MLTPage page)
         {
-            this.View.AAListBox.ScrollIntoView(page);
+            PageListView obj;
+            if (this.View.TryGetTarget(out obj))
+            {
+                obj.AAListBox.ScrollIntoView(page);
+            }
         }
 
         /// <summary>
@@ -168,7 +176,7 @@ namespace KMBEditor.MLTViewer.PageListView
             InitializeComponent();
 
             // ViewModel初期化
-            this._vm.View = this;
+            this._vm.View = new WeakReference<PageListView>(this);
             this._vm.MLTFile = this.ToReactiveProperty<MLTFile>(MLTFileProperty);
             this._vm.SelectedItem = this.ToReactiveProperty<MLTPage>(SelectedItemProperty);
 
