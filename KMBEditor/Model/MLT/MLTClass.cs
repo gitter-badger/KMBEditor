@@ -54,15 +54,21 @@ namespace KMBEditor.Model.MLT
         /// </summary>
         public string Name { get; private set; } = "(無題).mlt";
 
+        /// <summary>
+        /// 内包しているページのリスト
+        /// </summary>
+        public ObservableCollection<MLTPage> Pages { get; private set; }
+            = new ObservableCollection<MLTPage> { new MLTPage() };
+
+        /// <summary>
+        /// ファイルの絶対パス
+        /// </summary>
         private string _file_path { get; set; }
-        private string _raw_page { get; set; }
+
+        /// <summary>
+        /// 表示中のページ番号
+        /// </summary>
         private int current_page_num { get; set; }
-
-        public ObservableCollection<MLTPage> Pages { get; private set; } = new ObservableCollection<MLTPage> { new MLTPage() };
-
-        public MLTFile()
-        {
-        }
 
         /// <summary>
         /// 現在のページを取得する
@@ -212,6 +218,13 @@ namespace KMBEditor.Model.MLT
                 // 最終行は改行しない
                 yield return page.TrimEnd(System.Environment.NewLine.ToCharArray());
             }
+        }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public MLTFile()
+        {
         }
     }
 }
