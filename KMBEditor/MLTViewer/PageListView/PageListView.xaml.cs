@@ -6,8 +6,10 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
+using System.Diagnostics;
 
 namespace KMBEditor.MLTViewer.PageListView
 {
@@ -55,6 +57,8 @@ namespace KMBEditor.MLTViewer.PageListView
         public ReactiveCommand<MLTPage> MLTPageListItemSelectCommand { get; private set; }
             = new ReactiveCommand<MLTPage>();
 
+        private CompositeDisposable _disposable = new CompositeDisposable();
+
         /// <summary>
         /// 設定されているMLTFileの更新
         /// </summary>
@@ -93,6 +97,11 @@ namespace KMBEditor.MLTViewer.PageListView
         /// </summary>
         public void Init()
         {
+            // Disposeの登録
+            this._disposable.Add(this.MLTFile);
+            this._disposable.Add(this.SelectedItem);
+
+            // プロパティの初期化
             this.MLTFile.Subscribe(this.updateMLTFile);
             this.MLTPageListItemSelectCommand.Subscribe(this.updateSelectedItem);
             this.SelectedItem.Subscribe(this.updateSelectedItemFromTreeView);
@@ -104,6 +113,12 @@ namespace KMBEditor.MLTViewer.PageListView
         public PageListViewViewModel()
         {
             // Dependency Property等の受け渡しがあるため、ここでは初期化しない
+        }
+
+        ~PageListViewViewModel()
+        {
+            this._disposable.Dispose();
+            Debug.WriteLine("{0}: Disposed", this.ToString());
         }
     }
 
