@@ -37,16 +37,6 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             /// </summary>
             public ReactiveProperty<MLTFile> MLTFile { get; private set; } = new ReactiveProperty<MLTFile>();
             /// <summary>
-            /// PageTreeView用バインド用データ
-            /// </summary>
-            public ReactiveProperty<ObservableCollection<MLTPageIndex>> MLTPageIndexList { get; private set; }
-                = new ReactiveProperty<ObservableCollection<MLTPageIndex>>();
-            /// <summary>
-            /// PageListView用バインド用データ
-            /// </summary>
-            public ReactiveProperty<ObservableCollection<MLTPage>> MLTPageList { get; set; }
-                = new ReactiveProperty<ObservableCollection<MLTPage>>();
-            /// <summary>
             /// 選択中ページの共有用変数
             /// </summary>
             public ReactiveProperty<MLTPage> SelectedItem { get; set; } = new ReactiveProperty<MLTPage>();
@@ -84,52 +74,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             var tabContext = new TabContext();
             tabContext.TabHeaderName.Value = file.Name;
             tabContext.MLTFile.Value = file;
-            tabContext.MLTPageList.Value = file.Pages;
-            tabContext.MLTPageIndexList.Value = this.createMLTIndexList(file);
             this.TabContextList.Add(tabContext);
-        }
-
-        private ObservableCollection<MLTPageIndex> createMLTIndexList(MLTFile file)
-        {
-            // メモ：縦線が揃わなくて見た目がひどいので、インデックス値は０埋めで揃える
-
-            var mltPageIndexList = new ObservableCollection<MLTPageIndex>();
-            ObservableCollection<MLTPageIndex> children = null;
-            var isCaptionChild = false;
-            foreach (var page in file.Pages)
-            {
-                if (page.IsCaption)
-                {
-                    children = new ObservableCollection<MLTPageIndex>();
-                    mltPageIndexList.Add(new MLTPageIndex
-                        {
-                            Text = string.Format("{0:D3}. {1}", page.Index, page.RawText),
-                            Page = page,
-                            Children = children
-                        });
-                    isCaptionChild = true;
-                }
-                else
-                {
-                    if (isCaptionChild)
-                    {
-                        children.Add(new MLTPageIndex
-                            {
-                                Text = string.Format("{0:D3}. {1}", page.Index, page.Name),
-                                Page = page
-                            });
-                    }
-                    else
-                    {
-                        mltPageIndexList.Add(new MLTPageIndex
-                            {
-                                Text = string.Format("{0:D3}. {1}", page.Index, page.Name),
-                                Page = page
-                            });
-                    }
-                }
-            }
-            return mltPageIndexList;
         }
 
         private void initMLTFileList(ObservableCollection<MLTFile> files)
@@ -157,7 +102,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
 
         public MLTFileTabControlViewModel()
         {
-
+            // Dependency Propertyの設定等が必要なため、ここで初期化はしない
         }
     }
 
@@ -166,12 +111,15 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
     /// </summary>
     public partial class MLTFileTabControl : UserControl
     {
+        /// <summary>
+        /// ViewModelのインスタンス
+        /// </summary>
         private MLTFileTabControlViewModel _vm = new MLTFileTabControlViewModel();
 
         #region ItemSource
         public static readonly DependencyProperty MLTFileListProperty =
             DependencyProperty.Register(
-                "ItemSource",
+                nameof(ItemSource),
                 typeof(ObservableCollection<MLTFile>),
                 typeof(MLTFileTabControl));
 
@@ -182,15 +130,20 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
         }
         #endregion
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
         public MLTFileTabControl()
         {
             InitializeComponent();
 
+            // ViewModelの初期化
             this._vm.View = this;
             this._vm.MLTFileList = this.ToReactiveProperty<ObservableCollection<MLTFile>>(MLTFileListProperty);
 
             this._vm.Init();
 
+            // UserControlのDataContextの設定
             this.MLTFileTabControlGrid.DataContext = _vm;
         }
     }

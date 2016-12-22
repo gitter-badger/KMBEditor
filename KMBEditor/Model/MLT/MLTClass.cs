@@ -10,33 +10,6 @@ using Reactive.Bindings;
 namespace KMBEditor.Model.MLT
 {
     /// <summary>
-    /// 見出し管理用ツリー
-    /// </summary>
-    public class MLTPageIndex
-    {
-        /// <summary>
-        /// 見出し名('^【.*】$'の場合) or ASTでのページ名
-        /// </summary>
-        public string Text { get; set; }
-        /// <summary>
-        /// 見出しページ or AAページ
-        /// </summary>
-        public MLTPage Page { get; set; }
-        /// <summary>
-        /// TreeViewで下位ツリーを表示されているかの状態
-        /// </summary>
-        public ReactiveProperty<bool> IsExpanded { get; set; } = new ReactiveProperty<bool>(false);
-        /// <summary>
-        /// TreeViewで選択されているかの状態
-        /// </summary>
-        public ReactiveProperty<bool> IsSelected { get; set; } = new ReactiveProperty<bool>(false);
-        /// <summary>
-        /// 見出しページ以下のAAページを管理（MLTの仕様では、通常は1階層のみ）
-        /// </summary>
-        public ObservableCollection<MLTPageIndex> Children { get; set; }
-    }
-
-    /// <summary>
     /// MLTファイルに属するページ単位での状態管理クラス
     /// </summary>
     public class MLTPage

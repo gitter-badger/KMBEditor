@@ -25,7 +25,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <!-- 項目ジャンプ用ビュー -->
-                        <ptv:PageTreeView ItemSource="{Binding Path=MLTPageIndexList.Value}"
+                        <ptv:PageTreeView ItemSource="{Binding Path=MLTFile.Value}"
                                           SelectedItem="{Binding Path=SelectedItem.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <!-- スプリッター -->
                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="3"/>
