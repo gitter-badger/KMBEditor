@@ -33,6 +33,10 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             /// </summary>
             public ReactiveProperty<string> TabHeaderName { get; private set; } = new ReactiveProperty<string>();
             /// <summary>
+            /// MLTFile
+            /// </summary>
+            public ReactiveProperty<MLTFile> MLTFile { get; private set; } = new ReactiveProperty<MLTFile>();
+            /// <summary>
             /// PageTreeView用バインド用データ
             /// </summary>
             public ReactiveProperty<ObservableCollection<MLTPageIndex>> MLTPageIndexList { get; private set; }
@@ -79,6 +83,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
 
             var tabContext = new TabContext();
             tabContext.TabHeaderName.Value = file.Name;
+            tabContext.MLTFile.Value = file;
             tabContext.MLTPageList.Value = file.Pages;
             tabContext.MLTPageIndexList.Value = this.createMLTIndexList(file);
             this.TabContextList.Add(tabContext);

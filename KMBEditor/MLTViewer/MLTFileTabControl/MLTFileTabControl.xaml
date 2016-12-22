@@ -30,7 +30,7 @@
                         <!-- スプリッター -->
                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="3"/>
                         <!-- AA表示用テキストボックス -->
-                        <plv:PageListView Grid.Column="2" ItemSource="{Binding Path=MLTPageList.Value}"
+                        <plv:PageListView Grid.Column="2" ItemSource="{Binding Path=MLTFile.Value}"
                                           SelectedItem="{Binding Path=SelectedItem.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                 </DataTemplate>
