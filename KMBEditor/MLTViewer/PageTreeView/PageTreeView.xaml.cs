@@ -54,13 +54,13 @@ namespace KMBEditor.MLTViewer.PageTreeView
         /// <summary>
         /// 表示対象のMLTFileの保持
         /// </summary>
-        public ReactiveProperty<MLTFile> MLTFile { get; set; }
+        public ReactiveProperty<MLTFile> MLTFile { get; private set; }
             = new ReactiveProperty<MLTFile>();
 
         /// <summary>
         /// 選択中のアイテムの保持、ListViewとの共有用
         /// </summary>
-        public ReactiveProperty<MLTPage> SelectedItem { get; set; }
+        public ReactiveProperty<MLTPage> SelectedItem { get; private set; }
             = new ReactiveProperty<MLTPage>();
 
         /// <summary>

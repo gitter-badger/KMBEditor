@@ -38,13 +38,13 @@ namespace KMBEditor.MLTViewer.PageListView
         /// <summary>
         /// 表示対象のMLTFile
         /// </summary>
-        public ReactiveProperty<MLTFile> MLTFile { get; set; }
+        public ReactiveProperty<MLTFile> MLTFile { get; private set; }
             = new ReactiveProperty<MLTFile>();
 
         /// <summary>
         /// 選択中のアイテム保持/共有用変数
         /// </summary>
-        public ReactiveProperty<MLTPage> SelectedItem { get; set; }
+        public ReactiveProperty<MLTPage> SelectedItem { get; private set; }
             = new ReactiveProperty<MLTPage>();
 
         /// <summary>

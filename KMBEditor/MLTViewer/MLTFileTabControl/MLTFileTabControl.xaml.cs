@@ -29,7 +29,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             /// <summary>
             /// 選択中ページの共有用変数
             /// </summary>
-            public ReactiveProperty<MLTPage> SelectedItem { get; set; } = new ReactiveProperty<MLTPage>();
+            public ReactiveProperty<MLTPage> SelectedItem { get; private set; } = new ReactiveProperty<MLTPage>();
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
         /// <summary>
         /// ViewのItemSourceと連動するリスト
         /// </summary>
-        public ReactiveProperty<ObservableCollection<MLTFile>> MLTFileList { get; set; }
+        public ReactiveProperty<ObservableCollection<MLTFile>> MLTFileList { get; private set; }
             = new ReactiveProperty<ObservableCollection<MLTFile>>();
 
         /// <summary>
