@@ -23,7 +23,7 @@ namespace KMBEditor.MainWindow
     public class MainWindowViewModel
     {
         // Viewのインスタンス
-        private MainWindow _view;
+        public WeakReference<MainWindow> View;
 
         private GlobalSettings _global_settings = GlobalSettings.Instance;
 
@@ -91,8 +91,12 @@ namespace KMBEditor.MainWindow
                 });
 
             // 追加したタブに遷移
-            var tab = this._view.EditorTabControl;
-            tab.SelectedIndex = tab.Items.Count;
+            MainWindow obj;
+            if (this.View.TryGetTarget(out obj))
+            {
+                var tab = obj.EditorTabControl;
+                tab.SelectedIndex = tab.Items.Count;
+            }
         }
 
         /// <summary>
@@ -112,33 +116,45 @@ namespace KMBEditor.MainWindow
                 });
 
             // 追加したタブに遷移
-            var tab = this._view.EditorTabControl;
-            tab.SelectedIndex = tab.Items.Count;
+            MainWindow obj;
+            if (this.View.TryGetTarget(out obj))
+            {
+                var tab = obj.EditorTabControl;
+                tab.SelectedIndex = tab.Items.Count;
+            }
         }
 
         private void movePrevPage()
         {
             // 追加したタブに遷移
-            var tab = this._view.EditorTabControl;
-            var tabindex = tab.SelectedIndex;
-            var tabitem = this.TabItems[tabindex];
-            tabitem.Page.Value = tabitem.File.GetPrevPage();
+            MainWindow obj;
+            if (this.View.TryGetTarget(out obj))
+            {
+                var tab = obj.EditorTabControl;
+                var tabindex = tab.SelectedIndex;
+                var tabitem = this.TabItems[tabindex];
+                tabitem.Page.Value = tabitem.File.GetPrevPage();
+            }
         }
 
         private void moveNextPage()
         {
             // 追加したタブに遷移
-            var tab = this._view.EditorTabControl;
-            var tabindex = tab.SelectedIndex;
-            var tabitem = this.TabItems[tabindex];
-            tabitem.Page.Value = tabitem.File.GetNextPage();
+            MainWindow obj;
+            if (this.View.TryGetTarget(out obj))
+            {
+                var tab = obj.EditorTabControl;
+                var tabindex = tab.SelectedIndex;
+                var tabitem = this.TabItems[tabindex];
+                tabitem.Page.Value = tabitem.File.GetNextPage();
+            }
         }
 
-        public MainWindowViewModel(MainWindow view)
+        /// <summary>
+        /// ViewModelの初期化
+        /// </summary>
+        public void Init()
         {
-            // Viewのインスタンス
-            this._view = view;
-
             // タブの初期化
             this.createNewMLTFile();
 
@@ -172,6 +188,14 @@ namespace KMBEditor.MainWindow
             //        .Select(size => String.Format("{0} [Bytes]", size))
             //        .ToReactiveProperty<string>();
         }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public MainWindowViewModel()
+        {
+            // Viewの設定等が必要なため、ここで初期化はしない
+        }
     }
 
     /// <summary>
@@ -179,14 +203,18 @@ namespace KMBEditor.MainWindow
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainWindowViewModel _vm;
+        private MainWindowViewModel _vm = new MainWindowViewModel();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _vm = new MainWindowViewModel(this);
+            // ViewModelの初期化
+            this._vm.View = new WeakReference<MainWindow>(this);
 
+            this._vm.Init();
+
+            // DataContextの設定
             this.DataContext = _vm;
         }
 

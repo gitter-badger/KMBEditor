@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="KMBEditor.MLTViewer.MLTFileTabControl.MLTFileTabControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KMBEditor.MLTViewer.MLTFileTabControl"
+             xmlns:ptv="clr-namespace:KMBEditor.MLTViewer.PageTreeView"
+             xmlns:plv="clr-namespace:KMBEditor.MLTViewer.PageListView"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid x:Name="MLTFileTabControlGrid">
+        <TabControl x:Name="tabControl" Margin="0,10,0,0"
+                    ItemsSource="{Binding Path=TabContextList, UpdateSourceTrigger=PropertyChanged}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=TabHeaderName.Value}"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <Grid Background="#FFE5E5E5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <!-- 項目ジャンプ用ビュー -->
+                        <ptv:PageTreeView ItemSource="{Binding Path=MLTFile.Value}"
+                                          SelectedItem="{Binding Path=SelectedItem.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <!-- スプリッター -->
+                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="3"/>
+                        <!-- AA表示用テキストボックス -->
+                        <plv:PageListView Grid.Column="2"
+                                          ItemSource="{Binding Path=MLTFile.Value}"
+                                          SelectedItem="{Binding Path=SelectedItem.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+    </Grid>
+</UserControl>

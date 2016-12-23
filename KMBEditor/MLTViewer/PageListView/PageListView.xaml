@@ -23,7 +23,7 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
                  ScrollViewer.VerticalScrollBarVisibility="Auto">
             <i:Interaction.Triggers>
-                <!-- ツリービューのアイテムを左クリックした場合のイベント -->
+                <!-- ListViewのアイテムを左クリックした場合のイベント -->
                 <i:EventTrigger EventName="SelectionChanged">
                     <Interactivity:EventToReactiveCommand
                         Command="{Binding Path=MLTPageListItemSelectCommand, Mode=OneWay}">
@@ -46,7 +46,8 @@
                              IsUndoEnabled="False"
                              HorizontalScrollBarVisibility="Disabled"
                              VerticalScrollBarVisibility="Disabled"
-                             MinWidth="1000" Padding="5"/>
+                             MinWidth="1000" Padding="5"
+                             Focusable="False"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

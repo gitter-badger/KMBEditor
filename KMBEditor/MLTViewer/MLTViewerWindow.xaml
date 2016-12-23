@@ -8,8 +8,7 @@
         xmlns:livet="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:Interactivity="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET45"
         xmlns:local="clr-namespace:KMBEditor.MLTViewer"
-        xmlns:ptv="clr-namespace:KMBEditor.MLTViewer.PageTreeView"
-        xmlns:plv="clr-namespace:KMBEditor.MLTViewer.PageListView"
+        xmlns:mltfiletabcontrol="clr-namespace:KMBEditor.MLTViewer.MLTFileTabControl"
         mc:Ignorable="d"
         Title="MLTViewerWindow" Height="599" Width="1120"
         Closing="Window_Closing">
@@ -70,28 +69,8 @@
             <TabControl Grid.Column="2" Grid.ColumnSpan="2">
                 <TabItem Header="Group 1">
                     <Grid Background="#FFE5E5E5">
-                        <!-- MLT複数表示用タブコントロール -->
-                        <TabControl x:Name="tabControl" Margin="0,10,0,0">
-                            <TabItem Header="{Binding Path=PreviewTabName.Value}">
-                                <Grid Background="#FFE5E5E5">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="200"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <!-- 項目ジャンプ用ビュー -->
-                                        <ptv:PageTreeView ItemSource="{Binding Path=MLTPageIndexList.Value}"
-                                                          SelectedItem="{Binding Path=SelectedItem.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <!-- スプリッター -->
-                                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="3"/>
-                                        <!-- AA表示用テキストボックス -->
-                                        <plv:PageListView Grid.Column="2" ItemSource="{Binding Path=MLTPageList.Value}"
-                                                          SelectedItem="{Binding Path=SelectedItem.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                    </Grid>
-                                </Grid>
-                            </TabItem>
-                        </TabControl>
+                        <!-- MLT File 複数表示用タブコントロール -->
+                        <mltfiletabcontrol:MLTFileTabControl ItemSource="{Binding Path=TabFileList, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                 </TabItem>
             </TabControl>

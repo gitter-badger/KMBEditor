@@ -6,36 +6,10 @@ using System.Windows;
 using WinForms = System.Windows.Forms;
 using KMBEditor.Util.StringExtentions;
 using Reactive.Bindings;
+using System.Diagnostics;
 
 namespace KMBEditor.Model.MLT
 {
-    /// <summary>
-    /// 見出し管理用ツリー
-    /// </summary>
-    public class MLTPageIndex
-    {
-        /// <summary>
-        /// 見出し名('^【.*】$'の場合) or ASTでのページ名
-        /// </summary>
-        public string Text { get; set; }
-        /// <summary>
-        /// 見出しページ or AAページ
-        /// </summary>
-        public MLTPage Page { get; set; }
-        /// <summary>
-        /// TreeViewで下位ツリーを表示されているかの状態
-        /// </summary>
-        public ReactiveProperty<bool> IsExpanded { get; set; } = new ReactiveProperty<bool>(false);
-        /// <summary>
-        /// TreeViewで選択されているかの状態
-        /// </summary>
-        public ReactiveProperty<bool> IsSelected { get; set; } = new ReactiveProperty<bool>(false);
-        /// <summary>
-        /// 見出しページ以下のAAページを管理（MLTの仕様では、通常は1階層のみ）
-        /// </summary>
-        public ObservableCollection<MLTPageIndex> Children { get; set; }
-    }
-
     /// <summary>
     /// MLTファイルに属するページ単位での状態管理クラス
     /// </summary>
@@ -81,15 +55,21 @@ namespace KMBEditor.Model.MLT
         /// </summary>
         public string Name { get; private set; } = "(無題).mlt";
 
+        /// <summary>
+        /// 内包しているページのリスト
+        /// </summary>
+        public ObservableCollection<MLTPage> Pages { get; private set; }
+            = new ObservableCollection<MLTPage> { new MLTPage() };
+
+        /// <summary>
+        /// ファイルの絶対パス
+        /// </summary>
         private string _file_path { get; set; }
-        private string _raw_page { get; set; }
+
+        /// <summary>
+        /// 表示中のページ番号
+        /// </summary>
         private int current_page_num { get; set; }
-
-        public ObservableCollection<MLTPage> Pages { get; private set; } = new ObservableCollection<MLTPage> { new MLTPage() };
-
-        public MLTFile()
-        {
-        }
 
         /// <summary>
         /// 現在のページを取得する
@@ -239,6 +219,13 @@ namespace KMBEditor.Model.MLT
                 // 最終行は改行しない
                 yield return page.TrimEnd(System.Environment.NewLine.ToCharArray());
             }
+        }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public MLTFile()
+        {
         }
     }
 }
