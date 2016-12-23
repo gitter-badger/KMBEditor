@@ -69,8 +69,6 @@ namespace KMBEditor.MLTViewer.PageTreeView
         public ReactiveProperty<ObservableCollection<MLTPageIndex>> MLTPageIndexList { get; private set; }
             = new ReactiveProperty<ObservableCollection<MLTPageIndex>>();
 
-        private CompositeDisposable _disposable = new CompositeDisposable();
-
         /// <summary>
         /// MLTFileからMLTPageIndexの生成
         /// </summary>
@@ -187,10 +185,6 @@ namespace KMBEditor.MLTViewer.PageTreeView
         /// </summary>
         public void Init()
         {
-            // Disposeの登録
-            this._disposable.Add(this.MLTFile);
-            this._disposable.Add(this.SelectedItem);
-
             // プロパティの初期化
             this.MLTFile.Subscribe(this.updateMLTFile);
             this.SelectedItem.Subscribe(this.updateSelectedItemFromListView);
@@ -202,12 +196,6 @@ namespace KMBEditor.MLTViewer.PageTreeView
         public PageTreeViewViewModel()
         {
             // Dependency Propertyの設定等が必要なため、ここで初期化はしない
-        }
-
-        ~PageTreeViewViewModel()
-        {
-            this._disposable.Dispose();
-            Debug.WriteLine("{0}: Disposed", this.ToString());
         }
     }
 
