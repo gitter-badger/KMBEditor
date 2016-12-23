@@ -39,11 +39,13 @@ namespace KMBEditor.MLTViewer.PageListView
         /// 表示対象のMLTFile
         /// </summary>
         public ReactiveProperty<MLTFile> MLTFile { get; set; }
+            = new ReactiveProperty<MLTFile>();
 
         /// <summary>
         /// 選択中のアイテム保持/共有用変数
         /// </summary>
         public ReactiveProperty<MLTPage> SelectedItem { get; set; }
+            = new ReactiveProperty<MLTPage>();
 
         /// <summary>
         /// ListViewバインド用コレクション
@@ -145,7 +147,10 @@ namespace KMBEditor.MLTViewer.PageListView
             DependencyProperty.Register(
                 nameof(ItemSource),
                 typeof(MLTFile),
-                typeof(PageListView));
+                typeof(PageListView),
+                new PropertyMetadata(
+                    null,
+                    (d, e) => (d as PageListView)._vm.MLTFile.Value = e.NewValue as MLTFile));
 
         public MLTFile ItemSource
         {
@@ -159,7 +164,10 @@ namespace KMBEditor.MLTViewer.PageListView
             DependencyProperty.Register(
                 nameof(SelectedItem),
                 typeof(MLTPage),
-                typeof(PageListView));
+                typeof(PageListView),
+                new PropertyMetadata(
+                    null,
+                    (d, e) => (d as PageListView)._vm.SelectedItem.Value = e.NewValue as MLTPage));
 
         public MLTPage SelectedItem
         {
@@ -177,9 +185,6 @@ namespace KMBEditor.MLTViewer.PageListView
 
             // ViewModel初期化
             this._vm.View = new WeakReference<PageListView>(this);
-            this._vm.MLTFile = this.ToReactiveProperty<MLTFile>(MLTFileProperty);
-            this._vm.SelectedItem = this.ToReactiveProperty<MLTPage>(SelectedItemProperty);
-
             this._vm.Init();
 
             // UserControl用のDataContextの設定

@@ -6,6 +6,7 @@ using System.Windows;
 using WinForms = System.Windows.Forms;
 using KMBEditor.Util.StringExtentions;
 using Reactive.Bindings;
+using System.Diagnostics;
 
 namespace KMBEditor.Model.MLT
 {

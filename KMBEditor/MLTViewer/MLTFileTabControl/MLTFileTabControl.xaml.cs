@@ -3,6 +3,7 @@ using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
@@ -163,7 +164,10 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             DependencyProperty.Register(
                 nameof(ItemSource),
                 typeof(ObservableCollection<MLTFile>),
-                typeof(MLTFileTabControl));
+                typeof(MLTFileTabControl),
+                new PropertyMetadata(
+                    null,
+                    (d, e) => (d as MLTFileTabControl)._vm.MLTFileList.Value = e.NewValue as ObservableCollection<MLTFile>));
 
         public ObservableCollection<MLTFile> ItemSource
         {
@@ -181,8 +185,6 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
 
             // ViewModelの初期化
             this._vm.View = new WeakReference<MLTFileTabControl>(this);
-            this._vm.MLTFileList = this.ToReactiveProperty<ObservableCollection<MLTFile>>(MLTFileListProperty);
-
             this._vm.Init();
 
             // UserControlのDataContextの設定

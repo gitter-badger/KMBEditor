@@ -55,11 +55,13 @@ namespace KMBEditor.MLTViewer.PageTreeView
         /// 表示対象のMLTFileの保持
         /// </summary>
         public ReactiveProperty<MLTFile> MLTFile { get; set; }
+            = new ReactiveProperty<MLTFile>();
 
         /// <summary>
         /// 選択中のアイテムの保持、ListViewとの共有用
         /// </summary>
         public ReactiveProperty<MLTPage> SelectedItem { get; set; }
+            = new ReactiveProperty<MLTPage>();
 
         /// <summary>
         /// TreeViewとバインドする用のデータ
@@ -224,7 +226,10 @@ namespace KMBEditor.MLTViewer.PageTreeView
             DependencyProperty.Register(
                 nameof(ItemSource),
                 typeof(MLTFile),
-                typeof(PageTreeView));
+                typeof(PageTreeView),
+                new PropertyMetadata(
+                    null,
+                    (d, e) => (d as PageTreeView)._vm.MLTFile.Value = e.NewValue as MLTFile));
 
         public MLTFile ItemSource
         {
@@ -238,7 +243,10 @@ namespace KMBEditor.MLTViewer.PageTreeView
             DependencyProperty.Register(
                 nameof(SelectedItem),
                 typeof(MLTPage),
-                typeof(PageTreeView));
+                typeof(PageTreeView),
+                new PropertyMetadata(
+                    null,
+                    (d, e) => (d as PageTreeView)._vm.SelectedItem.Value = e.NewValue as MLTPage));
 
         public MLTPage SelectedItem
         {
@@ -256,9 +264,6 @@ namespace KMBEditor.MLTViewer.PageTreeView
 
             // ViewModelの初期化
             this._vm.View = new WeakReference<PageTreeView>(this);
-            this._vm.MLTFile = this.ToReactiveProperty<MLTFile>(MLTFileProperty);
-            this._vm.SelectedItem = this.ToReactiveProperty<MLTPage>(SelectedItemProperty);
-
             this._vm.Init();
 
             // UserControlのDataContextの設定
