@@ -13,7 +13,12 @@
                     ItemsSource="{Binding Path=TabContextList, UpdateSourceTrigger=PropertyChanged}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Path=TabHeaderName.Value}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Path=TabHeaderName.Value}"/>
+                        <Button Margin="5,0,0,0">
+                            <TextBlock Text="×"/>
+                        </Button>
+                    </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
