@@ -50,6 +50,12 @@
                                     </Interactivity:EventToReactiveCommand>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="{x:Type TreeViewItem}">
+                                    <EventSetter Event="TreeViewItem.MouseDoubleClick"
+                                                 Handler="TreeViewItem_MouseDoubleClick"/>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate DataType="MLTFileTreeNode" ItemsSource="{Binding Children}">
                                     <StackPanel Orientation="Horizontal" Height="20">

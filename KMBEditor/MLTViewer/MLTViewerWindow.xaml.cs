@@ -5,9 +5,11 @@ using Reactive.Bindings.Interactivity;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using WinForms = System.Windows.Forms;
 
 namespace KMBEditor.MLTViewer
@@ -39,6 +41,7 @@ namespace KMBEditor.MLTViewer
         public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; } = new ReactiveProperty<List<MLTFileTreeNode>>();
         public ReactiveCommand OpenResourceDirectoryCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand<MLTFileTreeNode> TreeItemSelectCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
+        public ReactiveCommand<MLTFileTreeNode> TreeItemDoubleClickCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
 
         private string openResourceDirectory()
         {
@@ -94,6 +97,7 @@ namespace KMBEditor.MLTViewer
             // コマンド定義
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.openResourceDirectory());
             this.TreeItemSelectCommand.Subscribe(this.updatePreviewTab);
+            this.TreeItemDoubleClickCommand.Subscribe(this.addNewTab);
 
             // FileTreeの初期化
             this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(@"C:\Users\user\Documents\AA\HukuTemp_v21.0_20161120\HukuTemp");
@@ -135,6 +139,14 @@ namespace KMBEditor.MLTViewer
             e.Cancel = true;
             // Windowを隠す。再表示はMainWindow側で行う
             this.Hide();
+        }
+
+        private void TreeViewItem_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var item = sender as TreeViewItem;
+            var node = item.DataContext as MLTFileTreeNode;
+
+            this._vm.TreeItemDoubleClickCommand.Execute(node);
         }
     }
 }
