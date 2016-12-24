@@ -1,6 +1,7 @@
 ﻿using KMBEditor.Model.MLT;
 using KMBEditor.Model.MLTFileTree;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Interactivity;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,14 @@ namespace KMBEditor.MLTViewer
         }
     }
 
+    public class GroupTabContext
+    {
+        public ReactiveProperty<string> TabHeaderName { get; private set; }
+            = new ReactiveProperty<string>();
+        public ObservableCollection<MLTFile> TabFileList { get; private set; }
+            = new ObservableCollection<MLTFile>();
+    }
+
     /// <summary>
     /// MLTViewerWindow の ViewModel
     /// </summary>
@@ -34,8 +43,8 @@ namespace KMBEditor.MLTViewer
 
         private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
 
-        public ObservableCollection<MLTFile> TabFileList { get; private set; }
-            = new ObservableCollection<MLTFile> { new MLTFile() };
+        public ObservableCollection<GroupTabContext> GroupTabList { get; private set; }
+            = new ObservableCollection<GroupTabContext>();
 
         public ReactiveProperty<string> ResourceDirectoryPath { get; private set; } = new ReactiveProperty<string>("");
         public ReactiveProperty<List<MLTFileTreeNode>> MLTFileTreeNodes { get; private set; } = new ReactiveProperty<List<MLTFileTreeNode>>();
@@ -64,6 +73,11 @@ namespace KMBEditor.MLTViewer
             }
         }
 
+        private GroupTabContext getCurrentGroupTabContext()
+        {
+            return this.GroupTabList[0];
+        }
+
         private void addNewTab(MLTFileTreeNode node)
         {
             if (node.IsDirectory == false)
@@ -73,8 +87,9 @@ namespace KMBEditor.MLTViewer
                 // MLTファイルのオープン
                 file.OpenMLTFile(node.Path);
 
-                // タブの要素追加
-                this.TabFileList.Add(file);
+                // 現在のグループタブにタブ追加
+                var groupTab = this.getCurrentGroupTabContext();
+                groupTab.TabFileList.Add(file);
             }
         }
 
@@ -87,20 +102,46 @@ namespace KMBEditor.MLTViewer
                 // MLTファイルのオープン
                 file.OpenMLTFile(node.Path);
 
-                // MLTファイルの更新
-                this.TabFileList[0] = file;
+                // 現在のグループタブのプレビュータブを更新
+                var groupTab = this.getCurrentGroupTabContext();
+                groupTab.TabFileList[0] = file;
             }
         }
 
-        public MLTViewerWindowViewModel()
+        private void addGroupTabCountext(GroupTabContext ctx)
+        {
+            var index = this.GroupTabList.IndexOf(ctx);
+
+            // 追加されたグループタブを選択
+            MLTViewerWindow obj;
+            if (this.View.TryGetTarget(out obj))
+            {
+                obj.GroupTabControl.SelectedIndex = index;
+            }
+
+        }
+
+        public void Init()
         {
             // コマンド定義
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.openResourceDirectory());
             this.TreeItemSelectCommand.Subscribe(this.updatePreviewTab);
             this.TreeItemDoubleClickCommand.Subscribe(this.addNewTab);
+            this.GroupTabList.ObserveAddChanged().Subscribe(this.addGroupTabCountext);
 
             // FileTreeの初期化
             this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(@"C:\Users\user\Documents\AA\HukuTemp_v21.0_20161120\HukuTemp");
+
+            // グループタブ初期化
+            var ctx = new GroupTabContext();
+            ctx.TabHeaderName.Value = "Group 1";
+            ctx.TabFileList.Add(new MLTFile());
+            this.GroupTabList.Add(ctx);
+        }
+
+        public MLTViewerWindowViewModel()
+        {
+            // Viewの初期化が必要なためここで初期化しない
         }
     }
 
@@ -122,6 +163,7 @@ namespace KMBEditor.MLTViewer
 
             // ViewModelの初期化
             this._vm.View = new WeakReference<MLTViewerWindow>(this);
+            this._vm.Init();
 
             // DataContextの設定
             this.DataContext = _vm;
