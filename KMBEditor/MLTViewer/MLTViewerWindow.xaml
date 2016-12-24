@@ -76,7 +76,8 @@
                 <TabItem Header="Group 1">
                     <Grid Background="#FFE5E5E5">
                         <!-- MLT File 複数表示用タブコントロール -->
-                        <mltfiletabcontrol:MLTFileTabControl ItemSource="{Binding Path=TabFileList, UpdateSourceTrigger=PropertyChanged}"/>
+                        <mltfiletabcontrol:MLTFileTabControl
+                            ItemSource="{Binding Path=TabFileList, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                 </TabItem>
             </TabControl>
