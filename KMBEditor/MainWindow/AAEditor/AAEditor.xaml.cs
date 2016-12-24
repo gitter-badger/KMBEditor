@@ -128,14 +128,20 @@ namespace KMBEditor.MainWindow.AAEditor
 
     public class AAEditorViewModel
     {
-        public ObservableCollection<int> LineNumberList { get; private set; } = new ObservableCollection<int> { 1 };
-        public ObservableCollection<VisualLine> VisualLineList { get; private set; } = new ObservableCollection<VisualLine>();
+        public ObservableCollection<int> LineNumberList { get; private set; }
+            = new ObservableCollection<int> { 1 };
+        public ObservableCollection<VisualLine> VisualLineList { get; private set; }
+            = new ObservableCollection<VisualLine>();
 
         public ReactiveProperty<string> BindingOriginalText { get; private set; }
-        public ReactiveProperty<string> EditAreaText { get; private set; } = new ReactiveProperty<string>();
+            = new ReactiveProperty<string>();
+        public ReactiveProperty<string> EditAreaText { get; private set; }
+            = new ReactiveProperty<string>();
 
-        public ReactiveProperty<Thickness> VirticalLineMargin { get; set; } = new ReactiveProperty<Thickness>();
-        public ReactiveProperty<Thickness> HorizontalLineMargin { get; set; } = new ReactiveProperty<Thickness>();
+        public ReactiveProperty<Thickness> VirticalLineMargin { get; private set; }
+            = new ReactiveProperty<Thickness>();
+        public ReactiveProperty<Thickness> HorizontalLineMargin { get; private set; }
+            = new ReactiveProperty<Thickness>();
 
         private bool isUpdatedOringinalText = false;
 
@@ -273,11 +279,8 @@ namespace KMBEditor.MainWindow.AAEditor
             this.EditAreaText.Value = s ?? "";
         }
 
-        public AAEditorViewModel(ReactiveProperty<string> text_rp)
+        public AAEditorViewModel()
         {
-            // AAEditorのDipendencyPropertyの取得
-            this.BindingOriginalText = text_rp;
-
             // ガイド線の設定
             double top  = 1 + (16 * 30); // offset + 1行当たりのpixel数 * 行数
             double left = 3 + (1 * 800); // offset + 1dot当たりのpixel数 * 800dot
@@ -301,23 +304,26 @@ namespace KMBEditor.MainWindow.AAEditor
     /// </summary>
     public partial class AAEditor : UserControl
     {
-        private AAEditorViewModel _vm;
+        private AAEditorViewModel _vm = new AAEditorViewModel();
 
+        #region Text
         public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(AAEditor));
+            DependencyProperty.Register(
+                "Text",
+                typeof(string),
+                typeof(AAEditor),
+                new PropertyMetadata(null, (d, e) => (d as AAEditor)._vm.BindingOriginalText.Value = e.NewValue as string));
 
         public string Text
         {
             get { return (string)this.GetValue(TextProperty); }
             set { this.SetValue(TextProperty, value); }
         }
+        #endregion
 
         public AAEditor()
         {
             InitializeComponent();
-
-            this._vm = new AAEditorViewModel(
-                this.ToReactiveProperty<string>(TextProperty));
 
             this.AAEditorUserControlGrid.DataContext = _vm;
         }
