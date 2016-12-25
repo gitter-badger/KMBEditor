@@ -152,6 +152,11 @@
     <Compile Include="MainWindow\AAEditor\Ruler\Ruler.xaml.cs">
       <DependentUpon>Ruler.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Util\StringExtentions\StringExtentions.cs" />
     <Compile Include="Util\BindableBase\BindableBase.cs" />
     <Page Include="MainWindow\AAEditor\AAEditor.xaml">
@@ -202,11 +207,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -263,6 +263,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MLTViewer\GroupTabControl\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Delete Filled-8.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

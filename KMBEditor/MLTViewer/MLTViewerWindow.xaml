@@ -50,6 +50,12 @@
                                     </Interactivity:EventToReactiveCommand>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="{x:Type TreeViewItem}">
+                                    <EventSetter Event="TreeViewItem.MouseDoubleClick"
+                                                 Handler="TreeViewItem_MouseDoubleClick"/>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate DataType="MLTFileTreeNode" ItemsSource="{Binding Children}">
                                     <StackPanel Orientation="Horizontal" Height="20">
@@ -66,13 +72,24 @@
             <GridSplitter HorizontalAlignment="Stretch" MinWidth="3" Grid.Column="1"/>
             <!-- 中カラム -->
             <!-- グループ機能用タブコントロール -->
-            <TabControl Grid.Column="2" Grid.ColumnSpan="2">
-                <TabItem Header="Group 1">
-                    <Grid Background="#FFE5E5E5">
-                        <!-- MLT File 複数表示用タブコントロール -->
-                        <mltfiletabcontrol:MLTFileTabControl ItemSource="{Binding Path=TabFileList, UpdateSourceTrigger=PropertyChanged}"/>
-                    </Grid>
-                </TabItem>
+            <TabControl x:Name="GroupTabControl"
+                        Grid.Column="2" Grid.ColumnSpan="2"
+                        SelectedIndex="{Binding Path=SelectedIndex.Value}"
+                        ItemsSource="{Binding Path=GroupTabList}">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=TabHeaderName.Value}"/>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <Grid Background="#FFE5E5E5">
+                            <!-- MLT File 複数表示用タブコントロール -->
+                            <mltfiletabcontrol:MLTFileTabControl
+                                ItemSource="{Binding Path=TabFileList, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
             </TabControl>
             <!-- 右スプリッター -->
             <GridSplitter MinWidth="3" Grid.Column="3" HorizontalAlignment="Stretch"/>

@@ -6,34 +6,35 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace KMBEditor.MLTViewer.MLTFileTabControl
 {
+    /// <summary>
+    /// MLTページ表示用タブのDataContext定義
+    /// </summary>
+    public class TabContext
+    {
+        /// <summary>
+        /// タブのヘッダーテキスト
+        /// </summary>
+        public ReactiveProperty<string> TabHeaderName { get; private set; } = new ReactiveProperty<string>();
+        /// <summary>
+        /// MLTFile
+        /// </summary>
+        public ReactiveProperty<MLTFile> MLTFile { get; private set; } = new ReactiveProperty<MLTFile>();
+        /// <summary>
+        /// 選択中ページの共有用変数
+        /// </summary>
+        public ReactiveProperty<MLTPage> SelectedItem { get; private set; } = new ReactiveProperty<MLTPage>();
+    }
+
     public class MLTFileTabControlViewModel
     {
         /// <summary>
-        /// MLTページ表示用タブのDataContext定義
-        /// </summary>
-        public class TabContext
-        {
-            /// <summary>
-            /// タブのヘッダーテキスト
-            /// </summary>
-            public ReactiveProperty<string> TabHeaderName { get; private set; } = new ReactiveProperty<string>();
-            /// <summary>
-            /// MLTFile
-            /// </summary>
-            public ReactiveProperty<MLTFile> MLTFile { get; private set; } = new ReactiveProperty<MLTFile>();
-            /// <summary>
-            /// 選択中ページの共有用変数
-            /// </summary>
-            public ReactiveProperty<MLTPage> SelectedItem { get; private set; } = new ReactiveProperty<MLTPage>();
-        }
-
-        /// <summary>
-        /// Viewのインスタンス
+        /// Viewのインスタンス(Viewへの依存は可能な限り減らすこと)
         /// </summary>
         public WeakReference<MLTFileTabControl> View { get; set; }
 
@@ -50,6 +51,23 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
                 = new ObservableCollection<TabContext>();
 
         /// <summary>
+        /// タブの選択インデックス
+        /// </summary>
+        public ReactiveProperty<int> SelectedIndex { get; private set; }
+            = new ReactiveProperty<int>();
+
+        /// <summary>
+        /// Tab削除コマンド
+        /// </summary>
+        public ReactiveCommand<TabContext> DeleteTabCommand { get; private set; }
+            = new ReactiveCommand<TabContext>();
+
+        /// <summary>
+        /// MLTFileのコレクションの状態監視のDispose操作
+        /// </summary>
+        private CompositeDisposable _filesChangedDisposable = new CompositeDisposable();
+
+        /// <summary>
         /// MLTFileが追加された場合の処理。TabContextListを生成
         /// </summary>
         /// <param name="file"></param>
@@ -61,17 +79,24 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
                 return;
             }
 
+            var index = this.TabContextList.Count;
+
+            // indexが0ならプレビュー用のプレフィックスを追加
+            Func<string> getName = () => {
+                if (index == 0)
+                {
+                    return $"[Preview] {file.Name}";
+                }
+                return file.Name;
+            };
+
             var tabContext = new TabContext();
-            tabContext.TabHeaderName.Value = file.Name;
+            tabContext.TabHeaderName.Value = getName();
             tabContext.MLTFile.Value = file;
             this.TabContextList.Add(tabContext);
 
             // 追加したタブを選択
-            MLTFileTabControl obj;
-            if (this.View.TryGetTarget(out obj))
-            {
-                obj.tabControl.SelectedIndex = this.TabContextList.Count - 1;
-            }
+            this.SelectedIndex.Value = this.TabContextList.Count - 1;
         }
 
         /// <summary>
@@ -101,15 +126,12 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             this.TabContextList[index] = tabContext;
 
             // 入れ替えたタブを選択
-            MLTFileTabControl obj;
-            if (this.View.TryGetTarget(out obj))
-            {
-                obj.tabControl.SelectedIndex = index;
-            }
+            this.SelectedIndex.Value = index;
         }
 
         /// <summary>
-        /// MLTFileListの初期化
+        /// <para>MLTFileListの初期化</para>
+        /// <para>グループタブの切り替えの単位で呼ばれる</para>
         /// </summary>
         /// <param name="files"></param>
         private void initMLTFileList(ObservableCollection<MLTFile> files)
@@ -119,16 +141,47 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
                 return;
             }
 
-            // 既存のファイルのタブを追加
-            // 基本的にはPreviewTabのみの追加
+            // コレクション状態変更時の処理が重複登録されないように一旦クリア
+            this._filesChangedDisposable.Clear();
+
+            // 表示中のタブのクリア
+            this.TabContextList.Clear();
+
+            // グループタブが保持しているファイルの表示
             foreach (var file in files)
             {
                 this.addTabContextToList(file);
             }
 
-            // コレクション状態変更時の処理を追加
-            files.ObserveAddChanged().Subscribe(this.addTabContextToList);
-            files.ObserveReplaceChanged().Subscribe(x => this.replaceTabContext(x.NewItem, x.OldItem));
+            // コレクション状態変更時の処理を登録
+            files.ObserveAddChanged()
+                 .Subscribe(this.addTabContextToList)
+                 .AddTo(this._filesChangedDisposable);
+            files.ObserveReplaceChanged()
+                 .Subscribe(x => this.replaceTabContext(x.NewItem, x.OldItem))
+                 .AddTo(this._filesChangedDisposable);
+        }
+
+        /// <summary>
+        /// タブの削除
+        /// </summary>
+        /// <param name="tabctx"></param>
+        private void deleteTab(TabContext tabctx)
+        {
+            var index = this.TabContextList.IndexOf(tabctx);
+
+            // Previewタブの場合は削除しない
+            if (index == 0)
+            {
+                return;
+            }
+
+            // タブを削除
+            this.TabContextList.Remove(tabctx);
+
+            // 元のMLTFileを削除
+            this.MLTFileList.Value.Remove(tabctx.MLTFile.Value);
+            tabctx.MLTFile.Value = null;
         }
 
         /// <summary>
@@ -138,6 +191,9 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
         {
             // MLTFileList自体が入れ替わった時の処理
             this.MLTFileList.Subscribe(this.initMLTFileList);
+
+            // コマンド初期化
+            this.DeleteTabCommand.Subscribe(this.deleteTab);
         }
 
         /// <summary>
@@ -189,6 +245,19 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
 
             // UserControlのDataContextの設定
             this.MLTFileTabControlGrid.DataContext = _vm;
+        }
+
+        /// <summary>
+        /// タブの削除ボタンを押したときのイベントハンドラ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var tab = sender as Button;
+            var tabContext = tab.DataContext as TabContext;
+
+            this._vm.DeleteTabCommand.Execute(tabContext);
         }
     }
 }

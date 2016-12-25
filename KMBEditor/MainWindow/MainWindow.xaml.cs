@@ -22,7 +22,9 @@ namespace KMBEditor.MainWindow
     /// </summary>
     public class MainWindowViewModel
     {
-        // Viewのインスタンス
+        /// <summary>
+        /// Viewのインスタンス(Viewへの依存は可能な限り減らすこと)
+        /// </summary>
         public WeakReference<MainWindow> View;
 
         private GlobalSettings _global_settings = GlobalSettings.Instance;
