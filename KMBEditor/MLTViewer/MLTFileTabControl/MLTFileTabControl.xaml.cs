@@ -33,7 +33,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
     public class MLTFileTabControlViewModel
     {
         /// <summary>
-        /// Viewのインスタンス
+        /// Viewのインスタンス(Viewへの依存は可能な限り減らすこと)
         /// </summary>
         public WeakReference<MLTFileTabControl> View { get; set; }
 

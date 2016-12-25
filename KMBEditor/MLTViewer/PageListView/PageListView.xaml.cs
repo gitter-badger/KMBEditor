@@ -31,7 +31,7 @@ namespace KMBEditor.MLTViewer.PageListView
     public class PageListViewViewModel
     {
         /// <summary>
-        /// Viewのインスタンス
+        /// Viewのインスタンス(Viewへの依存は可能な限り減らすこと)
         /// </summary>
         public WeakReference<PageListView> View { get; set; }
 

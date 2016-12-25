@@ -47,7 +47,7 @@ namespace KMBEditor.MLTViewer.PageTreeView
     public class PageTreeViewViewModel
     {
         /// <summary>
-        /// Viewのインスタンス
+        /// Viewのインスタンス(Viewへの依存は可能な限り減らすこと)
         /// </summary>
         public WeakReference<PageTreeView> View { get; set; }
 

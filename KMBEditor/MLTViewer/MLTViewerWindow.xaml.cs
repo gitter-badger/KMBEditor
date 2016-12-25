@@ -37,7 +37,7 @@ namespace KMBEditor.MLTViewer
     public class MLTViewerWindowViewModel
     {
         /// <summary>
-        /// Viewのインスタンスを保持
+        /// Viewのインスタンス(Viewへの依存は可能な限り減らすこと)
         /// </summary>
         public WeakReference<MLTViewerWindow> View { get; set; }
 
