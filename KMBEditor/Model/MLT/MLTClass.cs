@@ -53,7 +53,7 @@ namespace KMBEditor.Model.MLT
         /// <summary>
         /// 現在管理しているファイル名
         /// </summary>
-        public string Name { get; private set; } = "(無題).mlt";
+        public string Name { get; set; } = "(無題).mlt";
 
         /// <summary>
         /// 内包しているページのリスト

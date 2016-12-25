@@ -134,8 +134,14 @@ namespace KMBEditor.MLTViewer
             foreach (var i in Enumerable.Range(0, maxTabCount))
             {
                 var ctx = new GroupTabContext();
-                ctx.TabHeaderName.Value = $"Group {i}";
-                ctx.TabFileList.Add(new MLTFile());
+                // グループタブの初期ヘッダ名(1始まり)
+                ctx.TabHeaderName.Value = $"Group {i + 1}";
+                // Previewタブ用のダミーデータを追加
+                var previewDammyFile = new MLTFile();
+                previewDammyFile.Name = "";
+                previewDammyFile.Pages.Clear();
+                ctx.TabFileList.Add(previewDammyFile);
+
                 this.GroupTabList.Add(ctx);
             }
 
