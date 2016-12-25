@@ -10,6 +10,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid x:Name="MLTFileTabControlGrid">
         <TabControl x:Name="tabControl" Margin="0,10,0,0"
+                    SelectedIndex="{Binding Path=SelectedIndex.Value, Mode=TwoWay}"
                     ItemsSource="{Binding Path=TabContextList, UpdateSourceTrigger=PropertyChanged}">
             <TabControl.ItemTemplate>
                 <DataTemplate>

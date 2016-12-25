@@ -50,6 +50,12 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
                 = new ObservableCollection<TabContext>();
 
         /// <summary>
+        /// タブの選択インデックス
+        /// </summary>
+        public ReactiveProperty<int> SelectedIndex { get; private set; }
+            = new ReactiveProperty<int>();
+
+        /// <summary>
         /// Tab削除コマンド
         /// </summary>
         public ReactiveCommand<TabContext> DeleteTabCommand { get; private set; }
@@ -73,11 +79,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             this.TabContextList.Add(tabContext);
 
             // 追加したタブを選択
-            MLTFileTabControl obj;
-            if (this.View.TryGetTarget(out obj))
-            {
-                obj.tabControl.SelectedIndex = this.TabContextList.Count - 1;
-            }
+            this.SelectedIndex.Value = this.TabContextList.Count - 1;
         }
 
         /// <summary>
@@ -107,11 +109,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             this.TabContextList[index] = tabContext;
 
             // 入れ替えたタブを選択
-            MLTFileTabControl obj;
-            if (this.View.TryGetTarget(out obj))
-            {
-                obj.tabControl.SelectedIndex = index;
-            }
+            this.SelectedIndex.Value = index;
         }
 
         /// <summary>
