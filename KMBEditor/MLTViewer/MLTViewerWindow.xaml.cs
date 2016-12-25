@@ -67,7 +67,7 @@ namespace KMBEditor.MLTViewer
         public ReactiveCommand<MLTFileTreeNode> TreeItemSelectCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
         public ReactiveCommand<MLTFileTreeNode> TreeItemDoubleClickCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
 
-        private string openResourceDirectory()
+        private void openResourceDirectory()
         {
             using (var dialog = new WinForms.FolderBrowserDialog())
             {
@@ -77,14 +77,20 @@ namespace KMBEditor.MLTViewer
                 // 選択されなかった場合はなにもしない
                 if (dialog.ShowDialog() != WinForms.DialogResult.OK)
                 {
-                    return ""; // FIXME: このままだとエラーになるので要修正
+                    return;
+                }
+                
+                // 同じディレクトリが再度選択された場合もなにもしない
+                if (dialog.SelectedPath == this.ResourceDirectoryPath.Value)
+                {
+                    return;
                 }
 
                 // 選択されたディレクトリを起点に、MLTファイルを探索
                 this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(dialog.SelectedPath);
 
-                // 選択されたディレクトリへのパスを返す
-                return dialog.SelectedPath;
+                // リソースファイルパスを保存
+                this.ResourceDirectoryPath.Value = dialog.SelectedPath;
             }
         }
 
@@ -96,6 +102,11 @@ namespace KMBEditor.MLTViewer
 
         private void addNewTab(MLTFileTreeNode node)
         {
+            if (node == null)
+            {
+                return;
+            }
+
             if (node.IsDirectory == false)
             {
                 var file = new MLTFile();
@@ -111,6 +122,11 @@ namespace KMBEditor.MLTViewer
 
         private void updatePreviewTab(MLTFileTreeNode node)
         {
+            if (node == null)
+            {
+                return;
+            }
+
             if (node.IsDirectory == false)
             {
                 var file = new MLTFile();
@@ -151,12 +167,26 @@ namespace KMBEditor.MLTViewer
         public void Init()
         {
             // コマンド定義
-            this.OpenResourceDirectoryCommand.Subscribe(_ => this.ResourceDirectoryPath.Value = this.openResourceDirectory());
+            this.OpenResourceDirectoryCommand.Subscribe(_ => this.openResourceDirectory());
             this.TreeItemSelectCommand.Subscribe(this.updatePreviewTab);
             this.TreeItemDoubleClickCommand.Subscribe(this.addNewTab);
 
             // FileTreeの初期化
-            this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(@"C:\Users\user\Documents\AA\HukuTemp_v21.0_20161120\HukuTemp");
+            // XXX: リソースファイル切り替えるユースケースってある？
+            // 前回値の読出し
+            var resourcePath = Properties.Settings.Default.MLTResourcePath;
+            if (!string.IsNullOrWhiteSpace(resourcePath))
+            {
+                this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(resourcePath);
+                this.ResourceDirectoryPath.Value = resourcePath;
+            }
+            
+            // パスの変更時に、次回の起動時用のパスとして保存する
+            this.ResourceDirectoryPath.Subscribe(s => 
+                {
+                    Properties.Settings.Default.MLTResourcePath = s;
+                    Properties.Settings.Default.Save();
+                });
 
             // グループタブ初期化
             this.initGroupTab();
