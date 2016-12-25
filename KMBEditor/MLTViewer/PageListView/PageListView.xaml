@@ -10,7 +10,12 @@
              xmlns:local="clr-namespace:KMBEditor.MLTViewer.PageListView"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid x:Name="PageListViewUserControl">
+    <UserControl.Resources>
+        <local:PageListViewViewModel x:Key="ViewModel"/>
+    </UserControl.Resources>
+    <Grid x:Name="PageListViewUserControl"
+          DataContext="{StaticResource ViewModel}"
+          Loaded="PageListViewUserControl_Loaded">
         <!-- UIの仮想化を有効化して、表示しているAAのみレンダリング -->
         <ListBox x:Name="AAListBox" Grid.Column="2"
                  ItemsSource="{Binding Path=MLTPageList.Value}"
@@ -47,7 +52,18 @@
                              HorizontalScrollBarVisibility="Disabled"
                              VerticalScrollBarVisibility="Disabled"
                              MinWidth="1000" Padding="5"
-                             Focusable="False"/>
+                             Focusable="False">
+                        <TextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="SJISコピー(_S)"
+                                          Command="{Binding Source={StaticResource ViewModel}, Path=SJISCopyToClipBoardCommand}"
+                                          CommandParameter="{Binding Path=RawText}"/>
+                                <MenuItem Header="Unicodeコピー(_U)"
+                                          Command="{Binding Source={StaticResource ViewModel}, Path=UnicodeCopyToClipBoardCommand}"
+                                          CommandParameter="{Binding Path=DecodeText}"/>
+                            </ContextMenu>
+                        </TextBox.ContextMenu>
+                    </TextBox>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
