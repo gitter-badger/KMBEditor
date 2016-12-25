@@ -74,6 +74,7 @@
             <!-- グループ機能用タブコントロール -->
             <TabControl x:Name="GroupTabControl"
                         Grid.Column="2" Grid.ColumnSpan="2"
+                        SelectedIndex="{Binding Path=SelectedIndex.Value}"
                         ItemsSource="{Binding Path=GroupTabList}">
                 <TabControl.ItemTemplate>
                     <DataTemplate>

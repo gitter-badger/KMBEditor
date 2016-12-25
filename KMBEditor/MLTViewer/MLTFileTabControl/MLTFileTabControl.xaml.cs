@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -62,6 +63,11 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             = new ReactiveCommand<TabContext>();
 
         /// <summary>
+        /// MLTFileのコレクションの状態監視のDispose操作
+        /// </summary>
+        private CompositeDisposable _filesChangedDisposable = new CompositeDisposable();
+
+        /// <summary>
         /// MLTFileが追加された場合の処理。TabContextListを生成
         /// </summary>
         /// <param name="file"></param>
@@ -73,8 +79,19 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
                 return;
             }
 
+            var index = this.TabContextList.Count;
+
+            // indexが0ならプレビュー用のプレフィックスを追加
+            Func<string> getName = () => {
+                if (index == 0)
+                {
+                    return $"[Preview] {file.Name}";
+                }
+                return file.Name;
+            };
+
             var tabContext = new TabContext();
-            tabContext.TabHeaderName.Value = file.Name;
+            tabContext.TabHeaderName.Value = getName();
             tabContext.MLTFile.Value = file;
             this.TabContextList.Add(tabContext);
 
@@ -113,7 +130,8 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
         }
 
         /// <summary>
-        /// MLTFileListの初期化
+        /// <para>MLTFileListの初期化</para>
+        /// <para>グループタブの切り替えの単位で呼ばれる</para>
         /// </summary>
         /// <param name="files"></param>
         private void initMLTFileList(ObservableCollection<MLTFile> files)
@@ -123,16 +141,25 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
                 return;
             }
 
-            // 既存のファイルのタブを追加
-            // 基本的にはPreviewTabのみの追加
+            // コレクション状態変更時の処理が重複登録されないように一旦クリア
+            this._filesChangedDisposable.Clear();
+
+            // 表示中のタブのクリア
+            this.TabContextList.Clear();
+
+            // グループタブが保持しているファイルの表示
             foreach (var file in files)
             {
                 this.addTabContextToList(file);
             }
 
-            // コレクション状態変更時の処理を追加
-            files.ObserveAddChanged().Subscribe(this.addTabContextToList);
-            files.ObserveReplaceChanged().Subscribe(x => this.replaceTabContext(x.NewItem, x.OldItem));
+            // コレクション状態変更時の処理を登録
+            files.ObserveAddChanged()
+                 .Subscribe(this.addTabContextToList)
+                 .AddTo(this._filesChangedDisposable);
+            files.ObserveReplaceChanged()
+                 .Subscribe(x => this.replaceTabContext(x.NewItem, x.OldItem))
+                 .AddTo(this._filesChangedDisposable);
         }
 
         /// <summary>
