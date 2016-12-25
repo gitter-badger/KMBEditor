@@ -73,6 +73,16 @@ namespace KMBEditor.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
+        internal static System.Drawing.Bitmap Delete_Filled_8 {
+            get {
+                object obj = ResourceManager.GetObject("Delete_Filled_8", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
         internal static System.Drawing.Bitmap File_48 {
             get {
                 object obj = ResourceManager.GetObject("File_48", resourceCulture);

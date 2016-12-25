@@ -15,8 +15,11 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Path=TabHeaderName.Value}"/>
-                        <Button Margin="5,0,0,0" Click="Button_Click">
-                            <TextBlock Text="×"/>
+                        <!-- タブ削除ボタン -->
+                        <Button Margin="5,3,0,0"
+                                BorderBrush="{x:Null}" Foreground="{x:Null}" Background="{x:Null}"
+                                Click="Button_Click">
+                            <Image Source="/KMBEditor;component/Resources/Delete Filled-8.png"/>
                         </Button>
                     </StackPanel>
                 </DataTemplate>
