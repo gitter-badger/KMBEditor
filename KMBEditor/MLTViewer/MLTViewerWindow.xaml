@@ -60,7 +60,24 @@
                                 <HierarchicalDataTemplate DataType="MLTFileTreeNode" ItemsSource="{Binding Children}">
                                     <StackPanel Orientation="Horizontal" Height="20">
                                         <Image Source="{Binding Icon}" Width="15" Margin="0,0,5,0"/>
-                                        <TextBlock Text="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Name}">
+                                            <ToolTipService.ToolTip>
+                                                <TextBlock>
+                                                    <TextBlock.Style>
+                                                        <Style>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Path=IsDirectory}" Value="true">
+                                                                    <Setter Property="TextBlock.Text" Value="ダブルクリックでツリーを開く"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Path=IsDirectory}" Value="false">
+                                                                    <Setter Property="TextBlock.Text" Value="ダブルクリックで新規タブを追加"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </ToolTipService.ToolTip>
+                                        </TextBlock>
                                     </StackPanel>
                                 </HierarchicalDataTemplate>
                             </TreeView.ItemTemplate>
