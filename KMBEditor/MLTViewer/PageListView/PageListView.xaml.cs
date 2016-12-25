@@ -60,6 +60,18 @@ namespace KMBEditor.MLTViewer.PageListView
             = new ReactiveCommand<MLTPage>();
 
         /// <summary>
+        /// Unicodeコピーコマンド
+        /// </summary>
+        public ReactiveCommand<string> UnicodeCopyToClipBoardCommand { get; private set; }
+            = new ReactiveCommand<string>();
+
+        /// <summary>
+        /// SJISコピーコマンド 
+        /// </summary>
+        public ReactiveCommand<string> SJISCopyToClipBoardCommand { get; private set; }
+            = new ReactiveCommand<string>();
+
+        /// <summary>
         /// 設定されているMLTFileの更新
         /// </summary>
         /// <param name="file"></param>
@@ -109,6 +121,8 @@ namespace KMBEditor.MLTViewer.PageListView
             this.MLTFile.Subscribe(this.updateMLTFile);
             this.MLTPageListItemSelectCommand.Subscribe(this.updateSelectedItem);
             this.SelectedItem.Subscribe(this.updateSelectedItemFromTreeView);
+            this.SJISCopyToClipBoardCommand.Subscribe(s => Clipboard.SetText(s, TextDataFormat.Text));
+            this.UnicodeCopyToClipBoardCommand.Subscribe(s => Clipboard.SetText(s, TextDataFormat.UnicodeText));
         }
 
         /// <summary>
@@ -125,11 +139,6 @@ namespace KMBEditor.MLTViewer.PageListView
     /// </summary>
     public partial class PageListView : UserControl
     {
-        /// <summary>
-        /// ViewModelのインスタンス
-        /// </summary>
-        private PageListViewViewModel _vm = new PageListViewViewModel();
-
         #region ItemSource
         public static readonly DependencyProperty MLTFileProperty =
             DependencyProperty.Register(
@@ -138,7 +147,7 @@ namespace KMBEditor.MLTViewer.PageListView
                 typeof(PageListView),
                 new PropertyMetadata(
                     null,
-                    (d, e) => (d as PageListView)._vm.MLTFile.Value = e.NewValue as MLTFile));
+                    (d, e) => ((d as PageListView).PageListViewUserControl.DataContext as PageListViewViewModel).MLTFile.Value = e.NewValue as MLTFile));
 
         public MLTFile ItemSource
         {
@@ -155,7 +164,7 @@ namespace KMBEditor.MLTViewer.PageListView
                 typeof(PageListView),
                 new PropertyMetadata(
                     null,
-                    (d, e) => (d as PageListView)._vm.SelectedItem.Value = e.NewValue as MLTPage));
+                    (d, e) => ((d as PageListView).PageListViewUserControl.DataContext as PageListViewViewModel).SelectedItem.Value = e.NewValue as MLTPage));
 
         public MLTPage SelectedItem
         {
@@ -170,13 +179,16 @@ namespace KMBEditor.MLTViewer.PageListView
         public PageListView()
         {
             InitializeComponent();
+        }
+
+        private void PageListViewUserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            var data = sender as Grid;
+            var vm = data.DataContext as PageListViewViewModel;
 
             // ViewModel初期化
-            this._vm.View = new WeakReference<PageListView>(this);
-            this._vm.Init();
-
-            // UserControl用のDataContextの設定
-            this.PageListViewUserControl.DataContext = _vm;
+            vm.View = new WeakReference<PageListView>(this);
+            vm.Init();
         }
     }
 }
