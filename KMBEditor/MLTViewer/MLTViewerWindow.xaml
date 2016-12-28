@@ -12,7 +12,10 @@
         mc:Ignorable="d"
         Title="MLTViewerWindow" Height="599" Width="1120"
         Closing="Window_Closing">
-    <Grid>
+    <Window.Resources>
+        <local:MLTViewerWindowViewModel x:Key="ViewModel"/>
+    </Window.Resources>
+    <Grid x:Name="MLTViewer" DataContext="{StaticResource ViewModel}" Loaded="Grid_Loaded">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition/>
@@ -95,7 +98,15 @@
                         ItemsSource="{Binding Path=GroupTabList}">
                 <TabControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Path=TabHeaderName.Value}"/>
+                        <TextBlock Text="{Binding Path=TabHeaderName.Value}">
+                            <TextBlock.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="タブ名変更(_R)"
+                                              Command="{Binding Source={StaticResource ViewModel}, Path=RenameTabHeaderCommand}"
+                                              CommandParameter="{Binding}"/>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
+                        </TextBlock>
                     </DataTemplate>
                 </TabControl.ItemTemplate>
                 <TabControl.ContentTemplate>

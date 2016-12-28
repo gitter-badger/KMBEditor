@@ -1,5 +1,6 @@
 ﻿using KMBEditor.Model.MLT;
 using KMBEditor.Model.MLTFileTree;
+using KMBEditor.MLTViewer.RenameDialog;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Interactivity;
@@ -66,6 +67,7 @@ namespace KMBEditor.MLTViewer
         public ReactiveCommand OpenResourceDirectoryCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand<MLTFileTreeNode> TreeItemSelectCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
         public ReactiveCommand<MLTFileTreeNode> TreeItemDoubleClickCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
+        public ReactiveCommand<GroupTabContext> RenameTabHeaderCommand { get; private set; } = new ReactiveCommand<GroupTabContext>();
 
         private void openResourceDirectory()
         {
@@ -164,12 +166,27 @@ namespace KMBEditor.MLTViewer
             this.SelectedIndex.Value = 0;
         }
 
+        private void RenameTabHeader(GroupTabContext ctx)
+        {
+            if (ctx == null)
+            {
+                return;
+            }
+
+            var dialog = new RenameDialogWindow(ctx.TabHeaderName.Value);
+            if (dialog.ShowDialog() == true)
+            {
+                ctx.TabHeaderName.Value = dialog.ResponseText;
+            }
+        }
+
         public void Init()
         {
             // コマンド定義
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.openResourceDirectory());
             this.TreeItemSelectCommand.Subscribe(this.updatePreviewTab);
             this.TreeItemDoubleClickCommand.Subscribe(this.addNewTab);
+            this.RenameTabHeaderCommand.Subscribe(this.RenameTabHeader);
 
             // FileTreeの初期化
             // XXX: リソースファイル切り替えるユースケースってある？
@@ -208,18 +225,18 @@ namespace KMBEditor.MLTViewer
     /// </summary>
     public partial class MLTViewerWindow : Window
     {
-        private MLTViewerWindowViewModel _vm = new MLTViewerWindowViewModel();
-
         public MLTViewerWindow()
         {
             InitializeComponent();
+        }
 
-            // ViewModelの初期化
-            this._vm.View = new WeakReference<MLTViewerWindow>(this);
-            this._vm.Init();
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {
+            var view = sender as Grid;
+            var viewModel = view.DataContext as MLTViewerWindowViewModel;
 
-            // DataContextの設定
-            this.DataContext = _vm;
+            viewModel.View = new WeakReference<MLTViewerWindow>(this);
+            viewModel.Init();
         }
 
         /// <summary>
@@ -241,7 +258,8 @@ namespace KMBEditor.MLTViewer
             var item = sender as TreeViewItem;
             var node = item.DataContext as MLTFileTreeNode;
 
-            this._vm.TreeItemDoubleClickCommand.Execute(node);
+            var vm = this.MLTViewer.DataContext as MLTViewerWindowViewModel;
+            vm.TreeItemDoubleClickCommand.Execute(node);
         }
     }
 }
