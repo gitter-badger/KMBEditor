@@ -1,0 +1,26 @@
+﻿<Window x:Class="KMBEditor.CustomDialog.RenameDialog.RenameDialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KMBEditor.CustomDialog.RenameDialog"
+        mc:Ignorable="d"
+        Title="名前の変更"
+        Height="120" Width="300"
+        ResizeMode="NoResize"
+        ContentRendered="Window_ContentRendered"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <StackPanel>
+            <TextBox x:Name="InputTextBox" Text="{Binding Path=InputText.Value, Mode=TwoWay}" Margin="10,15,10,0"/>
+            <Grid Margin="10,10,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="OK" Command="{Binding Path=OkButtonClickCommand}" Margin="0,0,5,0"/>
+                <Button Grid.Column="1" Content="Cancel" Command="{Binding Path=CancelButtonClickCommand}" Margin="5,0,0,0"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>

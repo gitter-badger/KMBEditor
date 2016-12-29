@@ -1,6 +1,6 @@
 ﻿using KMBEditor.Model.MLT;
 using KMBEditor.Model.MLTFileTree;
-using KMBEditor.MLTViewer.RenameDialog;
+using KMBEditor.CustomDialog.RenameDialog;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Interactivity;
@@ -166,7 +166,11 @@ namespace KMBEditor.MLTViewer
             this.SelectedIndex.Value = 0;
         }
 
-        private void RenameTabHeader(GroupTabContext ctx)
+        /// <summary>
+        /// グループタブの表示名変更
+        /// </summary>
+        /// <param name="ctx">対象のDataContext</param>
+        private void RenameTabHeaderName(GroupTabContext ctx)
         {
             if (ctx == null)
             {
@@ -186,7 +190,7 @@ namespace KMBEditor.MLTViewer
             this.OpenResourceDirectoryCommand.Subscribe(_ => this.openResourceDirectory());
             this.TreeItemSelectCommand.Subscribe(this.updatePreviewTab);
             this.TreeItemDoubleClickCommand.Subscribe(this.addNewTab);
-            this.RenameTabHeaderCommand.Subscribe(this.RenameTabHeader);
+            this.RenameTabHeaderCommand.Subscribe(this.RenameTabHeaderName);
 
             // FileTreeの初期化
             // XXX: リソースファイル切り替えるユースケースってある？

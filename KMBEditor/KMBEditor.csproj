@@ -170,7 +170,7 @@
     <Compile Include="MLTViewer\PageTreeView\PageTreeView.xaml.cs">
       <DependentUpon>PageTreeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MLTViewer\RenameDialog\RenameDialog.xaml.cs">
+    <Compile Include="CustomDialog\RenameDialog\RenameDialog.xaml.cs">
       <DependentUpon>RenameDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\GlobalSettings.cs" />
@@ -224,7 +224,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MLTViewer\RenameDialog\RenameDialog.xaml">
+    <Page Include="CustomDialog\RenameDialog\RenameDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
