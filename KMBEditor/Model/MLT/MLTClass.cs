@@ -59,7 +59,7 @@ namespace KMBEditor.Model.MLT
         /// 内包しているページのリスト
         /// </summary>
         public ObservableCollection<MLTPage> Pages { get; private set; }
-            = new ObservableCollection<MLTPage> { new MLTPage() };
+            = new ObservableCollection<MLTPage> {};
 
         /// <summary>
         /// ファイルの絶対パス
