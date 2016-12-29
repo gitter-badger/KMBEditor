@@ -51,8 +51,9 @@ namespace KMBEditor.MLTViewer
         /// </summary>
         public WeakReference<MLTViewerWindow> View { get; set; }
 
-        private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
-
+        /// <summary>
+        /// グループタブのデータリスト
+        /// </summary>
         public ObservableCollection<GroupTabContext> GroupTabList { get; private set; }
             = new ObservableCollection<GroupTabContext>();
 
@@ -68,6 +69,11 @@ namespace KMBEditor.MLTViewer
         public ReactiveCommand<MLTFileTreeNode> TreeItemSelectCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
         public ReactiveCommand<MLTFileTreeNode> TreeItemDoubleClickCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
         public ReactiveCommand<GroupTabContext> RenameTabHeaderCommand { get; private set; } = new ReactiveCommand<GroupTabContext>();
+
+        /// <summary>
+        /// リソースファイルツリーのデータ
+        /// </summary>
+        private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
 
         private void openResourceDirectory()
         {
