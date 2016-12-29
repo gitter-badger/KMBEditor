@@ -27,7 +27,7 @@
             <MenuItem Header="表示(_N)">
                 <MenuItem Header="空白文字の表示(_W)"/>
                 <MenuItem Header="右ガイド線の表示(_M)"/>
-                <MenuItem Header="左ガイド線の表示(_S)"/>
+                <MenuItem Header="下ガイド線の表示(_S)"/>
             </MenuItem>
             <!-- メニューバー：ウィンドウ -->
             <MenuItem Header="ウィンドウ(_W)">
