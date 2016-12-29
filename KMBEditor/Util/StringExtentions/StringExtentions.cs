@@ -59,7 +59,10 @@ namespace KMBEditor.Util.StringExtentions
         /// <returns></returns>
         public static string UnicodeEscapeDecode(this string str)
         {
-            // &#123 のようなエスケープされている文字をUnicodeに変換する
+            // &#x1234; のようなエスケープされている文字をUnicodeに変換する
+            // サロゲートペア(U+10000 以降のコードポイント)を持つような文字でも問題なし
+            // 豆腐になる場合はフォントが対応していない文字だと考えられる
+            // ただしAAはフォントが MS PGothic なことが前提のため、これらの表示は基本あきらめるしかない
             return HttpUtility.HtmlDecode(str);
         }
 
