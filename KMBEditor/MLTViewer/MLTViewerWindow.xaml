@@ -11,7 +11,7 @@
         xmlns:mltfiletabcontrol="clr-namespace:KMBEditor.MLTViewer.MLTFileTabControl"
         mc:Ignorable="d"
         Title="MLTViewerWindow" Height="599" Width="1120"
-        Closing="Window_Closing">
+        Closing="Window_Closing" Closed="Window_Closed">
     <Window.Resources>
         <local:MLTViewerWindowViewModel x:Key="ViewModel"/>
     </Window.Resources>

@@ -13,6 +13,9 @@ using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using WinForms = System.Windows.Forms;
+using Newtonsoft.Json;
+using System.IO;
+using System.Text;
 
 namespace KMBEditor.MLTViewer
 {
@@ -190,6 +193,46 @@ namespace KMBEditor.MLTViewer
             }
         }
 
+        private readonly string _tabSettingsFilePath = @"mltviewer_tabsettings.json";
+
+        /// <summary>
+        /// 終了前のデータ保存
+        /// </summary>
+        public void SaveSettings()
+        {
+            // グループタブの状態を保存(上書き)
+            var json = JsonConvert.SerializeObject(this.GroupTabList);
+            using (var sw = new StreamWriter(this._tabSettingsFilePath, false, Encoding.Unicode))
+            {
+                sw.Write(json);
+            }
+        }
+
+        /// <summary>
+        /// 前回値の復帰
+        /// </summary>
+        private void loadSettings()
+        {
+            // グループタブの状態を復帰
+            if (File.Exists(this._tabSettingsFilePath))
+            {
+                using (var sr = new StreamReader(this._tabSettingsFilePath, Encoding.Unicode))
+                {
+                    var data = sr.ReadToEnd();
+                    var groupTabContexts = JsonConvert.DeserializeObject<ObservableCollection<GroupTabContext>>(data);
+                    foreach (var item in groupTabContexts)
+                    {
+                        this.GroupTabList.Add(item);
+                    }
+                }
+            }
+            else
+            {
+                // グループタブ初期化
+                this.initGroupTab();
+            }
+        }
+
         public void Init()
         {
             // コマンド定義
@@ -215,8 +258,8 @@ namespace KMBEditor.MLTViewer
                     Properties.Settings.Default.Save();
                 });
 
-            // グループタブ初期化
-            this.initGroupTab();
+            // 前回値の復帰
+            this.loadSettings();
         }
 
         public MLTViewerWindowViewModel()
@@ -270,6 +313,13 @@ namespace KMBEditor.MLTViewer
 
             var vm = this.MLTViewer.DataContext as MLTViewerWindowViewModel;
             vm.TreeItemDoubleClickCommand.Execute(node);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            var vm = this.MLTViewer.DataContext as MLTViewerWindowViewModel;
+            // 開いているタブなどの状態の保存
+            vm.SaveSettings();
         }
     }
 }
