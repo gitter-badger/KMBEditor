@@ -32,13 +32,13 @@ namespace KMBEditor.MainWindow
         public WeakReference<MainWindow> View;
 
         // プロパティ
-        public ReadOnlyObservableCollection<MLTPage> PageList { get; private set; }
         public ReactiveProperty<string> OnlineDocumentURL { get; private set; }
         public ReactiveProperty<string> GitHubIssueURL { get; private set; }
         public ReactiveProperty<string> CurrentBoardURL { get; private set; }
         public ReactiveProperty<string> DevelopperTwtterURL { get; private set; }
         public ReactiveProperty<string> OrignalPageBytes { get; private set; } = new ReactiveProperty<string>();
         public ObservableCollection<TabItemContent> TabItems { get; private set; } = new ObservableCollection<TabItemContent>();
+        public ReadOnlyObservableCollection<MLTPage> PageList { get; private set; }
         /// <summary>
         /// タブの選択インデックス
         /// </summary>
@@ -59,7 +59,6 @@ namespace KMBEditor.MainWindow
         public ReactiveCommand BrowserOpenCommand_DevelopperTwtterURL { get; private set; }
 
         // データ
-        private MLTFile _current_mlt_file = new MLTFile();
         private MLTViewerWindow _mlt_viewer;
         /// <summary>
         /// 共通設定保持クラス
@@ -172,7 +171,6 @@ namespace KMBEditor.MainWindow
             this.GitHubIssueURL = this._global_settings.ObserveProperty(x => x.GitHubIssueURL).ToReactiveProperty();
             this.DevelopperTwtterURL = this._global_settings.ObserveProperty(x => x.DevelopperTwtterURL).ToReactiveProperty();
             this.CurrentBoardURL = this._global_settings.ObserveProperty(x => x.CurrentBoardURL).ToReactiveProperty();
-            this.PageList = this._current_mlt_file.Pages.ToReadOnlyReactiveCollection();
 
             // コマンド初期化
             this.BrowserOpenCommand_OnlineDocumentURL = this.OnlineDocumentURL.Select(x => !string.IsNullOrEmpty(x)).ToReactiveCommand();
