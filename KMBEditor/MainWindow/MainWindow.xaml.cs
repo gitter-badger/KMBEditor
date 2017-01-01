@@ -12,11 +12,15 @@ using System.Windows.Controls;
 
 namespace KMBEditor.MainWindow
 {
+    /// <summary>
+    /// タブごとのデータコンテキスト
+    /// </summary>
     public class TabItemContent
     {
         public MLTFile File { get; set; }
         public ReactiveProperty<MLTPage> Page { get; set; }
     }
+
     /// <summary>
     /// MainWindow の ViewModel
     /// </summary>
