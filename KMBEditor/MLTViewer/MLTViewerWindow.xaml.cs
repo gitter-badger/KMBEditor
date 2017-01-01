@@ -216,6 +216,7 @@ namespace KMBEditor.MLTViewer
             // グループタブの状態を復帰
             if (File.Exists(this._tabSettingsFilePath))
             {
+                // 前回値の保存用設定ファイルが存在する場合
                 using (var sr = new StreamReader(this._tabSettingsFilePath, Encoding.Unicode))
                 {
                     var data = sr.ReadToEnd();
@@ -228,6 +229,7 @@ namespace KMBEditor.MLTViewer
             }
             else
             {
+                // 前回値の保存用設定ファイルが存在しない場合
                 // グループタブ初期化
                 this.initGroupTab();
             }
