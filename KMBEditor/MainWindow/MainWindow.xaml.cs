@@ -3,6 +3,7 @@ using KMBEditor.Model;
 using KMBEditor.Model.MLT;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using Reactive.Bindings.Interactivity;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -38,7 +39,11 @@ namespace KMBEditor.MainWindow
         public ReactiveProperty<string> DevelopperTwtterURL { get; private set; }
         public ReactiveProperty<string> OrignalPageBytes { get; private set; } = new ReactiveProperty<string>();
         public ObservableCollection<TabItemContent> TabItems { get; private set; } = new ObservableCollection<TabItemContent>();
-        public ReadOnlyObservableCollection<MLTPage> PageList { get; private set; }
+        /// <summary>
+        /// ページリスト表示用変数
+        /// </summary>
+        public ReactiveProperty<ObservableCollection<MLTPage>> PageList { get; private set; }
+            = new ReactiveProperty<ObservableCollection<MLTPage>>();
         /// <summary>
         /// タブの選択インデックス
         /// </summary>
@@ -189,6 +194,10 @@ namespace KMBEditor.MainWindow
             this.BrowserOpenCommand_DevelopperTwtterURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_CurrentBoardURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
 
+            // プロパティ定義
+            // ページリストの更新
+            this.SelectedIndex.Subscribe(i => this.PageList.Value = this.TabItems[i].File.Pages);
+
             // リアクティブプロパティ設定
             //this.OrignalPageBytes = this.Page
             //        .Select(obj => obj == null ? 0 : obj.Bytes)
@@ -235,6 +244,11 @@ namespace KMBEditor.MainWindow
                     e.Cancel = true;
                     break;
             }
+        }
+
+        private void EditorTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

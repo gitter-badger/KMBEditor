@@ -3,6 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
+        xmlns:Interactivity="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET45"
         xmlns:local="clr-namespace:KMBEditor.MainWindow"
         xmlns:editor="clr-namespace:KMBEditor.MainWindow.AAEditor"
         mc:Ignorable="d"
@@ -86,7 +89,9 @@
                                 <RowDefinition Height="265*"/>
                             </Grid.RowDefinitions>
                             <!-- MLT内ページリスト表示 -->
-                            <DataGrid x:Name="dataGrid" ItemsSource="{Binding PageList}" AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"/>
+                            <DataGrid x:Name="dataGrid"
+                                      ItemsSource="{Binding Path=PageList.Value}"
+                                      AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"/>
                             <!-- ページ変更ボタン（削除予定） -->
                             <Button x:Name="nextButton" Content="Next" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Command="{Binding NextPageCommand}" Height="20"/>
                             <Button x:Name="prevButton" Content="Prev" HorizontalAlignment="Left" Margin="99,0,0,10" VerticalAlignment="Bottom" Width="75" Command="{Binding PrevPageCommand}" Height="20"/>
