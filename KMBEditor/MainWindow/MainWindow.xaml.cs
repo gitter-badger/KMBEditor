@@ -27,8 +27,6 @@ namespace KMBEditor.MainWindow
         /// </summary>
         public WeakReference<MainWindow> View;
 
-        private GlobalSettings _global_settings = GlobalSettings.Instance;
-
         // プロパティ
         public ReadOnlyObservableCollection<MLTPage> PageList { get; private set; }
         public ReactiveProperty<string> OnlineDocumentURL { get; private set; }
@@ -54,6 +52,10 @@ namespace KMBEditor.MainWindow
         // データ
         private MLTFile _current_mlt_file = new MLTFile();
         private MLTViewerWindow _mlt_viewer;
+        /// <summary>
+        /// 共通設定保持クラス
+        /// </summary>
+        private GlobalSettings _global_settings = GlobalSettings.Instance;
 
         /// <summary>
         /// <para>MLTViewerを表示する</para>
