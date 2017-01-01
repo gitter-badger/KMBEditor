@@ -92,9 +92,10 @@ namespace KMBEditor.MainWindow
         {
             var new_mlt_file = new MLTFile();
 
-            // 空ページを追加
+            // 空ページで初期化
             new_mlt_file.Pages.Add(new MLTPage());
 
+            // タブを追加
             this.TabItems.Add(
                 new TabItemContent
                 {
@@ -113,8 +114,10 @@ namespace KMBEditor.MainWindow
         {
             var new_mlt_file = new MLTFile();
 
+            // ファイル選択ダイアログを開く
             new_mlt_file.OpemMLTFileWithDialog();
 
+            // タブを追加
             this.TabItems.Add(
                 new TabItemContent
                 {
