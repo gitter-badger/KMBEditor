@@ -209,9 +209,9 @@ namespace KMBEditor.MLTViewer
         }
 
         /// <summary>
-        /// 前回値の復帰
+        /// グループタブの状態を復帰、または初期化
         /// </summary>
-        private void loadSettings()
+        private void loadGroupTabContextOrInit()
         {
             // グループタブの状態を復帰
             if (File.Exists(this._tabSettingsFilePath))
@@ -235,6 +235,47 @@ namespace KMBEditor.MLTViewer
             }
         }
 
+        /// <summary>
+        /// MLTFileTreeの状態を復元
+        /// </summary>
+        private void loadMLTFileTree()
+        {
+            // 前回値の読出し
+            var resourcePath = Properties.Settings.Default.MLTResourcePath;
+
+            // 以下バリデーション
+            // 前回値を利用できない場合は前回値を初期化して返す
+
+            // そもそも設定されていない場合
+            if (string.IsNullOrWhiteSpace(resourcePath))
+            {
+                this.ResourceDirectoryPath.Value = "";
+                return;
+            }
+
+            // 設定はされているが、ディレクトリが存在しない場合
+            // リネーム、移動、新バージョン入れ替えなど
+            if (!Directory.Exists(resourcePath))
+            {
+                this.ResourceDirectoryPath.Value = "";
+                return;
+            }
+            
+            this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(resourcePath);
+            this.ResourceDirectoryPath.Value = resourcePath;
+        }
+
+        /// <summary>
+        /// 前回値の復帰
+        /// </summary>
+        private void loadSettings()
+        {
+            /// MLTFileTreeの状態を復元
+            loadMLTFileTree();
+            /// グループタブの状態を復帰、または初期化
+            loadGroupTabContextOrInit();
+        }
+
         public void Init()
         {
             // コマンド定義
@@ -243,19 +284,10 @@ namespace KMBEditor.MLTViewer
             this.TreeItemDoubleClickCommand.Subscribe(this.addNewTab);
             this.RenameTabHeaderCommand.Subscribe(this.RenameTabHeaderName);
 
-            // FileTreeの初期化
-            // XXX: リソースファイル切り替えるユースケースってある？
-            // 前回値の読出し
-            var resourcePath = Properties.Settings.Default.MLTResourcePath;
-            if (!string.IsNullOrWhiteSpace(resourcePath))
-            {
-                this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(resourcePath);
-                this.ResourceDirectoryPath.Value = resourcePath;
-            }
-            
-            // パスの変更時に、次回の起動時用のパスとして保存する
+            // プロパティ初期化
             this.ResourceDirectoryPath.Subscribe(s => 
                 {
+                    // パスの変更時に、次回の起動時用のパスとして保存する
                     Properties.Settings.Default.MLTResourcePath = s;
                     Properties.Settings.Default.Save();
                 });
