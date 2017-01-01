@@ -61,6 +61,7 @@
             </Grid.ColumnDefinitions>
             <!-- 左カラム -->
             <TabControl x:Name="EditorTabControl"
+                        SelectedIndex="{Binding Path=SelectedIndex.Value, Mode=TwoWay}"
                         ItemsSource="{Binding Path=TabItems}">
                 <TabControl.ItemTemplate>
                     <DataTemplate>

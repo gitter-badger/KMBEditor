@@ -35,6 +35,11 @@ namespace KMBEditor.MainWindow
         public ReactiveProperty<string> DevelopperTwtterURL { get; private set; }
         public ReactiveProperty<string> OrignalPageBytes { get; private set; } = new ReactiveProperty<string>();
         public ObservableCollection<TabItemContent> TabItems { get; private set; } = new ObservableCollection<TabItemContent>();
+        /// <summary>
+        /// タブの選択インデックス
+        /// </summary>
+        public ReactiveProperty<int> SelectedIndex { get; private set; }
+            = new ReactiveProperty<int>();
 
         // コマンド
         public ReactiveCommand CreateNewMLTFileCommand { get; private set; } = new ReactiveCommand();
@@ -97,13 +102,8 @@ namespace KMBEditor.MainWindow
                     Page = new ReactiveProperty<MLTPage>(new_mlt_file.GetCurrentPage())
                 });
 
-            // 追加したタブに遷移
-            MainWindow obj;
-            if (this.View.TryGetTarget(out obj))
-            {
-                var tab = obj.EditorTabControl;
-                tab.SelectedIndex = tab.Items.Count;
-            }
+            // 追加したタブを選択
+            this.SelectedIndex.Value = this.TabItems.Count - 1;
         }
 
         /// <summary>
@@ -122,13 +122,8 @@ namespace KMBEditor.MainWindow
                     Page = new ReactiveProperty<MLTPage>(new_mlt_file.GetCurrentPage())
                 });
 
-            // 追加したタブに遷移
-            MainWindow obj;
-            if (this.View.TryGetTarget(out obj))
-            {
-                var tab = obj.EditorTabControl;
-                tab.SelectedIndex = tab.Items.Count;
-            }
+            // 追加したタブを選択
+            this.SelectedIndex.Value = this.TabItems.Count - 1;
         }
 
         private void movePrevPage()
