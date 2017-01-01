@@ -13,6 +13,9 @@ using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using WinForms = System.Windows.Forms;
+using Newtonsoft.Json;
+using System.IO;
+using System.Text;
 
 namespace KMBEditor.MLTViewer
 {
@@ -51,8 +54,9 @@ namespace KMBEditor.MLTViewer
         /// </summary>
         public WeakReference<MLTViewerWindow> View { get; set; }
 
-        private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
-
+        /// <summary>
+        /// グループタブのデータリスト
+        /// </summary>
         public ObservableCollection<GroupTabContext> GroupTabList { get; private set; }
             = new ObservableCollection<GroupTabContext>();
 
@@ -68,6 +72,11 @@ namespace KMBEditor.MLTViewer
         public ReactiveCommand<MLTFileTreeNode> TreeItemSelectCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
         public ReactiveCommand<MLTFileTreeNode> TreeItemDoubleClickCommand { get; private set; } = new ReactiveCommand<MLTFileTreeNode>();
         public ReactiveCommand<GroupTabContext> RenameTabHeaderCommand { get; private set; } = new ReactiveCommand<GroupTabContext>();
+
+        /// <summary>
+        /// リソースファイルツリーのデータ
+        /// </summary>
+        private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
 
         private void openResourceDirectory()
         {
@@ -184,6 +193,89 @@ namespace KMBEditor.MLTViewer
             }
         }
 
+        private readonly string _tabSettingsFilePath = @"mltviewer_tabsettings.json";
+
+        /// <summary>
+        /// 終了前のデータ保存
+        /// </summary>
+        public void SaveSettings()
+        {
+            // グループタブの状態を保存(上書き)
+            var json = JsonConvert.SerializeObject(this.GroupTabList);
+            using (var sw = new StreamWriter(this._tabSettingsFilePath, false, Encoding.Unicode))
+            {
+                sw.Write(json);
+            }
+        }
+
+        /// <summary>
+        /// グループタブの状態を復帰、または初期化
+        /// </summary>
+        private void loadGroupTabContextOrInit()
+        {
+            // グループタブの状態を復帰
+            if (File.Exists(this._tabSettingsFilePath))
+            {
+                // 前回値の保存用設定ファイルが存在する場合
+                using (var sr = new StreamReader(this._tabSettingsFilePath, Encoding.Unicode))
+                {
+                    var data = sr.ReadToEnd();
+                    var groupTabContexts = JsonConvert.DeserializeObject<ObservableCollection<GroupTabContext>>(data);
+                    foreach (var item in groupTabContexts)
+                    {
+                        this.GroupTabList.Add(item);
+                    }
+                }
+            }
+            else
+            {
+                // 前回値の保存用設定ファイルが存在しない場合
+                // グループタブ初期化
+                this.initGroupTab();
+            }
+        }
+
+        /// <summary>
+        /// MLTFileTreeの状態を復元
+        /// </summary>
+        private void loadMLTFileTree()
+        {
+            // 前回値の読出し
+            var resourcePath = Properties.Settings.Default.MLTResourcePath;
+
+            // 以下バリデーション
+            // 前回値を利用できない場合は前回値を初期化して返す
+
+            // そもそも設定されていない場合
+            if (string.IsNullOrWhiteSpace(resourcePath))
+            {
+                this.ResourceDirectoryPath.Value = "";
+                return;
+            }
+
+            // 設定はされているが、ディレクトリが存在しない場合
+            // リネーム、移動、新バージョン入れ替えなど
+            if (!Directory.Exists(resourcePath))
+            {
+                this.ResourceDirectoryPath.Value = "";
+                return;
+            }
+            
+            this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(resourcePath);
+            this.ResourceDirectoryPath.Value = resourcePath;
+        }
+
+        /// <summary>
+        /// 前回値の復帰
+        /// </summary>
+        private void loadSettings()
+        {
+            /// MLTFileTreeの状態を復元
+            loadMLTFileTree();
+            /// グループタブの状態を復帰、または初期化
+            loadGroupTabContextOrInit();
+        }
+
         public void Init()
         {
             // コマンド定義
@@ -192,25 +284,16 @@ namespace KMBEditor.MLTViewer
             this.TreeItemDoubleClickCommand.Subscribe(this.addNewTab);
             this.RenameTabHeaderCommand.Subscribe(this.RenameTabHeaderName);
 
-            // FileTreeの初期化
-            // XXX: リソースファイル切り替えるユースケースってある？
-            // 前回値の読出し
-            var resourcePath = Properties.Settings.Default.MLTResourcePath;
-            if (!string.IsNullOrWhiteSpace(resourcePath))
-            {
-                this.MLTFileTreeNodes.Value = this._mlt_file_tree.SearchMLTFile(resourcePath);
-                this.ResourceDirectoryPath.Value = resourcePath;
-            }
-            
-            // パスの変更時に、次回の起動時用のパスとして保存する
+            // プロパティ初期化
             this.ResourceDirectoryPath.Subscribe(s => 
                 {
+                    // パスの変更時に、次回の起動時用のパスとして保存する
                     Properties.Settings.Default.MLTResourcePath = s;
                     Properties.Settings.Default.Save();
                 });
 
-            // グループタブ初期化
-            this.initGroupTab();
+            // 前回値の復帰
+            this.loadSettings();
         }
 
         public MLTViewerWindowViewModel()
@@ -264,6 +347,13 @@ namespace KMBEditor.MLTViewer
 
             var vm = this.MLTViewer.DataContext as MLTViewerWindowViewModel;
             vm.TreeItemDoubleClickCommand.Execute(node);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            var vm = this.MLTViewer.DataContext as MLTViewerWindowViewModel;
+            // 開いているタブなどの状態の保存
+            vm.SaveSettings();
         }
     }
 }

@@ -85,6 +85,9 @@ namespace KMBEditor.MainWindow
         {
             var new_mlt_file = new MLTFile();
 
+            // 空ページを追加
+            new_mlt_file.Pages.Add(new MLTPage());
+
             this.TabItems.Add(
                 new TabItemContent
                 {
