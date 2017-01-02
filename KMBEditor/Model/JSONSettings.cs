@@ -19,9 +19,18 @@ namespace KMBEditor.Model
         /// コンストラクタ
         /// </summary>
         /// <param name="filePath">保存先のファイルパス</param>
-        JSONSettings(string filePath)
+        public JSONSettings(string filePath)
         {
             this._filePath = filePath;
+        }
+
+        /// <summary>
+        /// 指定されているファイルが存在しているかの確認
+        /// </summary>
+        /// <returns>対象ファイルが存在していればtrue、しなければfalse</returns>
+        public bool FileExists()
+        {
+            return File.Exists(this._filePath);
         }
 
         /// <summary>
