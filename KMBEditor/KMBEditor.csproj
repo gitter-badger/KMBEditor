@@ -177,6 +177,7 @@
     <Compile Include="MainWindow\AAEditor\Ruler\Ruler.xaml.cs">
       <DependentUpon>Ruler.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\JSONSettings.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

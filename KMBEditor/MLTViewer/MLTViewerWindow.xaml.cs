@@ -1,5 +1,6 @@
 ﻿using KMBEditor.Model.MLT;
 using KMBEditor.Model.MLTFileTree;
+using KMBEditor.Model;
 using KMBEditor.CustomDialog.RenameDialog;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -77,6 +78,16 @@ namespace KMBEditor.MLTViewer
         /// リソースファイルツリーのデータ
         /// </summary>
         private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
+
+        /// <summary>
+        /// タブの状態保持ファイル
+        /// </summary>
+        private JSONSettings<ObservableCollection<GroupTabContext>> _tabSettings;
+
+        /// <summary>
+        /// 複数行テンプレートリソースディレクトリへのパス保持ファイル
+        /// </summary>
+        private JSONSettings<string> _HukuTempPath;
 
         private void openResourceDirectory()
         {
@@ -193,19 +204,15 @@ namespace KMBEditor.MLTViewer
             }
         }
 
-        private readonly string _tabSettingsFilePath = @"mltviewer_tabsettings.json";
-
         /// <summary>
         /// 終了前のデータ保存
         /// </summary>
         public void SaveSettings()
         {
+            // 複数行テンプレートリソースディレクトリへのパスを保存
+            this._HukuTempPath.Save(this.ResourceDirectoryPath.Value);
             // グループタブの状態を保存(上書き)
-            var json = JsonConvert.SerializeObject(this.GroupTabList);
-            using (var sw = new StreamWriter(this._tabSettingsFilePath, false, Encoding.Unicode))
-            {
-                sw.Write(json);
-            }
+            this._tabSettings.Save(this.GroupTabList);
         }
 
         /// <summary>
@@ -214,17 +221,13 @@ namespace KMBEditor.MLTViewer
         private void loadGroupTabContextOrInit()
         {
             // グループタブの状態を復帰
-            if (File.Exists(this._tabSettingsFilePath))
+            if (this._tabSettings.FileExists())
             {
                 // 前回値の保存用設定ファイルが存在する場合
-                using (var sr = new StreamReader(this._tabSettingsFilePath, Encoding.Unicode))
+                var groupTabContexts = this._tabSettings.Load();
+                foreach (var item in groupTabContexts)
                 {
-                    var data = sr.ReadToEnd();
-                    var groupTabContexts = JsonConvert.DeserializeObject<ObservableCollection<GroupTabContext>>(data);
-                    foreach (var item in groupTabContexts)
-                    {
-                        this.GroupTabList.Add(item);
-                    }
+                    this.GroupTabList.Add(item);
                 }
             }
             else
@@ -241,7 +244,11 @@ namespace KMBEditor.MLTViewer
         private void loadMLTFileTree()
         {
             // 前回値の読出し
-            var resourcePath = Properties.Settings.Default.MLTResourcePath;
+            var resourcePath = "";
+            if (this._HukuTempPath.FileExists())
+            {
+                resourcePath = this._HukuTempPath.Load();
+            }
 
             // 以下バリデーション
             // 前回値を利用できない場合は前回値を初期化して返す
@@ -285,12 +292,8 @@ namespace KMBEditor.MLTViewer
             this.RenameTabHeaderCommand.Subscribe(this.RenameTabHeaderName);
 
             // プロパティ初期化
-            this.ResourceDirectoryPath.Subscribe(s => 
-                {
-                    // パスの変更時に、次回の起動時用のパスとして保存する
-                    Properties.Settings.Default.MLTResourcePath = s;
-                    Properties.Settings.Default.Save();
-                });
+            this._tabSettings = new JSONSettings<ObservableCollection<GroupTabContext>>(@"mltviewer_tabsettings.json");
+            this._HukuTempPath = new JSONSettings<string>(@"mltviewer_hukutemppath.json");
 
             // 前回値の復帰
             this.loadSettings();
