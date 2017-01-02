@@ -73,6 +73,26 @@ namespace KMBEditor.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
+        internal static System.Drawing.Bitmap Chevron_Down_25 {
+            get {
+                object obj = ResourceManager.GetObject("Chevron_Down_25", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap Chevron_Up_25 {
+            get {
+                object obj = ResourceManager.GetObject("Chevron_Up_25", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
         internal static System.Drawing.Bitmap Delete_Filled_8 {
             get {
                 object obj = ResourceManager.GetObject("Delete_Filled_8", resourceCulture);
