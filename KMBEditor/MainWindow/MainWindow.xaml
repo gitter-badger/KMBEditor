@@ -91,7 +91,8 @@
                             <!-- MLT内ページリスト表示 -->
                             <DataGrid x:Name="dataGrid"
                                       ItemsSource="{Binding Path=PageList.Value}"
-                                      AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"/>
+                                      AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"
+                                      IsReadOnly="True"/>
                             <!-- ページ変更ボタン（削除予定） -->
                             <Button x:Name="nextButton" Content="Next" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Command="{Binding NextPageCommand}" Height="20"/>
                             <Button x:Name="prevButton" Content="Prev" HorizontalAlignment="Left" Margin="99,0,0,10" VerticalAlignment="Bottom" Width="75" Command="{Binding PrevPageCommand}" Height="20"/>
