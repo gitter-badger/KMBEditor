@@ -78,6 +78,11 @@ namespace KMBEditor.MLTViewer
         /// </summary>
         private MLTFileTreeClass _mlt_file_tree { get; set; } = new MLTFileTreeClass();
 
+        /// <summary>
+        /// タブの状態保持ファイル
+        /// </summary>
+        private readonly string _tabSettingsFilePath = @"mltviewer_tabsettings.json";
+
         private void openResourceDirectory()
         {
             using (var dialog = new WinForms.FolderBrowserDialog())
@@ -192,8 +197,6 @@ namespace KMBEditor.MLTViewer
                 ctx.TabHeaderName.Value = dialog.ResponseText;
             }
         }
-
-        private readonly string _tabSettingsFilePath = @"mltviewer_tabsettings.json";
 
         /// <summary>
         /// 終了前のデータ保存
