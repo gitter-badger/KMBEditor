@@ -81,7 +81,7 @@
             <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Stretch" MinWidth="3" Margin="0" Grid.Column="1"/>
             <!-- 右カラム -->
             <TabControl x:Name="tabControl1" Grid.Column="2">
-                <TabItem Header="TabItem">
+                <TabItem Header="ページ一覧">
                     <Grid Background="#FFE5E5E5">
                         <Grid>
                             <Grid.ColumnDefinitions>
