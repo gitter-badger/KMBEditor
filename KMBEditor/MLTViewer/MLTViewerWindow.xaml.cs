@@ -84,6 +84,11 @@ namespace KMBEditor.MLTViewer
         /// </summary>
         private JSONSettings<ObservableCollection<GroupTabContext>> _tabSettings;
 
+        /// <summary>
+        /// 複数行テンプレートリソースディレクトリへのパス保持ファイル
+        /// </summary>
+        private JSONSettings<string> _HukuTempPath;
+
         private void openResourceDirectory()
         {
             using (var dialog = new WinForms.FolderBrowserDialog())
@@ -204,6 +209,8 @@ namespace KMBEditor.MLTViewer
         /// </summary>
         public void SaveSettings()
         {
+            // 複数行テンプレートリソースディレクトリへのパスを保存
+            this._HukuTempPath.Save(this.ResourceDirectoryPath.Value);
             // グループタブの状態を保存(上書き)
             this._tabSettings.Save(this.GroupTabList);
         }
@@ -237,7 +244,11 @@ namespace KMBEditor.MLTViewer
         private void loadMLTFileTree()
         {
             // 前回値の読出し
-            var resourcePath = Properties.Settings.Default.MLTResourcePath;
+            var resourcePath = "";
+            if (this._HukuTempPath.FileExists())
+            {
+                resourcePath = this._HukuTempPath.Load();
+            }
 
             // 以下バリデーション
             // 前回値を利用できない場合は前回値を初期化して返す
@@ -282,12 +293,7 @@ namespace KMBEditor.MLTViewer
 
             // プロパティ初期化
             this._tabSettings = new JSONSettings<ObservableCollection<GroupTabContext>>(@"mltviewer_tabsettings.json");
-            this.ResourceDirectoryPath.Subscribe(s => 
-                {
-                    // パスの変更時に、次回の起動時用のパスとして保存する
-                    Properties.Settings.Default.MLTResourcePath = s;
-                    Properties.Settings.Default.Save();
-                });
+            this._HukuTempPath = new JSONSettings<string>(@"mltviewer_hukutemppath.json");
 
             // 前回値の復帰
             this.loadSettings();
