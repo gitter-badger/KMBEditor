@@ -24,7 +24,7 @@
             <!-- メニューバー：ファイル -->
             <MenuItem Header="ファイル(_F)">
                 <MenuItem Header="新規作成(_N)" Command="{Binding CreateNewMLTFileCommand}"/>
-                <MenuItem Header="開く(_O)" Command="{Binding OpenCommand}"/>
+                <MenuItem Header="ファイルを開く(_O)" Command="{Binding OpenCommand}"/>
             </MenuItem>
             <!-- メニューバー：表示 -->
             <MenuItem Header="表示(_N)">
