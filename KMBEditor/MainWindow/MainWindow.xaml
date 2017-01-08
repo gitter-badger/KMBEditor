@@ -24,7 +24,7 @@
             <!-- メニューバー：ファイル -->
             <MenuItem Header="ファイル(_F)">
                 <MenuItem Header="新規作成(_N)" Command="{Binding CreateNewMLTFileCommand}"/>
-                <MenuItem Header="開く(_O)" Command="{Binding OpenCommand}"/>
+                <MenuItem Header="ファイルを開く(_O)" Command="{Binding OpenCommand}"/>
             </MenuItem>
             <!-- メニューバー：表示 -->
             <MenuItem Header="表示(_N)">
@@ -81,21 +81,31 @@
             <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Stretch" MinWidth="3" Margin="0" Grid.Column="1"/>
             <!-- 右カラム -->
             <TabControl x:Name="tabControl1" Grid.Column="2">
-                <TabItem Header="TabItem">
+                <TabItem Header="ページ一覧">
                     <Grid Background="#FFE5E5E5">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="264*"/>
-                                <RowDefinition Height="265*"/>
-                            </Grid.RowDefinitions>
-                            <!-- MLT内ページリスト表示 -->
-                            <DataGrid x:Name="dataGrid"
-                                      ItemsSource="{Binding Path=PageList.Value}"
-                                      AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"/>
-                            <!-- ページ変更ボタン（削除予定） -->
-                            <Button x:Name="nextButton" Content="Next" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Command="{Binding NextPageCommand}" Height="20"/>
-                            <Button x:Name="prevButton" Content="Prev" HorizontalAlignment="Left" Margin="99,0,0,10" VerticalAlignment="Bottom" Width="75" Command="{Binding PrevPageCommand}" Height="20"/>
-                        </Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="161*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="264*"/>
+                            <RowDefinition Height="265*"/>
+                        </Grid.RowDefinitions>
+                        <!-- ページリスト操作用ツールバー -->
+                        <StackPanel Grid.Column="0">
+                            <Button Command="{Binding PrevPageCommand}">
+                                <Image Source="/KMBEditor;component/Resources/Chevron Up-25.png"/>
+                            </Button>
+                            <Button Command="{Binding NextPageCommand}">
+                                <Image Source="/KMBEditor;component/Resources/Chevron Down-25.png"/>
+                            </Button>
+                        </StackPanel>
+                        <!-- MLT内ページリスト表示 -->
+                        <DataGrid x:Name="dataGrid"
+                                  ItemsSource="{Binding Path=PageList.Value}"
+                                  AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"
+                                  IsReadOnly="True"
+                                  Grid.Column="1"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="TabItem">

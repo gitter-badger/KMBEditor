@@ -240,7 +240,8 @@ namespace KMBEditor.MainWindow
             {
                 case "RawText":
                 case "DecodeText":
-                    // AAは表示しない
+                case "IsCaption":
+                    // 表示しない
                     e.Cancel = true;
                     break;
             }

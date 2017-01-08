@@ -41,6 +41,8 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="{x:Type ListViewItem}">
+                            <!-- 行間隔は2chの仕様に合わせて2px空ける => 縦幅18px -->
+                            <Setter Property="Height" Value="18"/>
                             <Setter Property="Padding" Value="0"/>
                             <Setter Property="BorderThickness" Value="0"/>
                         </Style>
@@ -55,6 +57,7 @@
                         <!-- 縦線のずれ回避のため、必ず TextOptions.TextFormattingMode="Display" を指定すること -->
                         <!-- 編集領域 -->
                         <!-- 編集領域は描画する必要がないため、Foreground をブラシなしに設定 -->
+                        <!-- 行間隔は2chの仕様に合わせて2px空ける => 縦幅18px -->
                         <TextBox x:Name="textBox"
                                  Text="{Binding Path=EditAreaText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  FontFamily="MS PGothic"
@@ -63,7 +66,7 @@
                                  VerticalScrollBarVisibility="Disabled"
                                  HorizontalScrollBarVisibility="Disabled"
                                  TextOptions.TextFormattingMode="Display"
-                                 Foreground="{x:Null}"/>
+                                 TextBlock.LineHeight="18px"/>
                         <!-- 表示領域 -->
                         <!-- 表示領域は文字位置の調整のため、Marginを "3,1,0,0" とる必要あり -->
                         <ItemsControl ItemsSource="{Binding Path=VisualLineList}"
@@ -77,11 +80,14 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
+                                    <!-- 更新時の負荷低減のため、行ごとにTextBlockを分けている -->
+                                    <!-- 行間隔は2chの仕様に合わせて2px空ける => 縦幅18px -->
                                     <local:BindableTextBlock InlineList="{Binding Path=InlineList, UpdateSourceTrigger=PropertyChanged}"
                                                              FontFamily="MS PGothic"
                                                              FontSize="12pt"
                                                              TextOptions.TextFormattingMode="Display"
-                                                             IsHitTestVisible="False"/>
+                                                             IsHitTestVisible="False"
+                                                             LineHeight="18px"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
