@@ -52,7 +52,8 @@
                              HorizontalScrollBarVisibility="Disabled"
                              VerticalScrollBarVisibility="Disabled"
                              MinWidth="1000" Padding="5"
-                             Focusable="False">
+                             Focusable="False"
+                             TextBlock.LineHeight="18px">
                         <TextBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="SJISコピー(_S)"
