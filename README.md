@@ -60,6 +60,7 @@ Windows 8 以降は標準で .NET Framework 4.5 以上がインストールさ�
 + [ReactiveProperty 3.4.0 (MIT License)](https://github.com/runceel/ReactiveProperty)
 + [Json.NET 9.0.1 (MIT License)](http://www.newtonsoft.com/json)
 + [SQLite 1.0.104 (Public Domain)](https://www.nuget.org/packages/System.Data.SQLite/)
++ [WPF Chrome Tabs - MVVM 1.2.7 (MIT License)](https://www.nuget.org/packages/WPFChromeTabsMVVM/)
 
 ## アイコン画像
 
