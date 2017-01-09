@@ -119,5 +119,15 @@ namespace KMBEditor.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   (アイコン) に類似した型 System.Drawing.Icon のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Icon kmb {
+            get {
+                object obj = ResourceManager.GetObject("kmb", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }
