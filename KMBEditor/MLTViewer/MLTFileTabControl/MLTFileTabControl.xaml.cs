@@ -210,11 +210,6 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
     /// </summary>
     public partial class MLTFileTabControl : UserControl
     {
-        /// <summary>
-        /// ViewModelのインスタンス
-        /// </summary>
-        private MLTFileTabControlViewModel _vm = new MLTFileTabControlViewModel();
-
         #region ItemSource
         public static readonly DependencyProperty MLTFileListProperty =
             DependencyProperty.Register(
@@ -223,7 +218,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
                 typeof(MLTFileTabControl),
                 new PropertyMetadata(
                     null,
-                    (d, e) => (d as MLTFileTabControl)._vm.MLTFileList.Value = e.NewValue as ObservableCollection<MLTFile>));
+                    (d, e) => ((d as MLTFileTabControl).MLTFileTabControlGrid.DataContext as MLTFileTabControlViewModel).MLTFileList.Value = e.NewValue as ObservableCollection<MLTFile>));
 
         public ObservableCollection<MLTFile> ItemSource
         {
@@ -238,26 +233,16 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
         public MLTFileTabControl()
         {
             InitializeComponent();
-
-            // ViewModelの初期化
-            this._vm.View = new WeakReference<MLTFileTabControl>(this);
-            this._vm.Init();
-
-            // UserControlのDataContextの設定
-            this.MLTFileTabControlGrid.DataContext = _vm;
         }
 
-        /// <summary>
-        /// タブの削除ボタンを押したときのイベントハンドラ
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void MLTFileTabControlGrid_Loaded(object sender, RoutedEventArgs e)
         {
-            var tab = sender as Button;
-            var tabContext = tab.DataContext as TabContext;
+            var data = sender as Grid;
+            var vm = data.DataContext as MLTFileTabControlViewModel;
 
-            this._vm.DeleteTabCommand.Execute(tabContext);
+            // ViewModelの初期化
+            vm.View = new WeakReference<MLTFileTabControl>(this);
+            vm.Init();
         }
     }
 }
