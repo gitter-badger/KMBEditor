@@ -34,6 +34,7 @@
                     SelectedIndex="{Binding Path=SelectedIndex.Value, Mode=TwoWay}"
                     ItemsSource="{Binding Source={StaticResource ViewModel}, Path=TabContextList, UpdateSourceTrigger=PropertyChanged}"
                     CloseTabCommand="{Binding DeleteTabCommand}"
+                    ReorderTabsCommand="{Binding ReorderTabsCommand}"
                     IsAddButtonVisible="False"
                     MaximumTabWidth="250">
             <ct:ChromeTabControl.ItemTemplate>

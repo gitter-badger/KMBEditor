@@ -9,6 +9,9 @@ using System.Reactive.Linq;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
+using System.ComponentModel;
+using System.Windows.Data;
+using ChromeTabs;
 
 namespace KMBEditor.MLTViewer.MLTFileTabControl
 {
@@ -47,7 +50,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
         /// <summary>
         /// TabControlバインド用データ
         /// </summary>
-        public ObservableCollection<TabContext> TabContextList { get; private set; }
+        public ObservableCollection<TabContext> TabContextList { get; set; }
                 = new ObservableCollection<TabContext>();
 
         /// <summary>
@@ -63,9 +66,29 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
             = new ReactiveCommand<TabContext>();
 
         /// <summary>
+        /// Tab削除コマンド
+        /// </summary>
+        public ReactiveCommand<TabReorder> ReorderTabsCommand { get; private set; }
+            = new ReactiveCommand<TabReorder>();
+
+        /// <summary>
         /// MLTFileのコレクションの状態監視のDispose操作
         /// </summary>
         private CompositeDisposable _filesChangedDisposable = new CompositeDisposable();
+
+        /// <summary>
+        /// タブの順番入れ替え時のコマンド
+        /// </summary>
+        /// <param name="reorder"></param>
+        private void reorderTabsCommandAction(TabReorder reorder)
+        {
+            int from = reorder.FromIndex;
+            int to = reorder.ToIndex;
+            // タブの表示順を入れ替え
+            this.TabContextList.Move(from, to);
+            // MLTFileListの更新(状態保存用)
+            this.MLTFileList.Value.Move(from, to);
+        }
 
         /// <summary>
         /// MLTFileが追加された場合の処理。TabContextListを生成
@@ -194,6 +217,7 @@ namespace KMBEditor.MLTViewer.MLTFileTabControl
 
             // コマンド初期化
             this.DeleteTabCommand.Subscribe(this.deleteTab);
+            this.ReorderTabsCommand.Subscribe(this.reorderTabsCommandAction);
         }
 
         /// <summary>
