@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
-        xmlns:livet="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:Interactivity="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET45"
         xmlns:local="clr-namespace:KMBEditor.MLTViewer"
         xmlns:mltfiletabcontrol="clr-namespace:KMBEditor.MLTViewer.MLTFileTabControl"

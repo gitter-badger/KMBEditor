@@ -56,7 +56,7 @@ Windows 8 以降は標準で .NET Framework 4.5 以上がインストールさ�
 ## 使用フレームワーク/ライブラリ
 
 + [Microsoft .NET Framework 4.5 (Microsoft Reference Source License)](https://www.microsoft.com/ja-jp/download/details.aspx?id=30653)
-+ [Livet 1.3.0 (zlib/libpng License)](http://ugaya40.hateblo.jp/entry/Livet)
++ [MVVM Light 5.3.0 (MIT License)](https://www.nuget.org/packages/MvvmLight/)
 + [ReactiveProperty 3.4.0 (MIT License)](https://github.com/runceel/ReactiveProperty)
 + [Json.NET 9.0.1 (MIT License)](http://www.newtonsoft.com/json)
 + [SQLite 1.0.104 (Public Domain)](https://www.nuget.org/packages/System.Data.SQLite/)
