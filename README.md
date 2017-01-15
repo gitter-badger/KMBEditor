@@ -61,6 +61,9 @@ Windows 8 以降は標準で .NET Framework 4.5 以上がインストールさ�
 + [Json.NET 9.0.1 (MIT License)](http://www.newtonsoft.com/json)
 + [SQLite 1.0.104 (Public Domain)](https://www.nuget.org/packages/System.Data.SQLite/)
 + [WPF Chrome Tabs - MVVM 1.2.7 (MIT License)](https://www.nuget.org/packages/WPFChromeTabsMVVM/)
++ [MahApps.Metro 1.4.1 (MIT License)](https://www.nuget.org/packages/MahApps.Metro)
++ [Material Design Themes XAML Resources 2.2.1.750 (Microsoft Public License)](https://www.nuget.org/packages/MaterialDesignThemes/)
++ [Dragablz - Dragable and tearable tab control for WPF 0.0.3.182 (Microsoft Public License)](https://www.nuget.org/packages/Dragablz/)
 
 ## アイコン画像
 
