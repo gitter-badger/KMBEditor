@@ -52,13 +52,13 @@
                 <ScrollViewer Grid.Column="1"
                               VerticalScrollBarVisibility="Disabled"
                               HorizontalScrollBarVisibility="Auto">
-                    <Canvas>
+                    <Grid>
                         <!-- 以下は重ねて表示される、テキスト位置は一致している必要がある -->
                         <!-- 縦線のずれ回避のため、必ず TextOptions.TextFormattingMode="Display" を指定すること -->
                         <!-- 編集領域 -->
                         <!-- 編集領域は描画する必要がないため、Foreground をブラシなしに設定 -->
                         <!-- 行間隔は2chの仕様に合わせて2px空ける => 縦幅18px -->
-                        <TextBox x:Name="textBox"
+                        <TextBox Grid.Column="0"
                                  Text="{Binding Path=EditAreaText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  FontFamily="MS PGothic"
                                  FontSize="12pt"
@@ -69,10 +69,11 @@
                                  TextBlock.LineHeight="18px"
                                  VerticalAlignment="Stretch"
                                  HorizontalAlignment="Stretch"
-                                 Style="{x:Null}" Foreground="#FFF90000"/>
+                                 Style="{x:Null}"/>
                         <!-- 表示領域 -->
                         <!-- 表示領域は文字位置の調整のため、Marginを "3,1,0,0" とる必要あり -->
-                        <ItemsControl ItemsSource="{Binding Path=VisualLineList}"
+                        <ItemsControl Grid.Column="0"
+                                      ItemsSource="{Binding Path=VisualLineList}"
                                       Margin="3,1,0,0"
                                       VirtualizingPanel.IsVirtualizing="True"
                                       VirtualizingPanel.VirtualizationMode="Recycling">
@@ -94,7 +95,7 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                    </Canvas>
+                    </Grid>
                 </ScrollViewer>
                 <!-- 横ガイド線 800dot -->
                 <Rectangle Grid.Column="1" Fill="Red" Height="1" VerticalAlignment="Top" Margin="{Binding Path=HorizontalLineMargin.Value}"/>
