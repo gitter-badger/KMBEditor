@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
+             xmlns:livet="http://schemas.livet-mvvm.net/2011/wpf"
              xmlns:Interactivity="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET45"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KMBEditor.MLTViewer.PageTreeView"
@@ -14,6 +15,7 @@
                   ItemsSource="{Binding Path=MLTPageIndexList.Value, UpdateSourceTrigger=PropertyChanged}"
                   VirtualizingPanel.IsVirtualizing="True"
                   VirtualizingPanel.VirtualizationMode="Recycling">
+                  <!--
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="Focusable" Value="False"/>
@@ -27,6 +29,7 @@
                         Value="{Binding Path=IsSelected.Value, Mode=TwoWay}" />
                 </Style>
             </TreeView.ItemContainerStyle>
+            -->
             <TreeView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel/>

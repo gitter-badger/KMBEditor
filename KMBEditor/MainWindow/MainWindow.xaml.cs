@@ -217,7 +217,7 @@ namespace KMBEditor.MainWindow
     /// <summary>
     /// MainWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MahApps.Metro.Controls.MetroWindow
     {
         private MainWindowViewModel _vm = new MainWindowViewModel();
 
