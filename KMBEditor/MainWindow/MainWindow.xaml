@@ -4,11 +4,6 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        WindowTransitionsEnabled="False"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Background="{DynamicResource MaterialDesignPaper}"
-        GlowBrush="{DynamicResource AccentColorBrush}"
-        FontFamily="{StaticResource DefaultFont}"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
@@ -17,6 +12,11 @@
         xmlns:local="clr-namespace:KMBEditor.MainWindow"
         xmlns:editor="clr-namespace:KMBEditor.MainWindow.AAEditor"
         mc:Ignorable="d"
+        WindowTransitionsEnabled="False"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        FontFamily="{StaticResource DefaultFont}"
         Title="KMBEditor" Height="600" Width="800">
     <Window.Resources>
         <ResourceDictionary>
