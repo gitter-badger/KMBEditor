@@ -6,8 +6,8 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowTransitionsEnabled="False"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Background="{DynamicResource MaterialDesignPaper}"					  
-        GlowBrush="{DynamicResource AccentColorBrush}"					  
+        Background="{DynamicResource MaterialDesignPaper}"
+        GlowBrush="{DynamicResource AccentColorBrush}"
         FontFamily="{StaticResource DefaultFont}"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -27,75 +27,76 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
-        <materialDesign:DrawerHost.LeftDrawerContent>
-            <DockPanel MinWidth="212">
-                <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
-                                    DockPanel.Dock="Top"
-                                    HorizontalAlignment="Right" Margin="16"
-                                    IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-            </DockPanel>
-        </materialDesign:DrawerHost.LeftDrawerContent>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-                <RowDefinition Height="20"/>
-            </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <!-- メニューバー -->
+        <Menu>
+            <MenuItem>
+                <MenuItem.Header>
+                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                  IsChecked="False"
+                                  x:Name="MenuToggleButton"/>
+                </MenuItem.Header>
+            </MenuItem>
+            <!-- メニューバー：ファイル -->
+            <MenuItem Header="ファイル(_F)">
+                <MenuItem Header="新規作成(_N)" Command="{Binding CreateNewMLTFileCommand}"/>
+                <MenuItem Header="ファイルを開く(_O)" Command="{Binding OpenCommand}"/>
+            </MenuItem>
+            <!-- メニューバー：表示 -->
+            <MenuItem Header="表示(_N)">
+                <MenuItem Header="空白文字の表示(_W)"/>
+                <MenuItem Header="右ガイド線の表示(_M)"/>
+                <MenuItem Header="下ガイド線の表示(_S)"/>
+            </MenuItem>
+            <!-- メニューバー：ウィンドウ -->
+            <MenuItem Header="ウィンドウ(_W)">
+                <MenuItem Header="MLTViewerを表示(_M)" Command="{Binding OpenMLTViewerCommand}"/>
+            </MenuItem>
+            <!-- メニューバー：ヘルプ -->
+            <MenuItem Header="ヘルプ(_H)">
+                <MenuItem Header="オンラインドキュメント(_O)"
+                          Command="{Binding BrowserOpenCommand_OnlineDocumentURL}"
+                          CommandParameter="{Binding OnlineDocumentURL.Value}"/>
+                <MenuItem Header="バグレポート・機能追加要望(_U)">
+                    <MenuItem Header="GitHub Issue の作成ページを開く[推奨:要ログイン](_G)"
+                              Command="{Binding BrowserOpenCommand_GitHubIssueURL}"
+                              CommandParameter="{Binding GitHubIssueURL.Value}"/>
+                    <MenuItem Header="現行スレを開く(_S)"
+                              Command="{Binding BrowserOpenCommand_CurrentBoardURL}"
+                              CommandParameter="{Binding CurrentBoardURL.Value}"/>
+                    <MenuItem Header="開発者Twtterを開く(_T)"
+                              Command="{Binding BrowserOpenCommand_DevelopperTwtterURL}"
+                              CommandParameter="{Binding DevelopperTwtterURL.Value}"/>
+                </MenuItem>
+                <MenuItem Header="バージョン情報(_V)"/>
+            </MenuItem>
+        </Menu>
+        <!-- メイン -->
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="148*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="45*"/>
             </Grid.ColumnDefinitions>
-            <!-- メニューバー -->
-            <Menu>
-                <MenuItem>
-                    <MenuItem.Header>
-                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
-                                      IsChecked="False"
-                                      x:Name="MenuToggleButton"/>
-                    </MenuItem.Header>
-                </MenuItem>
-                <!-- メニューバー：ファイル -->
-                <MenuItem Header="ファイル(_F)">
-                    <MenuItem Header="新規作成(_N)" Command="{Binding CreateNewMLTFileCommand}"/>
-                    <MenuItem Header="ファイルを開く(_O)" Command="{Binding OpenCommand}"/>
-                </MenuItem>
-                <!-- メニューバー：表示 -->
-                <MenuItem Header="表示(_N)">
-                    <MenuItem Header="空白文字の表示(_W)"/>
-                    <MenuItem Header="右ガイド線の表示(_M)"/>
-                    <MenuItem Header="下ガイド線の表示(_S)"/>
-                </MenuItem>
-                <!-- メニューバー：ウィンドウ -->
-                <MenuItem Header="ウィンドウ(_W)">
-                    <MenuItem Header="MLTViewerを表示(_M)" Command="{Binding OpenMLTViewerCommand}"/>
-                </MenuItem>
-                <!-- メニューバー：ヘルプ -->
-                <MenuItem Header="ヘルプ(_H)">
-                    <MenuItem Header="オンラインドキュメント(_O)"
-                              Command="{Binding BrowserOpenCommand_OnlineDocumentURL}"
-                              CommandParameter="{Binding OnlineDocumentURL.Value}"/>
-                    <MenuItem Header="バグレポート・機能追加要望(_U)">
-                        <MenuItem Header="GitHub Issue の作成ページを開く[推奨:要ログイン](_G)"
-                                  Command="{Binding BrowserOpenCommand_GitHubIssueURL}"
-                                  CommandParameter="{Binding GitHubIssueURL.Value}"/>
-                        <MenuItem Header="現行スレを開く(_S)"
-                                  Command="{Binding BrowserOpenCommand_CurrentBoardURL}"
-                                  CommandParameter="{Binding CurrentBoardURL.Value}"/>
-                        <MenuItem Header="開発者Twtterを開く(_T)"
-                                  Command="{Binding BrowserOpenCommand_DevelopperTwtterURL}"
-                                  CommandParameter="{Binding DevelopperTwtterURL.Value}"/>
-                    </MenuItem>
-                    <MenuItem Header="バージョン情報(_V)"/>
-                </MenuItem>
-            </Menu>
-            <!-- メイン -->
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="148*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="45*"/>
-                </Grid.ColumnDefinitions>
-                <!-- 左カラム -->
+            <!-- 左カラム -->
+            <materialDesign:DrawerHost Grid.Column="0"
+                                       IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+                <materialDesign:DrawerHost.LeftDrawerContent>
+                    <DockPanel Width="{Binding ElementName=EditorTabControl, Path=ActualWidth}">
+                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                                      DockPanel.Dock="Top"
+                                      HorizontalAlignment="Right" Margin="16"
+                                      IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+                    </DockPanel>
+                </materialDesign:DrawerHost.LeftDrawerContent>
                 <TabControl x:Name="EditorTabControl"
                             SelectedIndex="{Binding Path=SelectedIndex.Value, Mode=TwoWay}"
                             ItemsSource="{Binding Path=TabItems}">
@@ -110,43 +111,43 @@
                         </DataTemplate>
                     </TabControl.ContentTemplate>
                 </TabControl>
-                <!-- グリッドスプリッター -->
-                <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Stretch" MinWidth="3" Margin="0" Grid.Column="1"/>
-                <!-- 右カラム -->
-                <TabControl x:Name="tabControl1" Grid.Column="2">
-                    <TabItem Header="ページ一覧">
-                        <Grid Background="#FFE5E5E5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="25"/>
-                                <ColumnDefinition Width="161*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="264*"/>
-                                <RowDefinition Height="265*"/>
-                            </Grid.RowDefinitions>
-                            <!-- ページリスト操作用ツールバー -->
-                            <StackPanel Grid.Column="0">
-                                <Button Command="{Binding PrevPageCommand}">
-                                    <Image Source="/KMBEditor;component/Resources/Chevron Up-25.png"/>
-                                </Button>
-                                <Button Command="{Binding NextPageCommand}">
-                                    <Image Source="/KMBEditor;component/Resources/Chevron Down-25.png"/>
-                                </Button>
-                            </StackPanel>
-                            <!-- MLT内ページリスト表示 -->
-                            <DataGrid x:Name="dataGrid"
-                                      ItemsSource="{Binding Path=PageList.Value}"
-                                      AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"
-                                      IsReadOnly="True"
-                                      Grid.Column="1"/>
-                        </Grid>
-                    </TabItem>
-                </TabControl>
-            </Grid>
-            <!-- ステータスバー -->
-            <StatusBar Grid.Row="2" MinHeight="20">
-                <StatusBarItem Content="{Binding Path=OrignalPageBytes.Value}" Height="20" VerticalAlignment="Top"/>
-            </StatusBar>
+            </materialDesign:DrawerHost>
+            <!-- グリッドスプリッター -->
+            <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Stretch" MinWidth="3" Margin="0" Grid.Column="1"/>
+            <!-- 右カラム -->
+            <TabControl x:Name="tabControl1" Grid.Column="2">
+                <TabItem Header="ページ一覧">
+                    <Grid Background="#FFE5E5E5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="161*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="264*"/>
+                            <RowDefinition Height="265*"/>
+                        </Grid.RowDefinitions>
+                        <!-- ページリスト操作用ツールバー -->
+                        <StackPanel Grid.Column="0">
+                            <Button Command="{Binding PrevPageCommand}">
+                                <Image Source="/KMBEditor;component/Resources/Chevron Up-25.png"/>
+                            </Button>
+                            <Button Command="{Binding NextPageCommand}">
+                                <Image Source="/KMBEditor;component/Resources/Chevron Down-25.png"/>
+                            </Button>
+                        </StackPanel>
+                        <!-- MLT内ページリスト表示 -->
+                        <DataGrid x:Name="dataGrid"
+                                  ItemsSource="{Binding Path=PageList.Value}"
+                                  AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"
+                                  IsReadOnly="True"
+                                  Grid.Column="1"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
         </Grid>
-    </materialDesign:DrawerHost>
+        <!-- ステータスバー -->
+        <StatusBar Grid.Row="2" MinHeight="20">
+            <StatusBarItem Content="{Binding Path=OrignalPageBytes.Value}" Height="20" VerticalAlignment="Top"/>
+        </StatusBar>
+    </Grid>
 </controls:MetroWindow>
