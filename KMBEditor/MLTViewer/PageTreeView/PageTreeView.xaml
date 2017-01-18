@@ -15,9 +15,8 @@
                   ItemsSource="{Binding Path=MLTPageIndexList.Value, UpdateSourceTrigger=PropertyChanged}"
                   VirtualizingPanel.IsVirtualizing="True"
                   VirtualizingPanel.VirtualizationMode="Recycling">
-                  <!--
             <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
                     <Setter Property="Focusable" Value="False"/>
                     <EventSetter Event="TreeViewItem.MouseLeftButtonDown"
                                  Handler="TreeViewItem_MouseLeftButtonDown"/>
@@ -29,7 +28,6 @@
                         Value="{Binding Path=IsSelected.Value, Mode=TwoWay}" />
                 </Style>
             </TreeView.ItemContainerStyle>
-            -->
             <TreeView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel/>
