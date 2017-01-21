@@ -8,6 +8,7 @@
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
              xmlns:Interactivity="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET45"
              xmlns:mltfiletabcontrol="clr-namespace:KMBEditor.MLTViewer.MLTFileTabControl"
+             xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -75,11 +76,11 @@
         <GridSplitter HorizontalAlignment="Stretch" MinWidth="3" Grid.Column="1"/>
         <!-- 中カラム -->
         <!-- グループ機能用タブコントロール -->
-        <TabControl x:Name="GroupTabControl"
+        <dragablz:TabablzControl x:Name="GroupTabControl"
                     Grid.Column="2" Grid.ColumnSpan="2"
                     SelectedIndex="{Binding Path=SelectedIndex.Value}"
                     ItemsSource="{Binding Path=GroupTabList}">
-            <TabControl.ItemTemplate>
+            <dragablz:TabablzControl.HeaderItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Path=TabHeaderName.Value}">
                         <TextBlock.ContextMenu>
@@ -91,8 +92,8 @@
                         </TextBlock.ContextMenu>
                     </TextBlock>
                 </DataTemplate>
-            </TabControl.ItemTemplate>
-            <TabControl.ContentTemplate>
+            </dragablz:TabablzControl.HeaderItemTemplate>
+            <dragablz:TabablzControl.ContentTemplate>
                 <DataTemplate>
                     <Grid Background="#FFE5E5E5">
                         <!-- MLT File 複数表示用タブコントロール -->
@@ -100,7 +101,7 @@
                             ItemSource="{Binding Path=TabFileList, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                 </DataTemplate>
-            </TabControl.ContentTemplate>
-        </TabControl>
+            </dragablz:TabablzControl.ContentTemplate>
+        </dragablz:TabablzControl>
     </Grid>
 </UserControl>
