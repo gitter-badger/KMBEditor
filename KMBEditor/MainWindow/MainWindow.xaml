@@ -17,7 +17,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         GlowBrush="{DynamicResource AccentColorBrush}"
         FontFamily="{StaticResource DefaultFont}"
-        Title="KMBEditor" Height="600" Width="800">
+        Title="KMBEditor" Height="600" Width="800" WindowState="Maximized">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
