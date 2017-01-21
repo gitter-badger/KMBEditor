@@ -187,6 +187,9 @@
     <Compile Include="MLTViewer\MLTFileTabControl\MLTFileTabControl.xaml.cs">
       <DependentUpon>MLTFileTabControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MLTViewer\MLTViewer.xaml.cs">
+      <DependentUpon>MLTViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MLTViewer\PageListView\PageListView.xaml.cs">
       <DependentUpon>PageListView.xaml</DependentUpon>
     </Compile>
@@ -234,7 +237,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MLTViewer\MLTViewerWindow.xaml">
+    <Page Include="MLTViewer\MLTViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -257,9 +260,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\MLTFileTree\MLTFileTreeClass.cs" />
-    <Compile Include="MLTViewer\MLTViewerWindow.xaml.cs">
-      <DependentUpon>MLTViewerWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -318,6 +318,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MLTViewer\GroupTabControl\" />
+    <Folder Include="View\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Delete Filled-8.png" />

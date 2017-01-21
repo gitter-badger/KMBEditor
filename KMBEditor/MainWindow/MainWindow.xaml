@@ -56,10 +56,6 @@
                 <MenuItem Header="右ガイド線の表示(_M)"/>
                 <MenuItem Header="下ガイド線の表示(_S)"/>
             </MenuItem>
-            <!-- メニューバー：ウィンドウ -->
-            <MenuItem Header="ウィンドウ(_W)">
-                <MenuItem Header="MLTViewerを表示(_M)" Command="{Binding OpenMLTViewerCommand}"/>
-            </MenuItem>
             <!-- メニューバー：ヘルプ -->
             <MenuItem Header="ヘルプ(_H)">
                 <MenuItem Header="オンラインドキュメント(_O)"
@@ -91,10 +87,13 @@
                                        IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
                 <materialDesign:DrawerHost.LeftDrawerContent>
                     <DockPanel Width="{Binding ElementName=EditorTabControl, Path=ActualWidth}">
+                        <!--
                         <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
                                       DockPanel.Dock="Top"
                                       HorizontalAlignment="Right" Margin="16"
                                       IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+                        -->
+                        <viewer:MLTViewerUserControl xmlns:viewer="clr-namespace:KMBEditor.MLTViewer"/>
                     </DockPanel>
                 </materialDesign:DrawerHost.LeftDrawerContent>
                 <TabControl x:Name="EditorTabControl"
