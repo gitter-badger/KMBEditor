@@ -10,7 +10,6 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
         xmlns:Interactivity="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET45"
         xmlns:local="clr-namespace:KMBEditor.MainWindow"
-        xmlns:editor="clr-namespace:KMBEditor.MainWindow.AAEditor"
         mc:Ignorable="d"
         WindowTransitionsEnabled="False"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -108,7 +107,7 @@
                     </TabControl.ItemTemplate>
                     <TabControl.ContentTemplate>
                         <DataTemplate>
-                            <editor:AAEditor Text="{Binding Path=Page.Value.DecodeText}"/>
+                            <editor:AAEditor Text="{Binding Path=Page.Value.DecodeText}" xmlns:editor="clr-namespace:KMBEditor.MainWindow.AAEditor"/>
                         </DataTemplate>
                     </TabControl.ContentTemplate>
                 </TabControl>
