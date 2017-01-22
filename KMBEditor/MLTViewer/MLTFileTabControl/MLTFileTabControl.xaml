@@ -53,14 +53,14 @@
                 <ControlTemplate TargetType="{x:Type ct:ChromeTabControl}">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
+                            <RowDefinition Height="40" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Border Background="{TemplateBinding Background}"
                                 BorderThickness="0,0,0,1"
                                 BorderBrush="#FF999999"
                                 Grid.Row="0"
-                                Padding="10,5,10,0">
+                                Padding="10,10,10,0">
                             <ct:ChromeTabPanel IsItemsHost="True"
                                                Background="{TemplateBinding Background}" />
                         </Border>

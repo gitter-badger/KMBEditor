@@ -53,6 +53,7 @@ namespace KMBEditor.MainWindow
         public ReactiveCommand CreateNewMLTFileCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand OpenCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand OpenMLTViewerCommand { get; private set; } = new ReactiveCommand();
+        public ReactiveCommand<TabItemContent> CloseTabCommand { get; private set; } = new ReactiveCommand<TabItemContent>();
 
         public ReactiveCommand PrevPageCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand NextPageCommand { get; private set; } = new ReactiveCommand();
@@ -138,6 +139,32 @@ namespace KMBEditor.MainWindow
         }
 
         /// <summary>
+        /// タブの削除コマンドアクション
+        /// </summary>
+        /// <param name="tabctx"></param>
+        private void closeTabCommandAction(TabItemContent tabctx)
+        {
+            if (tabctx == null)
+            {
+                return;
+            }
+
+            this.TabItems.Remove(tabctx);
+        }
+
+        /// <summary>
+        /// ページリストの更新
+        /// </summary>
+        /// <param name="index"></param>
+        private void updatePageList(int index)
+        {
+            if (this.TabItems.Count > index && index > 0)
+            {
+                this.PageList.Value = this.TabItems[index].File.Pages;
+            }
+        }
+
+        /// <summary>
         /// ViewModelの初期化
         /// </summary>
         public void Init()
@@ -162,6 +189,7 @@ namespace KMBEditor.MainWindow
             this.OpenCommand.Subscribe(_ => this.openMLTFile());
             this.PrevPageCommand.Subscribe(_ => this.movePrevPage());
             this.NextPageCommand.Subscribe(_ => this.moveNextPage());
+            this.CloseTabCommand.Subscribe(this.closeTabCommandAction);
             this.BrowserOpenCommand_OnlineDocumentURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_GitHubIssueURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_DevelopperTwtterURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
@@ -169,7 +197,7 @@ namespace KMBEditor.MainWindow
 
             // プロパティ定義
             // ページリストの更新
-            this.SelectedIndex.Subscribe(i => this.PageList.Value = this.TabItems[i].File.Pages);
+            this.SelectedIndex.Subscribe(updatePageList);
 
             // リアクティブプロパティ設定
             //this.OrignalPageBytes = this.Page

@@ -31,44 +31,46 @@
     </Window.Resources>
     <DockPanel>
         <!-- メニューバー -->
-        <Menu DockPanel.Dock="Top">
-            <MenuItem>
-                <MenuItem.Header>
-                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
-                                  IsChecked="False"
-                                  x:Name="MenuToggleButton"/>
-                </MenuItem.Header>
-            </MenuItem>
-            <!-- メニューバー：ファイル -->
-            <MenuItem Header="ファイル(_F)">
-                <MenuItem Header="新規作成(_N)" Command="{Binding CreateNewMLTFileCommand}"/>
-                <MenuItem Header="ファイルを開く(_O)" Command="{Binding OpenCommand}"/>
-            </MenuItem>
-            <!-- メニューバー：表示 -->
-            <MenuItem Header="表示(_N)">
-                <MenuItem Header="空白文字の表示(_W)"/>
-                <MenuItem Header="右ガイド線の表示(_M)"/>
-                <MenuItem Header="下ガイド線の表示(_S)"/>
-            </MenuItem>
-            <!-- メニューバー：ヘルプ -->
-            <MenuItem Header="ヘルプ(_H)">
-                <MenuItem Header="オンラインドキュメント(_O)"
-                          Command="{Binding BrowserOpenCommand_OnlineDocumentURL}"
-                          CommandParameter="{Binding OnlineDocumentURL.Value}"/>
-                <MenuItem Header="バグレポート・機能追加要望(_U)">
-                    <MenuItem Header="GitHub Issue の作成ページを開く[推奨:要ログイン](_G)"
-                              Command="{Binding BrowserOpenCommand_GitHubIssueURL}"
-                              CommandParameter="{Binding GitHubIssueURL.Value}"/>
-                    <MenuItem Header="現行スレを開く(_S)"
-                              Command="{Binding BrowserOpenCommand_CurrentBoardURL}"
-                              CommandParameter="{Binding CurrentBoardURL.Value}"/>
-                    <MenuItem Header="開発者Twtterを開く(_T)"
-                              Command="{Binding BrowserOpenCommand_DevelopperTwtterURL}"
-                              CommandParameter="{Binding DevelopperTwtterURL.Value}"/>
+        <materialDesign:Card DockPanel.Dock="Top" materialDesign:ShadowAssist.ShadowDepth="Depth1">
+            <Menu>
+                <MenuItem>
+                    <MenuItem.Header>
+                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                      IsChecked="False"
+                                      x:Name="MenuToggleButton"/>
+                    </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Header="バージョン情報(_V)"/>
-            </MenuItem>
-        </Menu>
+                <!-- メニューバー：ファイル -->
+                <MenuItem Header="ファイル(_F)">
+                    <MenuItem Header="新規作成(_N)" Command="{Binding CreateNewMLTFileCommand}"/>
+                    <MenuItem Header="ファイルを開く(_O)" Command="{Binding OpenCommand}"/>
+                </MenuItem>
+                <!-- メニューバー：表示 -->
+                <MenuItem Header="表示(_N)">
+                    <MenuItem Header="空白文字の表示(_W)"/>
+                    <MenuItem Header="右ガイド線の表示(_M)"/>
+                    <MenuItem Header="下ガイド線の表示(_S)"/>
+                </MenuItem>
+                <!-- メニューバー：ヘルプ -->
+                <MenuItem Header="ヘルプ(_H)">
+                    <MenuItem Header="オンラインドキュメント(_O)"
+                              Command="{Binding BrowserOpenCommand_OnlineDocumentURL}"
+                              CommandParameter="{Binding OnlineDocumentURL.Value}"/>
+                    <MenuItem Header="バグレポート・機能追加要望(_U)">
+                        <MenuItem Header="GitHub Issue の作成ページを開く[推奨:要ログイン](_G)"
+                                  Command="{Binding BrowserOpenCommand_GitHubIssueURL}"
+                                  CommandParameter="{Binding GitHubIssueURL.Value}"/>
+                        <MenuItem Header="現行スレを開く(_S)"
+                                  Command="{Binding BrowserOpenCommand_CurrentBoardURL}"
+                                  CommandParameter="{Binding CurrentBoardURL.Value}"/>
+                        <MenuItem Header="開発者Twtterを開く(_T)"
+                                  Command="{Binding BrowserOpenCommand_DevelopperTwtterURL}"
+                                  CommandParameter="{Binding DevelopperTwtterURL.Value}"/>
+                    </MenuItem>
+                    <MenuItem Header="バージョン情報(_V)"/>
+                </MenuItem>
+            </Menu>
+        </materialDesign:Card>
         <!-- ステータスバー -->
         <StatusBar DockPanel.Dock="Bottom" MinHeight="20">
             <StatusBarItem Content="{Binding Path=OrignalPageBytes.Value}" Height="20" VerticalAlignment="Top"/>
@@ -87,18 +89,16 @@
                 <materialDesign:DrawerHost.LeftDrawerContent>
                     <!-- タブコントロールの横線と合わせるために上に29pxマージンを取る -->
                     <DockPanel Width="{Binding ElementName=EditorTabControl, Path=ActualWidth}">
-                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
-                                      DockPanel.Dock="Top"
-                                      HorizontalAlignment="Right"
-                                      Height="29"
-                                      IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
                         <viewer:MLTViewerUserControl/>
                     </DockPanel>
                 </materialDesign:DrawerHost.LeftDrawerContent>
                 <!-- AA Story Editor -->
                 <ct:ChromeTabControl x:Name="EditorTabControl"
                             SelectedIndex="{Binding Path=SelectedIndex.Value, Mode=TwoWay}"
-                            ItemsSource="{Binding Path=TabItems}">
+                            ItemsSource="{Binding Path=TabItems}"
+                            AddTabCommand="{Binding Path=CreateNewMLTFileCommand}"
+                            CloseTabCommand="{Binding Path=CloseTabCommand}"
+                            MaximumTabWidth="250">
                     <ct:ChromeTabControl.Resources>
                         <DataTemplate DataType="{x:Type local:TabItemContent}">
                             <editor:AAEditor Text="{Binding Path=Page.Value.DecodeText}"/>
@@ -120,14 +120,14 @@
                         <ControlTemplate TargetType="{x:Type ct:ChromeTabControl}">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="40" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Border Background="{TemplateBinding Background}"
                                         BorderThickness="0,0,0,1"
                                         BorderBrush="#FF999999"
                                         Grid.Row="0"
-                                        Padding="10,5,10,0">
+                                        Padding="10,10,10,0">
                                     <ct:ChromeTabPanel IsItemsHost="True"
                                                        Background="{TemplateBinding Background}" />
                                 </Border>
@@ -143,10 +143,10 @@
             </materialDesign:DrawerHost>
             <!-- グリッドスプリッター -->
             <!-- タブコントロールの横線と合わせるために上に29pxマージンを取る -->
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="3" Margin="0,29,0,0"/>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="3"/>
             <!-- 右カラム -->
             <!-- タブコントロールの横線と合わせるために上に29pxマージンを取る -->
-            <dragablz:TabablzControl Grid.Column="2" Margin="0,29,0,0">
+            <dragablz:TabablzControl Grid.Column="2">
                 <TabItem Header="ページ一覧">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
