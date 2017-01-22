@@ -85,13 +85,13 @@
                                        IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
                 <!-- MLT Viewer -->
                 <materialDesign:DrawerHost.LeftDrawerContent>
+                    <!-- タブコントロールの横線と合わせるために上に29pxマージンを取る -->
                     <DockPanel Width="{Binding ElementName=EditorTabControl, Path=ActualWidth}">
-                        <!--
                         <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
                                       DockPanel.Dock="Top"
-                                      HorizontalAlignment="Right" Margin="16"
+                                      HorizontalAlignment="Right"
+                                      Height="29"
                                       IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-                        -->
                         <viewer:MLTViewerUserControl/>
                     </DockPanel>
                 </materialDesign:DrawerHost.LeftDrawerContent>
@@ -142,9 +142,11 @@
                 </ct:ChromeTabControl>
             </materialDesign:DrawerHost>
             <!-- グリッドスプリッター -->
-            <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Stretch" MinWidth="3" Margin="0" Grid.Column="1"/>
+            <!-- タブコントロールの横線と合わせるために上に29pxマージンを取る -->
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="3" Margin="0,29,0,0"/>
             <!-- 右カラム -->
-            <dragablz:TabablzControl x:Name="tabControl1" Grid.Column="2">
+            <!-- タブコントロールの横線と合わせるために上に29pxマージンを取る -->
+            <dragablz:TabablzControl Grid.Column="2" Margin="0,29,0,0">
                 <TabItem Header="ページ一覧">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
