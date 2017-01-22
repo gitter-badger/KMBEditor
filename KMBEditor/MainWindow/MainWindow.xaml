@@ -116,7 +116,7 @@
             <!-- グリッドスプリッター -->
             <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Stretch" MinWidth="3" Margin="0" Grid.Column="1"/>
             <!-- 右カラム -->
-            <TabControl x:Name="tabControl1" Grid.Column="2">
+            <dragablz:TabablzControl x:Name="tabControl1" Grid.Column="2">
                 <TabItem Header="ページ一覧">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
@@ -144,7 +144,7 @@
                                   Grid.Column="1"/>
                     </Grid>
                 </TabItem>
-            </TabControl>
+            </dragablz:TabablzControl>
         </Grid>
         <!-- ステータスバー -->
         <StatusBar Grid.Row="2" MinHeight="20">
