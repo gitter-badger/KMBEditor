@@ -87,7 +87,6 @@
                                        IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
                 <!-- MLT Viewer -->
                 <materialDesign:DrawerHost.LeftDrawerContent>
-                    <!-- タブコントロールの横線と合わせるために上に29pxマージンを取る -->
                     <DockPanel Width="{Binding ElementName=EditorTabControl, Path=ActualWidth}">
                         <viewer:MLTViewerUserControl/>
                     </DockPanel>
@@ -142,10 +141,8 @@
                 </ct:ChromeTabControl>
             </materialDesign:DrawerHost>
             <!-- グリッドスプリッター -->
-            <!-- タブコントロールの横線と合わせるために上に29pxマージンを取る -->
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="3"/>
             <!-- 右カラム -->
-            <!-- タブコントロールの横線と合わせるために上に29pxマージンを取る -->
             <dragablz:TabablzControl Grid.Column="2">
                 <TabItem Header="ページ一覧">
                     <Grid Background="#FFE5E5E5">
