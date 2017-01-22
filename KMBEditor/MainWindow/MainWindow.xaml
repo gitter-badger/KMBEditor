@@ -101,7 +101,7 @@
                             ItemsSource="{Binding Path=TabItems}">
                     <ct:ChromeTabControl.Resources>
                         <DataTemplate DataType="{x:Type local:TabItemContent}">
-                            <editor:AAEditor Text="{Binding Path=Page.Value.DecodeText}" />
+                            <editor:AAEditor Text="{Binding Path=Page.Value.DecodeText}"/>
                         </DataTemplate>
                     </ct:ChromeTabControl.Resources>
                     <ct:ChromeTabControl.ItemTemplate>

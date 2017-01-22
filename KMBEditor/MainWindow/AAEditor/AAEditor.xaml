@@ -6,8 +6,11 @@
              xmlns:local="clr-namespace:KMBEditor.MainWindow.AAEditor"
              xmlns:r="clr-namespace:KMBEditor.MainWindow.AAEditor.Ruler"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Width="Auto" Height="Auto" MinWidth="420" MinHeight="300">
-    <Grid x:Name="AAEditorUserControlGrid">
+             d:DesignHeight="300" d:DesignWidth="300"
+             Width="Auto" Height="Auto"
+             MinWidth="420" MinHeight="300"
+             Background="White">
+    <Grid x:Name="AAEditorUserControlGrid" Margin="0,5,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="15"/>
             <RowDefinition/>
