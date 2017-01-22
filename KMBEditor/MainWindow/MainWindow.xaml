@@ -85,6 +85,7 @@
             <!-- 左カラム -->
             <materialDesign:DrawerHost Grid.Column="0"
                                        IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+                <!-- MLT Viewer -->
                 <materialDesign:DrawerHost.LeftDrawerContent>
                     <DockPanel Width="{Binding ElementName=EditorTabControl, Path=ActualWidth}">
                         <!--
@@ -96,6 +97,7 @@
                         <viewer:MLTViewerUserControl xmlns:viewer="clr-namespace:KMBEditor.MLTViewer"/>
                     </DockPanel>
                 </materialDesign:DrawerHost.LeftDrawerContent>
+                <!-- AA Story Editor -->
                 <TabControl x:Name="EditorTabControl"
                             SelectedIndex="{Binding Path=SelectedIndex.Value, Mode=TwoWay}"
                             ItemsSource="{Binding Path=TabItems}">
