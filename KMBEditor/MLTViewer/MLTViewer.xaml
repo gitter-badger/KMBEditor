@@ -21,7 +21,7 @@
             <ColumnDefinition Width="651*"/>
         </Grid.ColumnDefinitions>
         <!-- 左カラム -->
-        <TabControl>
+        <dragablz:TabablzControl>
             <!-- MLTのリソースツリー -->
             <TabItem Header="エクスプローラ">
                 <Grid Background="#FFE5E5E5">
@@ -84,7 +84,7 @@
                     </TreeView>
                 </Grid>
             </TabItem>
-        </TabControl>
+        </dragablz:TabablzControl>
         <!-- 左スプリッター -->
         <GridSplitter HorizontalAlignment="Stretch" MinWidth="3" Grid.Column="1"/>
         <!-- 中カラム -->
