@@ -46,7 +46,20 @@
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate DataType="MLTFileTreeNode" ItemsSource="{Binding Children}">
                                 <StackPanel Orientation="Horizontal" Height="20">
-                                    <Image Source="{Binding Icon}" Width="15" Margin="0,0,5,0"/>
+                                    <Image Width="15" Margin="0,0,5,0">
+                                        <Image.Style>
+                                            <Style>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=IsDirectory}" Value="true">
+                                                        <Setter Property="Image.Source" Value="/KMBEditor;component/Resources/Folder-48.png"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Path=IsDirectory}" Value="false">
+                                                        <Setter Property="Image.Source" Value="/KMBEditor;component/Resources/File-48.png"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
                                     <TextBlock Text="{Binding Name}">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>

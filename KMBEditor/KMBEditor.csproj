@@ -287,15 +287,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Folder_48.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\File_48.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Add_Folder_48.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Add Folder-48.png" />
   </ItemGroup>
   <ItemGroup>
