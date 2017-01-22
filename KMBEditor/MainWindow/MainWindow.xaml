@@ -10,6 +10,8 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
         xmlns:Interactivity="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET45"
         xmlns:local="clr-namespace:KMBEditor.MainWindow"
+        xmlns:editor="clr-namespace:KMBEditor.MainWindow.AAEditor"
+        xmlns:viewer="clr-namespace:KMBEditor.MLTViewer"
         mc:Ignorable="d"
         WindowTransitionsEnabled="False"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -26,17 +28,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="20"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+    <DockPanel>
         <!-- メニューバー -->
-        <Menu>
+        <Menu DockPanel.Dock="Top">
             <MenuItem>
                 <MenuItem.Header>
                     <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
@@ -74,8 +68,12 @@
                 <MenuItem Header="バージョン情報(_V)"/>
             </MenuItem>
         </Menu>
+        <!-- ステータスバー -->
+        <StatusBar DockPanel.Dock="Bottom" MinHeight="20">
+            <StatusBarItem Content="{Binding Path=OrignalPageBytes.Value}" Height="20" VerticalAlignment="Top"/>
+        </StatusBar>
         <!-- メイン -->
-        <Grid Grid.Row="1">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="148*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -93,7 +91,7 @@
                                       HorizontalAlignment="Right" Margin="16"
                                       IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
                         -->
-                        <viewer:MLTViewerUserControl xmlns:viewer="clr-namespace:KMBEditor.MLTViewer"/>
+                        <viewer:MLTViewerUserControl/>
                     </DockPanel>
                 </materialDesign:DrawerHost.LeftDrawerContent>
                 <!-- AA Story Editor -->
@@ -107,7 +105,7 @@
                     </TabControl.ItemTemplate>
                     <TabControl.ContentTemplate>
                         <DataTemplate>
-                            <editor:AAEditor Text="{Binding Path=Page.Value.DecodeText}" xmlns:editor="clr-namespace:KMBEditor.MainWindow.AAEditor"/>
+                            <editor:AAEditor Text="{Binding Path=Page.Value.DecodeText}" />
                         </DataTemplate>
                     </TabControl.ContentTemplate>
                 </TabControl>
@@ -145,9 +143,5 @@
                 </TabItem>
             </dragablz:TabablzControl>
         </Grid>
-        <!-- ステータスバー -->
-        <StatusBar Grid.Row="2" MinHeight="20">
-            <StatusBarItem Content="{Binding Path=OrignalPageBytes.Value}" Height="20" VerticalAlignment="Top"/>
-        </StatusBar>
-    </Grid>
+    </DockPanel>
 </controls:MetroWindow>
