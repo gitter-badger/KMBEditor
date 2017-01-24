@@ -8,6 +8,7 @@
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
              xmlns:Interactivity="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET45"
              xmlns:mltfiletabcontrol="clr-namespace:KMBEditor.MLTViewer.MLTFileTabControl"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -24,7 +25,21 @@
         <dragablz:TabablzControl>
             <!-- MLTのリソースツリー -->
             <TabItem Header="エクスプローラ">
-                <Grid Background="#FFE5E5E5">
+                <DockPanel>
+                    <materialDesign:Card DockPanel.Dock="Top">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Left"
+                                    ToolTip="MLTリソースディレクトリを開く"
+                                    Command="{Binding Path=OpenResourceDirectoryCommand}">
+                                <Image Source="/KMBEditor;component/Resources/Open Folder-48.png"/>
+                            </Button>
+                            <TextBox DockPanel.Dock="Right"
+                                     Text="{Binding Path=ResourceDirectoryPath.Value}"
+                                     ToolTip="{Binding Path=ResourceDirectoryPath.Value}"
+                                     VerticalAlignment="Center"
+                                     Margin="10,0" IsReadOnlyCaretVisible="True"/>
+                        </DockPanel>
+                    </materialDesign:Card>
                     <!-- エクスプローラ用ツリービュー -->
                     <TreeView ItemsSource="{Binding MLTFileTreeNodes.Value}"
                               VirtualizingStackPanel.IsVirtualizing="True"
@@ -46,7 +61,7 @@
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate DataType="MLTFileTreeNode" ItemsSource="{Binding Children}">
                                 <StackPanel Orientation="Horizontal" Height="20">
-                                    <Image Width="15" Margin="0,0,5,0">
+                                    <Image Width="15">
                                         <Image.Style>
                                             <Style>
                                                 <Style.Triggers>
@@ -60,7 +75,7 @@
                                             </Style>
                                         </Image.Style>
                                     </Image>
-                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="6,0,0,0">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <TextBlock.Style>
@@ -82,7 +97,7 @@
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
                     </TreeView>
-                </Grid>
+                </DockPanel>
             </TabItem>
         </dragablz:TabablzControl>
         <!-- 左スプリッター -->

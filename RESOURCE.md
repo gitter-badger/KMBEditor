@@ -6,3 +6,4 @@
 + [Delete Filled Icon - Free Download at Icons8](https://icons8.com/web-app/8112/delete#filled)
 + [Chevron Up Icon - Free Download at Icons8](https://icons8.com/web-app/33617/chevron-up)
 + [Chevron Down Icon - Free Download at Icons8](https://icons8.com/web-app/33615/chevron-down)
++ [Open Folder Icon - Free Download at Icons8](https://icons8.com/web-app/12775/open-folder)
