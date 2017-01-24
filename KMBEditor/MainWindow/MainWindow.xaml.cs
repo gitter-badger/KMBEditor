@@ -1,5 +1,4 @@
-﻿using KMBEditor.MLTViewer;
-using KMBEditor.Model;
+﻿using KMBEditor.Model;
 using KMBEditor.Model.MLT;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -54,6 +53,7 @@ namespace KMBEditor.MainWindow
         public ReactiveCommand CreateNewMLTFileCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand OpenCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand OpenMLTViewerCommand { get; private set; } = new ReactiveCommand();
+        public ReactiveCommand<TabItemContent> CloseTabCommand { get; private set; } = new ReactiveCommand<TabItemContent>();
 
         public ReactiveCommand PrevPageCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand NextPageCommand { get; private set; } = new ReactiveCommand();
@@ -63,35 +63,10 @@ namespace KMBEditor.MainWindow
         public ReactiveCommand BrowserOpenCommand_CurrentBoardURL { get; private set; }
         public ReactiveCommand BrowserOpenCommand_DevelopperTwtterURL { get; private set; }
 
-        // データ
-        private MLTViewerWindow _mlt_viewer;
         /// <summary>
         /// 共通設定保持クラス
         /// </summary>
         private GlobalSettings _global_settings = GlobalSettings.Instance;
-
-        /// <summary>
-        /// <para>MLTViewerを表示する</para>
-        /// <para>初回はMLTViewerWindonwのインスタンスを生成する</para>
-        /// </summary>
-        private void MLTViewerWindowTogleVisible()
-        {
-            // 初期化は初回表示時まで遅延
-            if (this._mlt_viewer == null)
-            {
-                this._mlt_viewer = new MLTViewerWindow();
-            }
-
-            // 表示、非表示の切り替え
-            if (this._mlt_viewer.IsVisible)
-            {
-                this._mlt_viewer.Hide();
-            }
-            else
-            {
-                this._mlt_viewer.Show();
-            }
-        }
 
         /// <summary>
         /// MLTファイルの作成とタブへの追加
@@ -164,6 +139,32 @@ namespace KMBEditor.MainWindow
         }
 
         /// <summary>
+        /// タブの削除コマンドアクション
+        /// </summary>
+        /// <param name="tabctx"></param>
+        private void closeTabCommandAction(TabItemContent tabctx)
+        {
+            if (tabctx == null)
+            {
+                return;
+            }
+
+            this.TabItems.Remove(tabctx);
+        }
+
+        /// <summary>
+        /// ページリストの更新
+        /// </summary>
+        /// <param name="index"></param>
+        private void updatePageList(int index)
+        {
+            if (this.TabItems.Count > index && index > 0)
+            {
+                this.PageList.Value = this.TabItems[index].File.Pages;
+            }
+        }
+
+        /// <summary>
         /// ViewModelの初期化
         /// </summary>
         public void Init()
@@ -186,9 +187,9 @@ namespace KMBEditor.MainWindow
             // コマンド定義
             this.CreateNewMLTFileCommand.Subscribe(_ => this.createNewMLTFile());
             this.OpenCommand.Subscribe(_ => this.openMLTFile());
-            this.OpenMLTViewerCommand.Subscribe(_ => this.MLTViewerWindowTogleVisible());
             this.PrevPageCommand.Subscribe(_ => this.movePrevPage());
             this.NextPageCommand.Subscribe(_ => this.moveNextPage());
+            this.CloseTabCommand.Subscribe(this.closeTabCommandAction);
             this.BrowserOpenCommand_OnlineDocumentURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_GitHubIssueURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
             this.BrowserOpenCommand_DevelopperTwtterURL.Subscribe(url => System.Diagnostics.Process.Start(url.ToString()));
@@ -196,7 +197,7 @@ namespace KMBEditor.MainWindow
 
             // プロパティ定義
             // ページリストの更新
-            this.SelectedIndex.Subscribe(i => this.PageList.Value = this.TabItems[i].File.Pages);
+            this.SelectedIndex.Subscribe(updatePageList);
 
             // リアクティブプロパティ設定
             //this.OrignalPageBytes = this.Page
@@ -217,7 +218,7 @@ namespace KMBEditor.MainWindow
     /// <summary>
     /// MainWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MahApps.Metro.Controls.MetroWindow
     {
         private MainWindowViewModel _vm = new MainWindowViewModel();
 

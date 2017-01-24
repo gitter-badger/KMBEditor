@@ -6,8 +6,11 @@
              xmlns:local="clr-namespace:KMBEditor.MainWindow.AAEditor"
              xmlns:r="clr-namespace:KMBEditor.MainWindow.AAEditor.Ruler"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Width="Auto" Height="Auto" MinWidth="420" MinHeight="300">
-    <Grid x:Name="AAEditorUserControlGrid">
+             d:DesignHeight="300" d:DesignWidth="300"
+             Width="Auto" Height="Auto"
+             MinWidth="420" MinHeight="300"
+             Background="White">
+    <Grid x:Name="AAEditorUserControlGrid" Margin="0,5,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="15"/>
             <RowDefinition/>
@@ -58,7 +61,7 @@
                         <!-- 編集領域 -->
                         <!-- 編集領域は描画する必要がないため、Foreground をブラシなしに設定 -->
                         <!-- 行間隔は2chの仕様に合わせて2px空ける => 縦幅18px -->
-                        <TextBox x:Name="textBox"
+                        <TextBox Grid.Column="0"
                                  Text="{Binding Path=EditAreaText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  FontFamily="MS PGothic"
                                  FontSize="12pt"
@@ -66,10 +69,14 @@
                                  VerticalScrollBarVisibility="Disabled"
                                  HorizontalScrollBarVisibility="Disabled"
                                  TextOptions.TextFormattingMode="Display"
-                                 TextBlock.LineHeight="18px"/>
+                                 TextBlock.LineHeight="18px"
+                                 VerticalAlignment="Stretch"
+                                 HorizontalAlignment="Stretch"
+                                 Style="{x:Null}"/>
                         <!-- 表示領域 -->
                         <!-- 表示領域は文字位置の調整のため、Marginを "3,1,0,0" とる必要あり -->
-                        <ItemsControl ItemsSource="{Binding Path=VisualLineList}"
+                        <ItemsControl Grid.Column="0"
+                                      ItemsSource="{Binding Path=VisualLineList}"
                                       Margin="3,1,0,0"
                                       VirtualizingPanel.IsVirtualizing="True"
                                       VirtualizingPanel.VirtualizationMode="Recycling">

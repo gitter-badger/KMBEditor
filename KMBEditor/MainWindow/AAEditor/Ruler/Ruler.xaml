@@ -8,8 +8,6 @@
              d:DesignHeight="15" d:DesignWidth="500">
     <!-- left: 枠線1 + Margin 3 -->
     <Grid x:Name="RulerUserControl" Background="White" Margin="4,0,0,0">
-        <!-- 下横線 -->
-        <Rectangle Height="1" Fill="Black" VerticalAlignment="Bottom"/>
         <!-- 左端縦線 left: 枠線1 + Margin 3 -->
         <Rectangle Height="12" Width="1" Fill="Black" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
         <!-- ここからは横幅に合わせて繰り返し -->

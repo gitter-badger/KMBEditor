@@ -56,11 +56,14 @@ Windows 8 以降は標準で .NET Framework 4.5 以上がインストールさ�
 ## 使用フレームワーク/ライブラリ
 
 + [Microsoft .NET Framework 4.5 (Microsoft Reference Source License)](https://www.microsoft.com/ja-jp/download/details.aspx?id=30653)
-+ [Livet 1.3.0 (zlib/libpng License)](http://ugaya40.hateblo.jp/entry/Livet)
++ [MVVM Light 5.3.0 (MIT License)](https://www.nuget.org/packages/MvvmLight/)
 + [ReactiveProperty 3.4.0 (MIT License)](https://github.com/runceel/ReactiveProperty)
 + [Json.NET 9.0.1 (MIT License)](http://www.newtonsoft.com/json)
 + [SQLite 1.0.104 (Public Domain)](https://www.nuget.org/packages/System.Data.SQLite/)
 + [WPF Chrome Tabs - MVVM 1.2.7 (MIT License)](https://www.nuget.org/packages/WPFChromeTabsMVVM/)
++ [MahApps.Metro 1.4.1 (MIT License)](https://www.nuget.org/packages/MahApps.Metro)
++ [Material Design Themes XAML Resources 2.2.1.750 (Microsoft Public License)](https://www.nuget.org/packages/MaterialDesignThemes/)
++ [Dragablz - Dragable and tearable tab control for WPF 0.0.3.182 (Microsoft Public License)](https://www.nuget.org/packages/Dragablz/)
 
 ## アイコン画像
 

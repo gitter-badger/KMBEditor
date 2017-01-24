@@ -1,22 +1,18 @@
-﻿using KMBEditor.Model.MLT;
-using KMBEditor.Model.MLTFileTree;
+﻿using KMBEditor.CustomDialog.RenameDialog;
 using KMBEditor.Model;
-using KMBEditor.CustomDialog.RenameDialog;
+using KMBEditor.Model.MLT;
+using KMBEditor.Model.MLTFileTree;
 using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Interactivity;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using WinForms = System.Windows.Forms;
-using Newtonsoft.Json;
-using System.IO;
-using System.Text;
 
 namespace KMBEditor.MLTViewer
 {
@@ -53,7 +49,7 @@ namespace KMBEditor.MLTViewer
         /// <summary>
         /// Viewのインスタンス(Viewへの依存は可能な限り減らすこと)
         /// </summary>
-        public WeakReference<MLTViewerWindow> View { get; set; }
+        public WeakReference<MLTViewerUserControl> View { get; set; }
 
         /// <summary>
         /// グループタブのデータリスト
@@ -306,41 +302,17 @@ namespace KMBEditor.MLTViewer
     }
 
     /// <summary>
-    /// MLTViewerWindow.xaml の相互作用ロジック
-    /// 
-    /// 機能要件:
-    /// ・MLTのZipファイルの一覧表示機能を提供
-    /// ・編集機能は持たない、閲覧機能のみを提供
-    /// 
+    /// MLTViewer.xaml の相互作用ロジック
     /// </summary>
-    public partial class MLTViewerWindow : Window
+    public partial class MLTViewerUserControl : UserControl
     {
-        public MLTViewerWindow()
-        {
-            InitializeComponent();
-        }
-
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             var view = sender as Grid;
             var viewModel = view.DataContext as MLTViewerWindowViewModel;
 
-            viewModel.View = new WeakReference<MLTViewerWindow>(this);
+            viewModel.View = new WeakReference<MLTViewerUserControl>(this);
             viewModel.Init();
-        }
-
-        /// <summary>
-        /// <para>クローズボタンが押された時のイベント</para>
-        /// <para>ファイルツリーの再インデックスに時間がかかるため、Closeはせずに隠すだけにする</para>
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            // Windowは終了させない
-            e.Cancel = true;
-            // Windowを隠す。再表示はMainWindow側で行う
-            this.Hide();
         }
 
         private void TreeViewItem_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -352,11 +324,16 @@ namespace KMBEditor.MLTViewer
             vm.TreeItemDoubleClickCommand.Execute(node);
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        private void MLTViewer_Unloaded(object sender, RoutedEventArgs e)
         {
             var vm = this.MLTViewer.DataContext as MLTViewerWindowViewModel;
             // 開いているタブなどの状態の保存
             vm.SaveSettings();
+        }
+
+        public MLTViewerUserControl()
+        {
+            InitializeComponent();
         }
     }
 }

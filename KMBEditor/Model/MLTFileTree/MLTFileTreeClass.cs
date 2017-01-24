@@ -12,7 +12,6 @@ namespace KMBEditor.Model.MLTFileTree
     {
         public string Name { get; set; }
         public string Path { get; set; }
-        public BitmapImage Icon { get; set; }
         public bool IsDirectory { get; set; }
         public List<MLTFileTreeNode> Children { get; set; }
     }
@@ -25,8 +24,6 @@ namespace KMBEditor.Model.MLTFileTree
         /// TODO: astのサポート
         /// </summary>
         private string _file_search_pattarn { get; set; } = "*.mlt";
-        private BitmapImage _file_icon { get; set; } = new BitmapImage(new Uri(@"pack://application:,,,/Resources/File_48.png", UriKind.Absolute));
-        private BitmapImage _folder_icon { get; set; } = new BitmapImage(new Uri(@"pack://application:,,,/Resources/Folder_48.png", UriKind.Absolute)); 
 
         /// <summary>
         /// リソースディレクトリ配下のMLTファイルを再帰的に探索しツリー化を行う
@@ -59,7 +56,6 @@ namespace KMBEditor.Model.MLTFileTree
                     {
                         Name = dir_path.Substring(search_root_path.Length + 1), // 親のパス長 + '\' の位置を指定
                         Path = dir_path,
-                        Icon = _folder_icon,
                         IsDirectory = true,
                         Children = this.GetDirectoryNodes(dir_path)
                     });
@@ -76,7 +72,6 @@ namespace KMBEditor.Model.MLTFileTree
                     {
                         Name = file_path.Substring(search_root_path.Length + 1), // 親のパス長 + '\' の位置を指定
                         Path = file_path,
-                        Icon = _file_icon,
                         IsDirectory = false,
                     });
             }

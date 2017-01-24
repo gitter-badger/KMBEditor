@@ -1,6 +1,9 @@
-﻿<Window x:Class="KMBEditor.MainWindow.MainWindow"
+﻿<controls:MetroWindow x:Class="KMBEditor.MainWindow.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
@@ -8,79 +11,139 @@
         xmlns:Interactivity="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET45"
         xmlns:local="clr-namespace:KMBEditor.MainWindow"
         xmlns:editor="clr-namespace:KMBEditor.MainWindow.AAEditor"
+        xmlns:viewer="clr-namespace:KMBEditor.MLTViewer"
+        xmlns:ct="clr-namespace:ChromeTabs;assembly=ChromeTabs"
         mc:Ignorable="d"
-        Title="KMBEditor" Height="600" Width="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition/>
-            <RowDefinition Height="20"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+        WindowTransitionsEnabled="False"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        FontFamily="{StaticResource DefaultFont}"
+        Title="KMBEditor" Height="600" Width="800" WindowState="Maximized">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel>
         <!-- メニューバー -->
-        <Menu>
-            <!-- メニューバー：ファイル -->
-            <MenuItem Header="ファイル(_F)">
-                <MenuItem Header="新規作成(_N)" Command="{Binding CreateNewMLTFileCommand}"/>
-                <MenuItem Header="ファイルを開く(_O)" Command="{Binding OpenCommand}"/>
-            </MenuItem>
-            <!-- メニューバー：表示 -->
-            <MenuItem Header="表示(_N)">
-                <MenuItem Header="空白文字の表示(_W)"/>
-                <MenuItem Header="右ガイド線の表示(_M)"/>
-                <MenuItem Header="下ガイド線の表示(_S)"/>
-            </MenuItem>
-            <!-- メニューバー：ウィンドウ -->
-            <MenuItem Header="ウィンドウ(_W)">
-                <MenuItem Header="MLTViewerを表示(_M)" Command="{Binding OpenMLTViewerCommand}"/>
-            </MenuItem>
-            <!-- メニューバー：ヘルプ -->
-            <MenuItem Header="ヘルプ(_H)">
-                <MenuItem Header="オンラインドキュメント(_O)"
-                          Command="{Binding BrowserOpenCommand_OnlineDocumentURL}"
-                          CommandParameter="{Binding OnlineDocumentURL.Value}"/>
-                <MenuItem Header="バグレポート・機能追加要望(_U)">
-                    <MenuItem Header="GitHub Issue の作成ページを開く[推奨:要ログイン](_G)"
-                              Command="{Binding BrowserOpenCommand_GitHubIssueURL}"
-                              CommandParameter="{Binding GitHubIssueURL.Value}"/>
-                    <MenuItem Header="現行スレを開く(_S)"
-                              Command="{Binding BrowserOpenCommand_CurrentBoardURL}"
-                              CommandParameter="{Binding CurrentBoardURL.Value}"/>
-                    <MenuItem Header="開発者Twtterを開く(_T)"
-                              Command="{Binding BrowserOpenCommand_DevelopperTwtterURL}"
-                              CommandParameter="{Binding DevelopperTwtterURL.Value}"/>
+        <materialDesign:Card DockPanel.Dock="Top" materialDesign:ShadowAssist.ShadowDepth="Depth1">
+            <Menu>
+                <MenuItem>
+                    <MenuItem.Header>
+                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                      IsChecked="False"
+                                      x:Name="MenuToggleButton"/>
+                    </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Header="バージョン情報(_V)"/>
-            </MenuItem>
-        </Menu>
+                <!-- メニューバー：ファイル -->
+                <MenuItem Header="ファイル(_F)">
+                    <MenuItem Header="新規作成(_N)" Command="{Binding CreateNewMLTFileCommand}"/>
+                    <MenuItem Header="ファイルを開く(_O)" Command="{Binding OpenCommand}"/>
+                </MenuItem>
+                <!-- メニューバー：表示 -->
+                <MenuItem Header="表示(_N)">
+                    <MenuItem Header="空白文字の表示(_W)"/>
+                    <MenuItem Header="右ガイド線の表示(_M)"/>
+                    <MenuItem Header="下ガイド線の表示(_S)"/>
+                </MenuItem>
+                <!-- メニューバー：ヘルプ -->
+                <MenuItem Header="ヘルプ(_H)">
+                    <MenuItem Header="オンラインドキュメント(_O)"
+                              Command="{Binding BrowserOpenCommand_OnlineDocumentURL}"
+                              CommandParameter="{Binding OnlineDocumentURL.Value}"/>
+                    <MenuItem Header="バグレポート・機能追加要望(_U)">
+                        <MenuItem Header="GitHub Issue の作成ページを開く[推奨:要ログイン](_G)"
+                                  Command="{Binding BrowserOpenCommand_GitHubIssueURL}"
+                                  CommandParameter="{Binding GitHubIssueURL.Value}"/>
+                        <MenuItem Header="現行スレを開く(_S)"
+                                  Command="{Binding BrowserOpenCommand_CurrentBoardURL}"
+                                  CommandParameter="{Binding CurrentBoardURL.Value}"/>
+                        <MenuItem Header="開発者Twtterを開く(_T)"
+                                  Command="{Binding BrowserOpenCommand_DevelopperTwtterURL}"
+                                  CommandParameter="{Binding DevelopperTwtterURL.Value}"/>
+                    </MenuItem>
+                    <MenuItem Header="バージョン情報(_V)"/>
+                </MenuItem>
+            </Menu>
+        </materialDesign:Card>
+        <!-- ステータスバー -->
+        <StatusBar DockPanel.Dock="Bottom" MinHeight="20">
+            <StatusBarItem Content="{Binding Path=OrignalPageBytes.Value}" Height="20" VerticalAlignment="Top"/>
+        </StatusBar>
         <!-- メイン -->
-        <Grid Grid.Row="1">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="148*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="45*"/>
             </Grid.ColumnDefinitions>
             <!-- 左カラム -->
-            <TabControl x:Name="EditorTabControl"
-                        SelectedIndex="{Binding Path=SelectedIndex.Value, Mode=TwoWay}"
-                        ItemsSource="{Binding Path=TabItems}">
-                <TabControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Path=File.Name}"/>
-                    </DataTemplate>
-                </TabControl.ItemTemplate>
-                <TabControl.ContentTemplate>
-                    <DataTemplate>
-                        <editor:AAEditor Text="{Binding Path=Page.Value.DecodeText}"/>
-                    </DataTemplate>
-                </TabControl.ContentTemplate>
-            </TabControl>
+            <materialDesign:DrawerHost Grid.Column="0"
+                                       IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+                <!-- MLT Viewer -->
+                <materialDesign:DrawerHost.LeftDrawerContent>
+                    <DockPanel Width="{Binding ElementName=EditorTabControl, Path=ActualWidth}">
+                        <viewer:MLTViewerUserControl/>
+                    </DockPanel>
+                </materialDesign:DrawerHost.LeftDrawerContent>
+                <!-- AA Story Editor -->
+                <ct:ChromeTabControl x:Name="EditorTabControl"
+                            SelectedIndex="{Binding Path=SelectedIndex.Value, Mode=TwoWay}"
+                            ItemsSource="{Binding Path=TabItems}"
+                            AddTabCommand="{Binding Path=CreateNewMLTFileCommand}"
+                            CloseTabCommand="{Binding Path=CloseTabCommand}"
+                            MaximumTabWidth="250">
+                    <ct:ChromeTabControl.Resources>
+                        <DataTemplate DataType="{x:Type local:TabItemContent}">
+                            <editor:AAEditor Text="{Binding Path=Page.Value.DecodeText}"/>
+                        </DataTemplate>
+                    </ct:ChromeTabControl.Resources>
+                    <ct:ChromeTabControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ct:ChromeTabItem}}}">
+                                <StackPanel Orientation="Horizontal" Background="Transparent">
+                                    <TextBlock Text="{Binding Path=File.Name}"
+                                               TextWrapping="NoWrap"
+                                               TextTrimming="CharacterEllipsis"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ct:ChromeTabControl.ItemTemplate>
+                    <ct:ChromeTabControl.Template>
+                        <ControlTemplate TargetType="{x:Type ct:ChromeTabControl}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderThickness="0,0,0,1"
+                                        BorderBrush="#FF999999"
+                                        Grid.Row="0"
+                                        Padding="10,10,10,0">
+                                    <ct:ChromeTabPanel IsItemsHost="True"
+                                                       Background="{TemplateBinding Background}" />
+                                </Border>
+                                <Grid Grid.Row="1">
+                                    <Border Background="WhiteSmoke">
+                                        <ContentPresenter Content="{TemplateBinding SelectedContent}" />
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </ControlTemplate>
+                    </ct:ChromeTabControl.Template>
+                </ct:ChromeTabControl>
+            </materialDesign:DrawerHost>
             <!-- グリッドスプリッター -->
-            <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Stretch" MinWidth="3" Margin="0" Grid.Column="1"/>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="3"/>
             <!-- 右カラム -->
-            <TabControl x:Name="tabControl1" Grid.Column="2">
+            <dragablz:TabablzControl Grid.Column="2">
                 <TabItem Header="ページ一覧">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
@@ -108,17 +171,7 @@
                                   Grid.Column="1"/>
                     </Grid>
                 </TabItem>
-                <TabItem Header="TabItem">
-                    <Grid Background="#FFE5E5E5"/>
-                </TabItem>
-                <TabItem Header="TabItem" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54">
-                    <Grid Background="#FFE5E5E5"/>
-                </TabItem>
-            </TabControl>
+            </dragablz:TabablzControl>
         </Grid>
-        <!-- ステータスバー -->
-        <StatusBar Grid.Row="2" MinHeight="20">
-            <StatusBarItem Content="{Binding Path=OrignalPageBytes.Value}" Height="20" VerticalAlignment="Top"/>
-        </StatusBar>
-    </Grid>
-</Window>
+    </DockPanel>
+</controls:MetroWindow>
