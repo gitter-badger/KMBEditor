@@ -15,6 +15,10 @@ AA(アスキーアート) 作成用エディタ(になる予定のもの)です�
 + [SikigamiHNQ/OrinrinEditor: AsciiArt Story Editor for Japanese Only](https://github.com/SikigamiHNQ/OrinrinEditor)
 + [OrinrinEditor | やる夫 Wiki | Fandom powered by Wikia](http://yaruo.wikia.com/wiki/OrinrinEditor)
 
+また、MLTViewerの仕様に関しては、Nanorymerを一部参考にしています
+
++ [ファザコンなのははAAビューアを作ってしまったようです - 1463138480 - したらば掲示板](http://jbbs.shitaraba.net/bbs/read.cgi/otaku/15956/1463138480/)
+
 # 最新リリースパッケージ
 
 最新のリリースパッケージは以下から取得できます。`KMBEditor-v(version).zip` をダウンロード後、解凍して下さい。
