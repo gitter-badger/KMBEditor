@@ -39,13 +39,12 @@
                     MaximumTabWidth="250">
             <ct:ChromeTabControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ct:ChromeTabItem}}}">
-                        <StackPanel Orientation="Horizontal" Background="Transparent">
-                            <TextBlock Text="{Binding Path=TabHeaderName.Value}"
-                                       TextWrapping="NoWrap"
-                                       TextTrimming="CharacterEllipsis"
-                                       VerticalAlignment="Center" />
-                        </StackPanel>
+                    <Grid Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ct:ChromeTabItem}}}"
+                          ToolTip="{Binding Path=TabHeaderName.Value}">
+                        <TextBlock Text="{Binding Path=TabHeaderName.Value}"
+                                   TextWrapping="NoWrap"
+                                   TextTrimming="CharacterEllipsis"
+                                   VerticalAlignment="Center" />
                     </Grid>
                 </DataTemplate>
             </ct:ChromeTabControl.ItemTemplate>

@@ -106,7 +106,9 @@
                     <ct:ChromeTabControl.ItemTemplate>
                         <DataTemplate>
                             <Grid Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type ct:ChromeTabItem}}}">
-                                <StackPanel Orientation="Horizontal" Background="Transparent">
+                                <StackPanel Orientation="Horizontal"
+                                            Background="Transparent"
+                                            ToolTip="{Binding Path=File.Name}">
                                     <TextBlock Text="{Binding Path=File.Name}"
                                                TextWrapping="NoWrap"
                                                TextTrimming="CharacterEllipsis"
