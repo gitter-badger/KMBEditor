@@ -24,7 +24,7 @@
                     MaximumTabWidth="250">
             <ct:ChromeTabControl.Resources>
                 <DataTemplate DataType="{x:Type local:TabContext}">
-                    <Grid Background="#FFE5E5E5">
+                    <Grid Background="White">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>
                             <ColumnDefinition Width="Auto"/>
