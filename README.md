@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/tar-bin/KMBEditor.png?label=ready&title=Ready)](https://waffle.io/tar-bin/KMBEditor)
 [![Build status](https://ci.appveyor.com/api/projects/status/vg1e2udxedr14h67/branch/master?svg=true&passingText=master)](https://ci.appveyor.com/project/tar-bin/kmbeditor-cyyma/branch/master)
 [![Build status](https://ci.appveyor.com/api/projects/status/vg1e2udxedr14h67?svg=true)](https://ci.appveyor.com/project/tar-bin/kmbeditor-cyyma)
 
