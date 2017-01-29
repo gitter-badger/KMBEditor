@@ -158,7 +158,9 @@ namespace KMBEditor.MainWindow
         /// <param name="index"></param>
         private void updatePageList(int index)
         {
-            if (this.TabItems.Count > index && index > 0)
+            // 選択状態がリセットされた場合にインデックスが-1になる場合と
+            // 上位で不正に指定された場合での動作を除外する
+            if (this.TabItems.Count > index && index >= 0)
             {
                 this.PageList.Value = this.TabItems[index].File.Pages;
             }
