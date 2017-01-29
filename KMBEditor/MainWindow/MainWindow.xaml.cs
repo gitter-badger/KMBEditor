@@ -52,6 +52,8 @@ namespace KMBEditor.MainWindow
         // コマンド
         public ReactiveCommand CreateNewMLTFileCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand OpenCommand { get; private set; } = new ReactiveCommand();
+        public ReactiveCommand SaveCommand { get; private set; } = new ReactiveCommand();
+        public ReactiveCommand SaveAsCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand<TabItemContent> CloseTabCommand { get; private set; } = new ReactiveCommand<TabItemContent>();
 
         public ReactiveCommand PrevPageCommand { get; private set; } = new ReactiveCommand();
@@ -166,6 +168,22 @@ namespace KMBEditor.MainWindow
         }
 
         /// <summary>
+        /// 新規保存/上書き保存コマンド
+        /// </summary>
+        private void saveCommandAction()
+        {
+            MessageBox.Show("saveCommandAction");
+        }
+
+        /// <summary>
+        /// 名前をつけて保存コマンド
+        /// </summary>
+        private void saveAsCommandAction()
+        {
+            MessageBox.Show("saveAsCommandAction");
+        }
+
+        /// <summary>
         /// ViewModelの初期化
         /// </summary>
         public void Init()
@@ -188,6 +206,8 @@ namespace KMBEditor.MainWindow
             // コマンド定義
             this.CreateNewMLTFileCommand.Subscribe(_ => this.createNewMLTFile());
             this.OpenCommand.Subscribe(_ => this.openMLTFile());
+            this.SaveCommand.Subscribe(_ => this.saveCommandAction());
+            this.SaveAsCommand.Subscribe(_ => this.saveAsCommandAction());
             this.PrevPageCommand.Subscribe(_ => this.movePrevPage());
             this.NextPageCommand.Subscribe(_ => this.moveNextPage());
             this.CloseTabCommand.Subscribe(this.closeTabCommandAction);
@@ -221,19 +241,18 @@ namespace KMBEditor.MainWindow
     /// </summary>
     public partial class MainWindow : MahApps.Metro.Controls.MetroWindow
     {
-        private MainWindowViewModel _vm = new MainWindowViewModel();
-
         public MainWindow()
         {
             InitializeComponent();
+        }
 
+        private void DockPanel_Loaded(object sender, RoutedEventArgs e)
+        {
+            var view = sender as DockPanel;
+            var viewModel = view.DataContext as MainWindowViewModel;
             // ViewModelの初期化
-            this._vm.View = new WeakReference<MainWindow>(this);
-
-            this._vm.Init();
-
-            // DataContextの設定
-            this.DataContext = _vm;
+            viewModel.View = new WeakReference<MainWindow>(this);
+            viewModel.Init();
         }
 
         private void dataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
