@@ -52,7 +52,6 @@ namespace KMBEditor.MainWindow
         // コマンド
         public ReactiveCommand CreateNewMLTFileCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand OpenCommand { get; private set; } = new ReactiveCommand();
-        public ReactiveCommand OpenMLTViewerCommand { get; private set; } = new ReactiveCommand();
         public ReactiveCommand<TabItemContent> CloseTabCommand { get; private set; } = new ReactiveCommand<TabItemContent>();
 
         public ReactiveCommand PrevPageCommand { get; private set; } = new ReactiveCommand();
