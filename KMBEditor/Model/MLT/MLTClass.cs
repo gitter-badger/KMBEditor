@@ -164,7 +164,7 @@ namespace KMBEditor.Model.MLT
         /// </summary>
         private void saveMLTFile(string filePath)
         {
-            using (var writer = new StreamWriter(filePath))
+            using (var writer = new StreamWriter(filePath, false /* append */, System.Text.Encoding.GetEncoding("Shift_JIS")))
             {
                 foreach (var page in this.Pages)
                 {
