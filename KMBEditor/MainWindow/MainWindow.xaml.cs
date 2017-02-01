@@ -274,6 +274,7 @@ namespace KMBEditor.MainWindow
         {
             switch (e.PropertyName)
             {
+                case "SplitterText":
                 case "RawText":
                 case "DecodeText":
                 case "IsCaption":
