@@ -296,7 +296,8 @@ namespace KMBEditor.Model.MLT
                         // 区切り文字の行はどのページにも含まない
                         // 最終行は改行しない
                         yield return Tuple.Create<string, string>(
-                            page.TrimEnd(System.Environment.NewLine.ToCharArray()),
+                            // 末尾の改行文字を一組だけ削除（TrimEndだと既存の改行文字までなくなるので使用しない）
+                            page.Remove(page.Length - System.Environment.NewLine.Count()),
                             line);
                         // ページ生成用変数をリセット
                         page = "";
@@ -311,7 +312,8 @@ namespace KMBEditor.Model.MLT
                 // 最終ページを返す
                 // 最終行は改行しない
                 yield return Tuple.Create<string, string>(
-                    page.TrimEnd(System.Environment.NewLine.ToCharArray()),
+                    // 末尾の改行文字を一組だけ削除（TrimEndだと既存の改行文字までなくなるので使用しない）
+                    page.Remove(page.Length - System.Environment.NewLine.Count()),
                     null);
             }
         }
