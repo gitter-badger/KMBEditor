@@ -115,7 +115,6 @@ namespace KMBEditor.MainWindow
 
         private void movePrevPage()
         {
-            // 追加したタブに遷移
             MainWindow obj;
             if (this.View.TryGetTarget(out obj))
             {
@@ -128,7 +127,6 @@ namespace KMBEditor.MainWindow
 
         private void moveNextPage()
         {
-            // 追加したタブに遷移
             MainWindow obj;
             if (this.View.TryGetTarget(out obj))
             {
@@ -172,7 +170,16 @@ namespace KMBEditor.MainWindow
         /// </summary>
         private void saveCommandAction()
         {
-            MessageBox.Show("saveCommandAction");
+            MainWindow obj;
+            if (this.View.TryGetTarget(out obj))
+            {
+                var tab = obj.EditorTabControl;
+                var tabindex = tab.SelectedIndex;
+                var tabitem = this.TabItems[tabindex];
+
+                // 新規保存/上書き保存
+                tabitem.File.SaveMLTFile();
+            }
         }
 
         /// <summary>
@@ -180,7 +187,15 @@ namespace KMBEditor.MainWindow
         /// </summary>
         private void saveAsCommandAction()
         {
-            MessageBox.Show("saveAsCommandAction");
+            MainWindow obj;
+            if (this.View.TryGetTarget(out obj))
+            {
+                var tab = obj.EditorTabControl;
+                var tabindex = tab.SelectedIndex;
+                var tabitem = this.TabItems[tabindex];
+                var filename = tabitem.File.SaveAsMLTFile();
+                MessageBox.Show(filename);
+            }
         }
 
         /// <summary>
