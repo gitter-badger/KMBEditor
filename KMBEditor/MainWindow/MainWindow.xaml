@@ -22,6 +22,7 @@
         Title="KMBEditor" Height="600" Width="800" WindowState="Maximized">
     <Window.Resources>
         <ResourceDictionary>
+            <local:MainWindowViewModel x:Key="ViewModel"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
@@ -29,7 +30,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <DockPanel>
+    <DockPanel DataContext="{StaticResource ViewModel}" Loaded="DockPanel_Loaded">
         <!-- メニューバー -->
         <materialDesign:Card DockPanel.Dock="Top" materialDesign:ShadowAssist.ShadowDepth="Depth1">
             <Menu>
@@ -44,6 +45,9 @@
                 <MenuItem Header="ファイル(_F)">
                     <MenuItem Header="新規作成(_N)" Command="{Binding CreateNewMLTFileCommand}"/>
                     <MenuItem Header="ファイルを開く(_O)" Command="{Binding OpenCommand}"/>
+                    <Separator/>
+                    <MenuItem Header="上書き保存(_S)" Command="{Binding Path=SaveCommand}"/>
+                    <MenuItem Header="名前をつけて保存(_N)" Command="{Binding Path=SaveAsCommand}"/>
                 </MenuItem>
                 <!-- メニューバー：表示 -->
                 <MenuItem Header="表示(_N)">
