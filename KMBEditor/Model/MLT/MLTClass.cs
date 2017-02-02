@@ -173,6 +173,12 @@ namespace KMBEditor.Model.MLT
                     {
                         writer.WriteLine(page.SplitterText);
                     }
+
+                    // DecodeTextをRawTextに変換(Unicode文字をエスケープ)
+                    //FIXME: エスケープできてない
+                    //TODO: 基本は16進だけど、10進でのエスケープも選択したい
+                    page.RawText = page.DecodeText;
+
                     // ページを書き込み
                     writer.WriteLine(page.RawText);
                 }
