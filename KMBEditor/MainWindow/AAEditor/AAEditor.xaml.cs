@@ -8,6 +8,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace KMBEditor.MainWindow.AAEditor
 {
@@ -126,7 +129,7 @@ namespace KMBEditor.MainWindow.AAEditor
         }
     }
 
-    public class AAEditorViewModel
+    public class AAEditorViewModel : ViewModelBase
     {
         public ObservableCollection<int> LineNumberList { get; private set; }
             = new ObservableCollection<int> { 1 };
@@ -267,6 +270,17 @@ namespace KMBEditor.MainWindow.AAEditor
         }
 
         /// <summary>
+        /// 編集領域のテキストの更新を上位に反映
+        /// </summary>
+        /// <param name="s"></param>
+        private void writeBackEditAreaText(string s)
+        {
+            // 編集領域のテキストを書き戻し
+            // ViewのDependencyPeoperty更新用メッセージを送付
+            MessengerInstance.Send(s);
+        }
+
+        /// <summary>
         /// バインディングされている元のテキストが変わった場合の処理 
         /// </summary>
         /// <param name="s">バインディングされている元のテキスト</param>
@@ -280,6 +294,7 @@ namespace KMBEditor.MainWindow.AAEditor
         }
 
         public AAEditorViewModel()
+            : base(Messenger.Default)
         {
             // ガイド線の設定
             double top  = 1 + ((16 + 2) * 30); // offset + 1行当たりのpixel数 * 行数
@@ -297,6 +312,7 @@ namespace KMBEditor.MainWindow.AAEditor
             // 編集領域のテキストが更新された時の処理
             this.EditAreaText.Subscribe(s => this.updateLineNumber(s));
             this.EditAreaText.Subscribe(s => this.updateVisualText(s));
+            this.EditAreaText.Subscribe(s => this.writeBackEditAreaText(s));
         }
     }
     /// <summary>
@@ -326,6 +342,13 @@ namespace KMBEditor.MainWindow.AAEditor
             InitializeComponent();
 
             this.AAEditorUserControlGrid.DataContext = _vm;
+
+            Messenger.Default.Register(this, (Action<string>)updateText);
+        }
+
+        private void updateText(string text)
+        {
+            this.Text = text;
         }
     }
 }

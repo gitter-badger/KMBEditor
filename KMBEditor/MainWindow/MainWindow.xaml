@@ -104,7 +104,7 @@
                             MaximumTabWidth="250">
                     <ct:ChromeTabControl.Resources>
                         <DataTemplate DataType="{x:Type local:TabItemContent}">
-                            <editor:AAEditor Text="{Binding Path=Page.Value.DecodeText}"/>
+                            <editor:AAEditor Text="{Binding Path=Page.Value.DecodeText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataTemplate>
                     </ct:ChromeTabControl.Resources>
                     <ct:ChromeTabControl.ItemTemplate>
